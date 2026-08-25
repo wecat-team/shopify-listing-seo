@@ -46,15 +46,45 @@ the alt on a shared file must not name a single product.
 Videos have no alt in this sense. Filter media by type before building the plan
 or the run reports failures that are not failures.
 
-## Handle changes need a redirect in the same change
+## Handle changes: let productUpdate create the redirect
 
-Creating a redirect needs the `write_online_store_pages` scope. If the app's
-token lacks it, `urlRedirectCreate` is unavailable and a handle change strands
-the old URL on a 404.
+A handle change without a redirect discards every link and ranking the old URL
+earned. The fix is a single field on the same mutation:
 
-Re-authorising an app **replaces** the scope grant rather than adding to it, so
-request every scope you need in one grant or you will silently lose the ones you
-had.
+```graphql
+mutation { productUpdate(input: {
+  id: $id,
+  handle: "short-clean-handle",
+  redirectNewHandle: true      # Shopify creates the 301 for you
+}) { product { id handle } userErrors { field message } } }
+```
+
+`redirectNewHandle: true` creates the `UrlRedirect` from the old path to the new
+one as part of the product update. Verified on a live shop: after the rename, a
+`urlRedirects(query: "path:/products/<old-handle>")` query returned the redirect
+already in place.
+
+Two things to know before trusting it in a batch:
+
+- **Confirm the scope.** Creating redirects needs `write_online_store_pages`.
+  Check what the token actually carries rather than assuming — a scope grant may
+  be wider or narrower than the notes say:
+
+  ```graphql
+  query { currentAppInstallation { accessScopes { handle } } }
+  ```
+
+- **Re-authorising replaces the grant** rather than adding to it. Request every
+  scope you need in one grant or you will silently lose the ones you had.
+
+Rehearse the whole thing on a **draft** product first: rename it, query the
+redirect, rename it back, then delete the redirects the rehearsal created
+(`urlRedirectDelete`). Draft products are not published, so nothing a shopper or
+a crawler sees is involved.
+
+Even with redirects handled, a handle change spends ranking equity to buy a
+tidier URL. On a product that already ranks, that trade is usually not worth
+making; on a product with no history, it costs nothing.
 
 ## The protocol for a bulk write
 

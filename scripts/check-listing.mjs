@@ -115,6 +115,22 @@ function checkOne(p) {
   });
   if (!images.length) out.push(F('warn', 'images', 'no images supplied to check'));
 
+  // --- Shopify search surface: tags are query matches, not filing metadata ---
+  const tags = (p.tags ?? []).map(text).filter(Boolean);
+  const INTERNAL = /^(dept[:_-]|custom[A-Z]|internal[:_-]|do-not-|needs-|supplier[:_-]|tmp[:_-])/;
+  for (const t of tags.filter((t) => INTERNAL.test(t))) {
+    out.push(F('warn', 'tags', `"${t}" looks like an internal flag — tags are a storefront search field, put flags in metafields`));
+  }
+  if (p.tags && !tags.filter((t) => !INTERNAL.test(t)).length) {
+    out.push(F('warn', 'tags', 'no shopper-facing tags — nothing here matches a material, occasion or colour query'));
+  }
+  if (p.productType !== undefined && !text(p.productType)) {
+    out.push(F('warn', 'productType', 'empty — product type is a storefront search field'));
+  }
+  if (p.category !== undefined && (!text(p.category) || /^uncategorized$/i.test(text(p.category)))) {
+    out.push(F('warn', 'category', 'not set to a real taxonomy category'));
+  }
+
   // --- 8. Collections ---
   if (Array.isArray(p.collections) && p.collections.length === 0) {
     out.push(F('error', 'collections', 'not in any collection'));

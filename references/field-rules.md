@@ -12,6 +12,7 @@ need rather than the whole file.
 - [7. Images and alt text](#7-images-and-alt-text)
 - [8. Collections and internal links](#8-collections-and-internal-links)
 - [9. Structured data](#9-structured-data)
+- [10. Shopify's own fields: tags, product type, vendor, variants](#10-shopifys-own-fields-tags-product-type-vendor-variants)
 
 ## 1. Primary keyword
 
@@ -42,7 +43,8 @@ Two failures worth checking for explicitly, because both ship regularly:
 
 - A word repeated back to back (`Personalized Personalized Wedding Hoop`), which
   happens when a bulk edit prepends a prefix that was already there.
-- A comma tail of keyword phrases inherited from a marketplace listing.
+- A comma tail of keyword phrases, usually an import artefact. It is truncated
+  by Google and it is the visible `<h1>` on the storefront.
 
 **Bad** (162 chars, repeated word, comma tail):
 `Personalized Personalized Til Death Do Us Part Glass Ornament, Custom Gothic Wedding Ornament, Skeleton Couple Keepsake, Halloween Wedding Gift, Anniversary Decor`
@@ -188,3 +190,62 @@ only from a live value.
 Collection pages are usually missing `ItemList`, and variant-heavy products are
 usually missing `ProductGroup` with `productGroupID`, `variesBy` and
 `hasVariant`. Both are worthwhile once the product-level nodes are correct.
+
+## 10. Shopify's own fields: tags, product type, vendor, variants
+
+These are not SEO fields in the Google sense — Google never sees most of them.
+They matter because they are what Shopify's storefront search actually indexes,
+so they decide whether a shopper who types a material, a size or an occasion
+finds the product at all.
+
+Shopify searches exactly eight product fields: `title`, `body`, `product_type`,
+`vendor`, `tag`, `variants.title`, `variants.sku`, `variants.barcode`. It does
+not search `seo.title`, `seo.description`, `handle`, `category` or metafields.
+
+### Tags
+
+Tags are search surface, not filing metadata. Every tag is a term a shopper can
+match against.
+
+**Use tags for** words a shopper would type: materials (`linen`, `acrylic`),
+occasions (`bridal shower`, `anniversary`), recipients (`for the bride`),
+colours, styles.
+
+**Never use tags for** internal flags — `dept:gifts`, `customName`,
+`needs-photo`, `supplier-3`. They match nothing a shopper types, and when most
+of the catalog carries them they match nearly everything. On one live shop an
+internal `customDate` tag returned 246 of 273 products through the search API.
+
+Internal flags belong in **metafields**, which are not searched. Moving them is a
+data migration, not a copy change, so plan it as one.
+
+### Product type
+
+Free text the merchant defines, and a search field. Keep it a consistent
+controlled vocabulary — `Table Runner`, not `table runner` on some products and
+`Runner (linen)` on others. Inconsistent values fragment both search and any
+reporting built on them.
+
+### Category (Shopify's standard taxonomy)
+
+Distinct from product type: a node in Shopify's standardized taxonomy, used for
+classification across Shopify surfaces and integrated marketplaces. Not searched
+on the storefront, but it feeds channels and it is cheap to set correctly.
+
+Audit for products left on `Uncategorized` — they are invisible to anything that
+keys off the taxonomy.
+
+### Vendor
+
+A search field. If every product shares one vendor value, searching that value
+returns the entire catalog — harmless, but it means vendor carries no
+discriminating signal for you. Worth setting properly on multi-brand catalogs.
+
+### Variant titles and SKU
+
+Both searchable, which is the practical argument for filling SKU beyond what
+Google wants: staff and repeat customers search by it.
+
+Variant titles are also where size queries land. Keep the format consistent —
+`30x40 in` and `20X60 Inches` on neighbouring products means one of them misses
+a query the other catches. Pick one format and apply it across the catalog.

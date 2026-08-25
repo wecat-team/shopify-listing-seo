@@ -1,6 +1,6 @@
 ---
 name: shopify-listing-seo
-description: Write and audit Shopify product listings that rank - product title, SEO title, meta description, URL handle, body copy, images, collections and structured data, with the exact character budgets and the Shopify Admin API traps that silently destroy data. Use this whenever the user is writing, rewriting, bulk-editing or auditing Shopify product listings, product descriptions, meta titles or meta descriptions; whenever they mention product SEO, listing SEO, PDP copy, catalog cleanup, keyword cannibalization or migrating listings from Etsy/Amazon to Shopify; and whenever they are about to write product fields through the Shopify Admin API - even if they never say the word "SEO".
+description: Write and audit Shopify product listings that rank in Google and in the store's own search - product title, SEO title, meta description, URL handle, body copy, tags, product type, vendor, variants, images and structured data - with the exact character budgets, the fields Shopify actually indexes, and the Admin API behaviours that silently destroy data during a bulk edit. Use this whenever the user is writing, rewriting, bulk-editing or auditing Shopify product listings, product descriptions, meta titles or meta descriptions; whenever they mention product SEO, listing SEO, PDP copy, catalog cleanup, product tags, storefront search or keyword cannibalization; and whenever they are about to write product fields through the Shopify Admin API - even if they never say the word "SEO".
 ---
 
 # Shopify listing SEO
@@ -65,15 +65,60 @@ couple portrait 24x36` converts; `wedding sign` does not rank. This is why the
 specs section of the body copy matters so much — it is what makes the long-tail
 query match.
 
-## Etsy titles do not port to Google
+## A Shopify listing is indexed twice
 
-Catalogs migrated from Etsy arrive with 150-character comma-stuffed titles.
-Etsy's internal search matches strings; Google evaluates whether the text reads
-naturally and truncates at ~60 characters. Porting an Etsy title verbatim gives
-you a title that is cut off in results and reads as keyword stuffing.
+Two different systems read a listing, and they read different fields. Optimising
+for one while ignoring the other leaves half the traffic on the table.
 
-Rewrite: keep the primary keyword in the first 30 characters, drop the comma
-tail, and put the discarded phrases into the body copy where they belong.
+**Google** reads the rendered page: the `<title>` tag, the meta description, the
+`<h1>`, the body copy, image alt and the structured data.
+
+**Shopify's own storefront search** reads the product record, and only these
+eight fields:
+
+| Searched by Shopify | Not searched by Shopify |
+| --- | --- |
+| `title` | `seo.title` |
+| `body` (description) | `seo.description` |
+| `product_type` | `handle` |
+| `vendor` | `category` (taxonomy) |
+| `tag` | metafields |
+| `variants.title` | collections |
+| `variants.sku` | |
+| `variants.barcode` | |
+
+Two consequences worth designing around:
+
+- **The SEO title and meta description do nothing for on-site search.** They are
+  purely a Google surface. The product title, in contrast, carries in both
+  places, which is why it gets the most attention.
+- **Tags, product type, vendor, variant titles and SKU are search surface.**
+  On Shopify these are not filing metadata — they are query matches. A shopper
+  typing a size, a material or a SKU can only land on the product if that string
+  lives in one of those eight fields.
+
+### Keep internal flags out of tags
+
+Because `tag` is a search field, tags used as internal flags — `dept:gifts`,
+`customName`, `needs-photo`, `supplier-3` — are dead weight in the index, and on
+a catalog where most products carry them they match almost everything.
+
+Verified on a live shop: an internal `customDate` tag returned 246 of 273
+products through the Storefront search API. That is not a filter, it is noise.
+
+Put internal flags in **metafields**, which are not searched, and keep tags for
+words a shopper would actually type: materials, occasions, colours, recipients.
+
+### Long product titles hurt on both surfaces
+
+A 150-character title with a comma tail of keyword phrases is a common import
+artefact. Google truncates it at ~60 characters and reads the rest as stuffing;
+on-site it is the visible `<h1>` and the collection-grid label, so it also makes
+the storefront harder to scan.
+
+Rewrite to 45-70 characters: primary keyword in the first 30, comma tail dropped,
+and the discarded phrases moved into the body copy and tags where they are still
+searched.
 
 ## Near-identical product families
 

@@ -17,8 +17,13 @@ Most listing SEO advice is right in outline and wrong in the details that matter
 - `productUpdate(input: {seo: {title}})` **replaces** the whole `seo` object.
   A title-only bulk edit nulls every meta description in the catalog. This is
   documented nowhere prominent and shows up as "our meta descriptions vanished".
-- Catalogs migrated from Etsy arrive with 150-character comma-stuffed titles that
-  Google truncates and reads as keyword stuffing.
+- A Shopify listing is indexed by two systems that read different fields.
+  Shopify's own storefront search never looks at the SEO title or meta
+  description — it reads title, body, product type, vendor, tags, variant title,
+  SKU and barcode. Optimising only for Google leaves on-site search untouched.
+- Tags are a search field, so tags used as internal flags (`dept:gifts`,
+  `customName`) become index noise. On one live shop a single internal tag
+  matched 246 of 273 products.
 
 This skill exists so an agent handles those correctly without being told.
 
@@ -57,7 +62,7 @@ Ask for what you want in plain language:
 > Rewrite the meta descriptions for these 40 table runner listings — they're all
 > sharing the same one right now.
 
-> Our product titles came over from Etsy and they're 150 characters. Fix them.
+> Our product titles are 150 characters with a comma tail of keywords. Fix them.
 
 > Audit this catalog export and tell me what's blocking these products from
 > ranking.
