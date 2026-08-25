@@ -23,6 +23,9 @@ const TITLE_TAG_MAX = Number(flag('title-tag-max', '60'));
 const SEO_TITLE_MAX = TITLE_TAG_MAX - SUFFIX.length;
 
 const FILLER = /-(for|the|and|with|your|of|to|a|an)-/;
+// Google Merchant Center product data spec, `title` attribute.
+const TITLE_MAX = 150;      // hard limit: truncated + feed warning past this
+const TITLE_VISIBLE = 70;   // "users will usually notice only the first 70 or fewer"
 const STOP_EXT = /\.(jpe?g|png|webp|gif|avif)$/i;
 
 const text = (v) => (v ?? '').toString().replace(/\s+/g, ' ').trim();
@@ -42,17 +45,37 @@ function checkOne(p) {
   const images = p.images ?? [];
 
   // --- 2. Product title ---
+  // Length rules come from Google Merchant Center's feed `title` spec, the only
+  // primary source that states any number: 1-150 hard, "users will usually
+  // notice only the first 70 or fewer characters", "use all 150 characters",
+  // "put the most important details first". There is no sourced 45-70 rule, so
+  // this does not enforce one - it checks the front-loading Google does document.
   if (!title) out.push(F('error', 'title', 'missing'));
   else {
-    if (title.length < 45 || title.length > 70) {
-      out.push(F('error', 'title', `${title.length} chars, want 45-70`));
+    if (title.length > TITLE_MAX) {
+      out.push(F('error', 'title', `${title.length} chars, over the ${TITLE_MAX}-char feed limit — Google truncates it and flags the feed`));
+    }
+    if (title.length < 25) {
+      out.push(F('warn', 'title', `${title.length} chars — too short to identify the product or match many queries`));
+    }
+    // The first ~70 characters are what a shopper actually reads, so the
+    // product's core name has to fit there. Checking that the leading segment
+    // (up to the first comma) fits is the useful test; demanding that char 70
+    // land exactly on a space would fire on most titles for no reason.
+    if (title.length > TITLE_VISIBLE) {
+      const lead = title.split(/\s*[,|]\s*/)[0];
+      if (lead.length > TITLE_VISIBLE) {
+        out.push(F('warn', 'title', `the leading phrase runs ${lead.length} chars — a shopper sees about ${TITLE_VISIBLE}, so put the distinguishing words earlier`));
+      }
     }
     const ws = title.split(' ');
     const rep = ws.find((w, i) =>
       i > 0 && w.length > 3 && w.toLowerCase().replace(/[,|]/g, '') === ws[i - 1].toLowerCase().replace(/[,|]/g, ''));
+    // Keyword stuffing is defined qualitatively by Google - unnatural
+    // repetition - so repetition is the thing worth flagging, not length.
     if (rep) out.push(F('error', 'title', `word "${rep}" repeated back to back`));
-    if ((title.match(/,/g) || []).length >= 3) {
-      out.push(F('warn', 'title', 'three or more commas reads as a marketplace keyword tail'));
+    if (/\b(SALE|BEST|CHEAP|FREE SHIPPING)\b/.test(title)) {
+      out.push(F('warn', 'title', 'promotional text is disallowed in Merchant Center feed titles'));
     }
   }
 
@@ -87,8 +110,10 @@ function checkOne(p) {
   }
 
   // --- 6. Body copy ---
+  // No word-count floor: Google states it has no preferred word count. What is
+  // checkable is whether the copy carries the facts buyers search for.
   const w = words(body);
-  if (w < 250) out.push(F('error', 'body', `${w} words, want 250+`));
+  if (w < 40) out.push(F('warn', 'body', `${w} words — too thin to answer a buyer's questions`));
   const lower = plain(body).toLowerCase();
   const hasDimensions = /\b\d+\s*(x|×|by)\s*\d+\b/.test(lower) || /\b\d+(\.\d+)?\s?(inch|inches|in\b|cm|mm)\b/.test(lower);
   if (!hasDimensions) out.push(F('error', 'body', 'no concrete dimensions — long-tail size queries cannot match'));

@@ -40,11 +40,11 @@ jumping around means redoing work.
 | # | Field | Budget |
 | --- | --- | --- |
 | 1 | Primary keyword | one per listing, two supporting at most |
-| 2 | Product title | 45-70 characters |
+| 2 | Product title | first ~70 chars must identify it; 150 max if fed to Shopping |
 | 3 | SEO title | 60 minus the brand suffix |
 | 4 | Meta description | 120-155 characters, unique |
 | 5 | URL handle | 3-5 words, set once |
-| 6 | Body copy | 250+ words, six sections, unique |
+| 6 | Body copy | six content sections, unique. No word count |
 | 7 | Images | descriptive filenames, alt on every image |
 | 8 | Collection + internal links | one canonical URL per product |
 
@@ -116,9 +116,24 @@ artefact. Google truncates it at ~60 characters and reads the rest as stuffing;
 on-site it is the visible `<h1>` and the collection-grid label, so it also makes
 the storefront harder to scan.
 
-Rewrite to 45-70 characters: primary keyword in the first 30, comma tail dropped,
-and the discarded phrases moved into the body copy and tags where they are still
-searched.
+Front-load instead of truncating. Google Merchant Center documents the numbers
+for the feed `title` attribute — and if the shop publishes to the Google &
+YouTube channel, the product title *is* that feed title:
+
+| Google's wording | Register |
+| --- | --- |
+| "Title [title]: 1–150 characters" | hard limit, enforced by truncation + a feed warning |
+| "Users will usually notice only the first 70 or fewer characters of your title, depending on screen size." | display observation |
+| "Use all 150 characters" | documented best practice |
+| "Put the most important details first" | documented best practice |
+
+So the fix for a 150-character comma-tail title is **ordering, not deletion**:
+make the first ~70 characters identify the product and say what makes it
+different, keep the rest up to 150, and remove only repetition.
+
+There is **no authoritative source** for a 45-70 character product-title rule.
+It appears in agency writing, not in any Google or Shopify document. Do not
+apply it.
 
 ## Near-identical product families
 

@@ -33,7 +33,19 @@ listing — a different use case, material, size or occasion.
 
 ## 2. Product title
 
-**45-70 characters.** Primary keyword inside the first 30.
+**First ~70 characters must identify the product. 150 characters maximum** when
+the shop feeds Google Shopping.
+
+Provenance matters here, because the widely repeated "45-70 characters" has
+none: it is not in any Google or Shopify document. The real numbers belong to
+Google Merchant Center's feed `title` attribute — 1-150 characters hard, "Users
+will usually notice only the first 70 or fewer characters", and the explicit
+best practices "Use all 150 characters" and "Put the most important details
+first". If the product is published to the Google & YouTube channel, the Shopify
+product title is that feed title.
+
+Truncation past 150 is silent, plus a "Needs attention" feed warning. The item
+is not disapproved.
 
 The title does three jobs at once: it is the `<h1>`, the name on collection
 grids, and — when no SEO title is set — the `<title>` tag itself. So it has to
@@ -100,7 +112,12 @@ the rule going forward and leave the existing URLs.
 
 ## 6. Body copy
 
-**250+ words minimum, six sections, unique.**
+**Six content sections, unique. There is no word-count minimum.**
+
+Google states it in writing: "Are you writing to a particular word count because
+you've heard or read that Google has a preferred word count? (No, we don't.)"
+A "250-word minimum" is folklore. What matters is whether the copy answers the
+buyer's questions — which is what the six sections below are for.
 
 Structure it as the order a buyer actually asks:
 
@@ -118,10 +135,12 @@ Every fact in sections 3 and 4 must come from the shop's real variant data and
 published policies. If a number is not available, leave the sentence out. An
 invented lead time is a customer-service problem, not an SEO win.
 
-Copy must be unique. Reusing a paragraph across a product family is precisely
-Google's *scaled content abuse* pattern — and note that the policy is about
-value, not authorship, so "a human wrote it" is not a defence and "AI wrote it"
-is not the violation.
+Copy should be unique, but be precise about why. Scaled content abuse is defined
+by **primary purpose and lack of user value** — "no matter how it's created" —
+not by duplication, not by length, and not by whether AI wrote it. Reused
+paragraphs across a product family are a quality and differentiation problem
+first; they only become a policy problem when the pages exist mainly to
+manipulate rankings.
 
 ## 7. Images and alt text
 

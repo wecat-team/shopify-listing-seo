@@ -11,9 +11,14 @@ destroy data during a bulk edit.
 
 Most listing SEO advice is right in outline and wrong in the details that matter:
 
-- Every guide says "60 characters" for the SEO title. Storefronts append
-  `" | Brand"` to the page title, so the real budget is 60 minus that suffix.
-  Nobody mentions it, and every listing in the catalog overshoots.
+- Most of the numbers in circulation have no source. "45-70 character product
+  titles" and "250-word minimum descriptions" appear in no Google or Shopify
+  document — Google says in writing it has no preferred word count, and Merchant
+  Center's actual guidance is "Use all 150 characters, put the most important
+  details first". This skill labels every threshold as a hard rule, a documented
+  recommendation, or unsourced convention.
+- Storefronts append `" | Brand"` to the page title, so the SEO title budget is
+  the observed ~60 minus that suffix. Nobody mentions the suffix.
 - `productUpdate(input: {seo: {title}})` **replaces** the whole `seo` object.
   A title-only bulk edit nulls every meta description in the catalog. This is
   documented nowhere prominent and shows up as "our meta descriptions vanished".
