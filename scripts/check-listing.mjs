@@ -20,10 +20,27 @@ const CATALOG = argv.includes('--catalog');
 const JSON_OUT = argv.includes('--json');
 const SUFFIX = flag('suffix', '');
 const TITLE_TAG_MAX = Number(flag('title-tag-max', '60'));
-const SEO_TITLE_MAX = TITLE_TAG_MAX - SUFFIX.length;
+const SEO_TITLE_MAX = TITLE_TAG_MAX - SUFFIX.length; // rule-of-thumb only; px is what counts
 
-const FILLER = /-(for|the|and|with|your|of|to|a|an)-/;
+const HANDLE_MAX = 255; // Shopify: "Handle is too long (maximum is 255 characters)"
 // Google Merchant Center product data spec, `title` attribute.
+// Arial 20px advance widths, measured with canvas measureText. Google truncates
+// the title link by pixel width, not character count — "i" is 4.4px and "W" is
+// 18.9px, so a character budget mis-sizes wide titles by 100px or more.
+const ARIAL20 = {' ':5.557,'!':5.557,'"':7.1,'#':11.123,'$':11.123,'%':17.783,'&':13.34,"'":3.818,
+  '(':6.66,')':6.66,'*':7.783,'+':11.68,',':5.557,'-':6.66,'.':5.557,'/':5.557,':':5.557,';':5.557,
+  '?':11.123,'@':20.303,'[':5.556,']':5.556,'|':5.195,'—':20,'–':11.123,'’':4.443,
+  '0':11.123,'1':11.123,'2':11.123,'3':11.123,'4':11.123,'5':11.123,'6':11.123,'7':11.123,'8':11.123,'9':11.123,
+  A:13.34,B:13.34,C:14.443,D:14.443,E:13.34,F:12.217,G:15.557,H:14.443,I:5.557,J:10,K:13.34,L:11.123,
+  M:16.66,N:14.443,O:15.557,P:13.34,Q:15.557,R:14.443,S:13.34,T:12.217,U:14.443,V:13.34,W:18.877,
+  X:13.34,Y:13.34,Z:12.217,
+  a:11.123,b:11.123,c:10,d:11.123,e:11.123,f:5.557,g:11.123,h:11.123,i:4.443,j:4.443,k:10,l:4.443,
+  m:16.66,n:11.123,o:11.123,p:11.123,q:11.123,r:6.66,s:10,t:5.557,u:11.123,v:10,w:14.443,x:10,y:10,z:10};
+const titlePx = (s) => [...s].reduce((n, ch) => n + (ARIAL20[ch] ?? 11.1), 0);
+// Third-party measurement puts desktop truncation near 580-600px. Google
+// publishes no number at all, so this is convention, not a rule.
+const TITLE_PX_BUDGET = 600;
+const TITLE_PX_SAFE = 580;
 const TITLE_MAX = 150;      // hard limit: truncated + feed warning past this
 const TITLE_VISIBLE = 70;   // "users will usually notice only the first 70 or fewer"
 const STOP_EXT = /\.(jpe?g|png|webp|gif|avif)$/i;
@@ -84,11 +101,15 @@ function checkOne(p) {
   // is what renders. Check whichever one actually reaches the <title> tag.
   const effective = seoTitle || title;
   if (effective) {
-    const rendered = effective.length + SUFFIX.length;
-    if (rendered > TITLE_TAG_MAX) {
+    const px = titlePx(effective + SUFFIX);
+    const chars = effective.length + SUFFIX.length;
+    if (px > TITLE_PX_BUDGET) {
       out.push(F('error', 'seoTitle',
-        `<title> renders ${rendered} chars (${effective.length} + "${SUFFIX}"), want <= ${TITLE_TAG_MAX}` +
-        (seoTitle ? '' : ` — set an SEO title of at most ${SEO_TITLE_MAX} chars`)));
+        `<title> renders ${Math.round(px)}px (${chars} chars incl. "${SUFFIX}") — over the ~${TITLE_PX_BUDGET}px desktop cut` +
+        (seoTitle ? '' : ' — set a separate SEO title')));
+    } else if (px > TITLE_PX_SAFE) {
+      out.push(F('warn', 'seoTitle',
+        `<title> renders ${Math.round(px)}px — within ${TITLE_PX_BUDGET}px but past the ${TITLE_PX_SAFE}px safe mark, trim if it has many capitals`));
     }
   }
 
@@ -101,9 +122,18 @@ function checkOne(p) {
   // --- 5. Handle ---
   if (!handle) out.push(F('error', 'handle', 'missing'));
   else {
-    const parts = handle.split('-').filter(Boolean);
-    if (parts.length > 5) out.push(F('warn', 'handle', `${parts.length} words, want 3-5 (do not change a handle that already ranks)`));
-    if (FILLER.test(`-${handle}-`)) out.push(F('warn', 'handle', 'contains a filler word'));
+    // Shopify's own limit. Nobody publishes an optimal handle length, and the
+    // handle is not one of the fields storefront search reads, so length is not
+    // checked beyond the hard maximum.
+    if (handle.length > HANDLE_MAX) {
+      out.push(F('error', 'handle', `${handle.length} chars, over Shopify's ${HANDLE_MAX}-character maximum`));
+    }
+    if (handle.includes('_')) {
+      out.push(F('warn', 'handle', 'uses underscores — Google recommends hyphens'));
+    }
+    if (/^\d+$|-\d{4,}$/.test(handle)) {
+      out.push(F('warn', 'handle', 'looks like an ID — Google recommends readable words'));
+    }
     if (handle !== handle.toLowerCase() || /[^a-z0-9-]/.test(handle)) {
       out.push(F('error', 'handle', 'must be lowercase letters, digits and hyphens'));
     }

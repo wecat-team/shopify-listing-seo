@@ -1,195 +1,238 @@
 ---
 name: shopify-listing-seo
-description: Write and audit Shopify product listings that rank in Google and in the store's own search - product title, SEO title, meta description, URL handle, body copy, tags, product type, vendor, variants, images and structured data - with the exact character budgets, the fields Shopify actually indexes, and the Admin API behaviours that silently destroy data during a bulk edit. Use this whenever the user is writing, rewriting, bulk-editing or auditing Shopify product listings, product descriptions, meta titles or meta descriptions; whenever they mention product SEO, listing SEO, PDP copy, catalog cleanup, product tags, storefront search or keyword cannibalization; and whenever they are about to write product fields through the Shopify Admin API - even if they never say the word "SEO".
+description: Write a complete, standards-compliant Shopify product listing from a few facts about the product - product title, SEO title, meta description, URL handle, description HTML, tags and product type - and audit existing listings against the same rules. Every threshold is labelled as a hard rule, a documented recommendation, or unsourced convention, so nothing is enforced that no source supports. Use this whenever someone is writing, rewriting or auditing a Shopify product listing or product description, whenever they mention product SEO, listing SEO, meta title, meta description, product tags or storefront search, and whenever they are about to write product fields through the Shopify Admin API - even if they never say the word "SEO".
 ---
 
 # Shopify listing SEO
 
-A listing ranks when it answers one shopper's buying question completely. Nothing
-here is a trick: the character budgets exist because Google truncates, and the
-content rules exist because Google's spam policy targets pages that add nothing.
+Most listing advice repeats numbers that no Google or Shopify document contains.
+This skill separates the three registers and never enforces the third as if it
+were the first:
 
-## Before writing anything: find the brand suffix
-
-Almost every Shopify theme and headless storefront appends the shop name to the
-page title — `Product name | Brand`. Google renders about **60 characters**, so
-the real budget for the SEO title field is:
-
-```
-seo.title budget = 60 - length(" | Brand")
-```
-
-A shop called `Aster & Fig` gets 48. A shop called `Nordic Home Supply` gets 39.
-Getting this wrong is the single most common listing SEO mistake, because every
-guide on the internet says "60 characters" and no guide mentions the suffix.
-
-Confirm it by fetching one live product page and reading its `<title>`:
-
-```bash
-curl -s https://SHOP/products/HANDLE | grep -o '<title>[^<]*</title>'
-```
-
-If the title tag is longer than the product's own SEO title field, the difference
-is the suffix. Subtract it from 60 and use that number for the rest of the work.
-
-## The eight fields
-
-Work in this order. Later fields depend on decisions made in earlier ones, so
-jumping around means redoing work.
-
-| # | Field | Budget |
-| --- | --- | --- |
-| 1 | Primary keyword | one per listing, two supporting at most |
-| 2 | Product title | first ~70 chars must identify it; 150 max if fed to Shopping |
-| 3 | SEO title | 60 minus the brand suffix |
-| 4 | Meta description | 120-155 characters, unique |
-| 5 | URL handle | 3-5 words, set once |
-| 6 | Body copy | six content sections, unique. No word count |
-| 7 | Images | descriptive filenames, alt on every image |
-| 8 | Collection + internal links | one canonical URL per product |
-
-Full rules, thresholds and worked examples: [references/field-rules.md](references/field-rules.md).
-
-## Keyword choice comes first
-
-Pick **one** primary keyword before writing a word of copy. Then check the shop's
-own catalog for a listing already targeting it — two listings on one keyword
-split the ranking signal and neither wins. This is the most common failure in
-catalogs that grew fast, and it is invisible unless you look for it.
-
-A useful test: if you cannot write 250 words of true, specific copy around the
-keyword, the keyword is wrong for this product.
-
-Long-tail is where a small shop actually wins. `custom wedding welcome sign with
-couple portrait 24x36` converts; `wedding sign` does not rank. This is why the
-specs section of the body copy matters so much — it is what makes the long-tail
-query match.
-
-## A Shopify listing is indexed twice
-
-Two different systems read a listing, and they read different fields. Optimising
-for one while ignoring the other leaves half the traffic on the table.
-
-**Google** reads the rendered page: the `<title>` tag, the meta description, the
-`<h1>`, the body copy, image alt and the structured data.
-
-**Shopify's own storefront search** reads the product record, and only these
-eight fields:
-
-| Searched by Shopify | Not searched by Shopify |
+| Register | Meaning |
 | --- | --- |
-| `title` | `seo.title` |
-| `body` (description) | `seo.description` |
-| `product_type` | `handle` |
-| `vendor` | `category` (taxonomy) |
-| `tag` | metafields |
-| `variants.title` | collections |
-| `variants.sku` | |
-| `variants.barcode` | |
+| **HARD RULE** | Published by Google or Shopify, with an enforcement mechanism |
+| **RECOMMENDATION** | Published as advice, no enforcement |
+| **CONVENTION** | A house style choice. Useful, but not a rule from anyone |
 
-Two consequences worth designing around:
+## Default path: interview, then write the whole listing
 
-- **The SEO title and meta description do nothing for on-site search.** They are
-  purely a Google surface. The product title, in contrast, carries in both
-  places, which is why it gets the most attention.
-- **Tags, product type, vendor, variant titles and SKU are search surface.**
-  On Shopify these are not filing metadata — they are query matches. A shopper
-  typing a size, a material or a SKU can only land on the product if that string
-  lives in one of those eight fields.
+Most people asking for help do not want a lecture on thresholds — they want a
+finished listing they can paste into Shopify. So unless they have explicitly
+asked for an audit, work like this:
 
-### Keep internal flags out of tags
+**Step 1 — ask for the facts.** Ask in the language the person is writing in, in
+one message, and keep it to what you genuinely cannot infer:
 
-Because `tag` is a search field, tags used as internal flags — `dept:gifts`,
-`customName`, `needs-photo`, `supplier-3` — are dead weight in the index, and on
-a catalog where most products carry them they match almost everything.
+1. What is the product, and what is it made of?
+2. What can the buyer personalize? (names, date, photo, custom wording…)
+3. What sizes, colours or other options exist? Give exact numbers and units.
+4. How long does production take, and how long does delivery take?
+5. What occasion or style is it for?
+6. What is the shop name? (needed to size the SEO title — see below)
 
-Verified on a live shop: an internal `customDate` tag returned 246 of 273
-products through the Storefront search API. That is not a filter, it is noise.
+If they have already given some of this, do not ask again. If they answer only
+some, write the listing and mark the gaps rather than inventing facts.
 
-Put internal flags in **metafields**, which are not searched, and keep tags for
-words a shopper would actually type: materials, occasions, colours, recipients.
+**Step 2 — write every field**, in this order, and hand them back as a block
+they can copy field by field. Never invent a size, a material or a lead time; if
+a fact is missing, leave the sentence out and say what is missing.
 
-### Long product titles hurt on both surfaces
+**Step 3 — self-check** against [the checklist](#self-check-before-handing-it-over)
+and say which items you could not verify.
 
-A 150-character title with a comma tail of keyword phrases is a common import
-artefact. Google truncates it at ~60 characters and reads the rest as stuffing;
-on-site it is the visible `<h1>` and the collection-grid label, so it also makes
-the storefront harder to scan.
+## Sizing the SEO title: measure the brand suffix first
 
-Front-load instead of truncating. Google Merchant Center documents the numbers
-for the feed `title` attribute — and if the shop publishes to the Google &
-YouTube channel, the product title *is* that feed title:
+Storefronts append the shop name to the page title — `Product name | Shop`. That
+suffix eats the display budget, and no guide mentions it.
+
+Google publishes **no character limit** for `<title>`; it truncates "typically to
+fit the device width", so truncation is a **pixel** problem, not a character one.
+Third-party measurement puts desktop truncation around 580-600px. Arial 20px
+character widths vary more than four-fold: `i` is 4.4px, `W` is 18.9px.
+
+Practical method:
+
+1. Measure the suffix. ` | LunaVows` is 11 characters and about **110px** — a
+   fifth of the whole budget.
+2. Budget ≈ 600px total. Average English sentence-case text runs ~9.9px per
+   character, so `600px − suffix` divided by 9.9 gives a character target.
+3. That lands near **49 characters** for an 11-character suffix. Treat it as a
+   rule of thumb, and tighten it when the title is full of caps or wide letters
+   (`M W G O Q`), which is exactly when a character count lies.
+
+CONVENTION, derived from third-party pixel measurement — not a Google rule.
+
+## Product title: front-load, do not truncate
+
+The single most common bad advice is "keep product titles to 45-70 characters".
+**No Google or Shopify document contains that range.** The only primary source
+that states any title number is the Google Merchant Center feed spec — and if the
+shop publishes to the Google & YouTube channel, the Shopify product title *is*
+the feed title:
 
 | Google's wording | Register |
 | --- | --- |
-| "Title [title]: 1–150 characters" | hard limit, enforced by truncation + a feed warning |
-| "Users will usually notice only the first 70 or fewer characters of your title, depending on screen size." | display observation |
-| "Use all 150 characters" | documented best practice |
-| "Put the most important details first" | documented best practice |
+| "Title [title]: 1–150 characters" | **HARD RULE** — truncation + a feed warning past 150, not disapproval |
+| "Users will usually notice only the first 70 or fewer characters of your title, depending on screen size." | Display observation |
+| "Use all 150 characters" | **RECOMMENDATION** |
+| "Put the most important details first" | **RECOMMENDATION** |
 
-So the fix for a 150-character comma-tail title is **ordering, not deletion**:
-make the first ~70 characters identify the product and say what makes it
-different, keep the rest up to 150, and remove only repetition.
+So the fix for a long comma-tail title is **ordering, not deletion**: make the
+first ~70 characters identify the product and say what makes it different, keep
+the rest up to 150, and remove only repetition.
 
-There is **no authoritative source** for a 45-70 character product-title rule.
-It appears in agency writing, not in any Google or Shopify document. Do not
-apply it.
+Keyword stuffing is defined qualitatively by Google — unnatural repetition,
+list-like out-of-context keyword blocks — with no character threshold anywhere. A
+long title is a dilution and readability problem, not a documented violation. A
+title that repeats a word is the actual risk.
 
-## Near-identical product families
+## Description: content, not word count
 
-Shops that sell one design in twelve colourways end up with twelve listings whose
-copy differs by one word. Deduplicating these mechanically produces twelve
-identical meta descriptions, which is exactly the shape Google's *scaled content
-abuse* policy names.
+There is **no minimum word count**. Google states it in writing: *"Are you
+writing to a particular word count because you've heard or read that Google has a
+preferred word count? (No, we don't.)"* A "250-word minimum" is folklore.
 
-The fix that works: **lead with the artwork**, because in a family of near-clones
-the artwork is the only real differentiator. Not "Personalized linen table
-runner" twelve times, but "Burgundy rose", "White anemone", "Talavera sunflower".
+Cover these six things, in this order, and the length takes care of itself:
 
-## Writing to the Shopify Admin API
+1. What it is — one or two sentences, primary keyword used naturally
+2. What the buyer personalizes — every field, and what it accepts
+3. Specifications — exact dimensions **with units**, material, mounting
+4. Timing — production time, delivery time, order-by guidance
+5. Care
+6. Occasions
 
-If the task involves writing fields back through the API rather than the admin
-UI, read [references/shopify-api-traps.md](references/shopify-api-traps.md)
-**before the first write**. It covers the `SEOInput` replacement behaviour that
-silently nulls meta descriptions, how image alt behaves on shared files, and the
-probe-one-first protocol that catches this class of bug at a cost of one product
-instead of hundreds.
+Sections 3 and 4 are the ones most often missing and the ones buyers search for.
+A listing with no dimensions can never match `30x40 table runner`.
 
-The short version, because it is worth repeating here:
+On near-identical products: scaled content abuse turns on **primary purpose and
+lack of user value** — "no matter how it's created" — not on duplication, not on
+length, and not on whether AI wrote it. Reused paragraphs are a differentiation
+problem first. In a family of near-clones the real differentiator is usually the
+**artwork**, so lead with it.
 
-- `productUpdate(input: {seo: {title}})` **replaces the whole `seo` object**.
-  Send both `title` and `description` on every write, carrying the live value for
-  the field you are not changing.
-- Never change a handle on a ranking product without a 301 redirect in the same
-  change. A handle that reads badly but ranks beats a pretty handle that lost its
-  history.
-- Probe one product, read it back, and confirm nothing else moved before running
-  the batch.
+## Description HTML
 
-## Validate before publishing
+Write the description as HTML. A safe vocabulary that renders well nearly
+everywhere:
 
-```bash
-node scripts/check-listing.mjs listing.json --suffix " | Brand"
-node scripts/check-listing.mjs catalog.json --suffix " | Brand" --catalog
+`<p>` `<h3>` `<h4>` `<ul>/<li>` `<ol>/<li>` `<strong>` `<em>` `<a href>`
+
+Avoid `style="…"`, `<table>`, `<font>`, `<script>`, `<iframe>`. Tables break on
+phones and hand-set colours fight the theme. Do not write `<h1>` or `<h2>` — the
+page already supplies those.
+
+```html
+<p>One or two sentences: what it is, what is printed on it, where it goes.</p>
+
+<h3>What you personalize</h3>
+<p>Add your names, wedding date and venue in the fields on this page.</p>
+
+<h3>Sizes and options</h3>
+<ul>
+  <li><strong>Sizes:</strong> 20x60, 24x72 and 35x100 inches</li>
+  <li><strong>Material:</strong> cotton linen or polyester</li>
+</ul>
+
+<h3>Making and delivery</h3>
+<p>Made to order. Production takes 1 to 3 business days, then tracked delivery
+takes 5 to 12 business days.</p>
 ```
 
-The checker takes one listing or a whole catalog array and reports every rule
-that fails, including cross-listing duplicates that a single-listing check cannot
-see. See [examples/listing.json](examples/listing.json) for the input shape. It
-exits non-zero when something fails, so it drops into a pre-publish hook.
+## Handle: set it once; length does not matter
 
-Run it and fix what it reports rather than eyeballing character counts — counting
-by hand is where the off-by-a-few errors come from.
+| Fact | Source | Register |
+| --- | --- | --- |
+| Maximum 255 characters | Shopify: "Handle is too long (maximum is 255 characters)" | **HARD RULE** |
+| Hyphens, not underscores | Google URL structure guidance | **RECOMMENDATION** |
+| Readable words, not ID numbers | Google URL structure guidance | **RECOMMENDATION** |
+| An optimal length | **Nothing published anywhere** | — |
 
-## What this skill deliberately does not do
+Google publishes no URL length or word-count guidance, and the handle is not one
+of the fields Shopify's storefront search reads, so handle length affects neither
+ranking nor on-site findability.
 
-- **Invent specifications.** Sizes, materials and production times must come from
-  the shop's own variant data and policies. A confident, wrong "ships in 2 days"
-  costs more than a missing sentence.
-- **Write for AI crawlers separately.** Complete structured data and clear specs
-  are what get a product cited in AI answers. A separate hidden page or a block
-  of fake Q&A at the bottom of every listing is the thin-content pattern that gets
-  penalised.
-- **Promise rankings from field edits alone.** Titles and meta descriptions are
-  proposals; Google rewrites most of them. Measure in Search Console over weeks,
-  not days.
+The rule that matters is **set it once**. Changing a handle spends the ranking
+equity the old URL earned, even when the redirect works. On a product with
+history, leave it alone. See
+[references/shopify-api-traps.md](references/shopify-api-traps.md) for the
+`redirectNewHandle` mechanics when a change is genuinely required.
+
+## The fields Shopify's own search reads
+
+A listing is indexed by two systems that read different fields. Shopify's
+storefront search reads exactly eight:
+
+`title`, `body`, `product_type`, `vendor`, `tag`, `variants.title`,
+`variants.sku`, `variants.barcode`
+
+It does **not** read `seo.title`, `seo.description`, `handle`, `category` or
+metafields. Two consequences:
+
+- The SEO title and meta description are a Google-only surface. The product
+  title carries in both places, which is why it earns the most attention.
+- Tags, product type, vendor and variant titles are query matches. Use tags for
+  words a shopper types — materials, occasions, recipients, colours — and keep
+  internal flags (`dept:gifts`, `needs-photo`) in metafields, which are not
+  searched. On one live shop an internal tag matched 246 of 273 products.
+
+Shopify does not publish ranking weights, only the field list. Claims that
+"titles outrank descriptions" are not sourced to Shopify.
+
+## Meta description
+
+120-155 characters, unique per product. Both numbers are **CONVENTION** — Google
+publishes no limit and is not obliged to use the text at all ("snippets are
+primarily created from the page content itself"). Writing a distinct one per page
+*is* a documented recommendation.
+
+Lead with what the product is and what is personalizable; mobile shows roughly
+the first half.
+
+## Images
+
+| Fact | Register |
+| --- | --- |
+| Google Merchant Center will require feed images ≥ **500x500 px from 31 January 2027** | **HARD RULE**, feed images only |
+| Descriptive, hyphenated filenames | **RECOMMENDATION** |
+| Alt text on every image | **RECOMMENDATION** — Google uses it to understand images; also accessibility |
+
+Shoot larger than the minimum. Alt text describes the picture to someone who
+cannot see it — it is not a second keyword field. Charts and swatch grids need
+alt saying what they are, not the product name.
+
+## Self-check before handing it over
+
+```
+[ ] Product title: first ~70 characters identify the product
+[ ] Product title: 150 characters or fewer
+[ ] Product title: no word repeated back to back, no ALL CAPS, no "Sale"
+[ ] SEO title: fits the budget once the brand suffix is added
+[ ] Meta description: 120-155 characters, not reused from another product
+[ ] Handle: lowercase, hyphens, readable, under 255 characters
+[ ] Description: covers all six content sections
+[ ] Description: exact dimensions with units
+[ ] Description: production and delivery time
+[ ] Description HTML uses only the safe tag vocabulary
+[ ] Tags: 3-6 words a shopper would type, no internal flags
+[ ] Nothing invented — every spec came from the person, not from you
+```
+
+Run the checker when the listing exists as JSON:
+
+```bash
+node scripts/check-listing.mjs listing.json --suffix " | Shop"
+node scripts/check-listing.mjs catalog.json --suffix " | Shop" --catalog
+```
+
+Catalog mode is where the value is: duplicate meta descriptions, duplicate body
+openings and two listings fighting over one keyword are invisible one at a time.
+
+## What this skill will not do
+
+- **Invent specifications.** A confident wrong "ships in 2 days" costs more than
+  a missing sentence.
+- **Enforce unsourced numbers.** If a threshold has no source, it is labelled
+  CONVENTION and can be overridden.
+- **Promise rankings from field edits.** Google rewrites most titles and
+  descriptions. Measure in Search Console over weeks.

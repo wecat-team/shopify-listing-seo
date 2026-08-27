@@ -17,9 +17,10 @@ of you:
 
 Two rules cost real data when missed, so they are repeated here:
 
-1. **The SEO title budget is 60 minus the brand suffix**, not 60. Storefronts
-   append `" | Brand"` to every page title. Measure the suffix on a live product
-   page before writing anything.
+1. **Title truncation is measured in pixels, not characters.** Google publishes
+   no `<title>` limit. The storefront's `" | Brand"` suffix eats roughly a fifth
+   of the budget, and Arial character widths vary four-fold, so a character count
+   mis-sizes wide titles. Use `scripts/check-listing.mjs`, which measures.
 
 2. **`productUpdate(input: {seo: {...}})` replaces the whole `seo` object.**
    Sending only `title` sets `description` to null. Always send both fields,
@@ -35,3 +36,7 @@ node scripts/check-listing.mjs catalog.json --suffix " | Brand" --catalog
 Do not invent specifications. Sizes, materials and lead times must come from the
 shop's own variant data and published policies; leave a sentence out rather than
 guess at it.
+
+Do not enforce a product-title character range or a description word count.
+Neither exists in any Google or Shopify document — see
+[references/sources.md](references/sources.md) for the register of every number.

@@ -14,6 +14,24 @@ in this skill is downstream of them, and they change.
 - [Image SEO best practices](https://developers.google.com/search/docs/appearance/google-images)
 - [Spam policies](https://developers.google.com/search/docs/essentials/spam-policies) — the *scaled content abuse* section
 
+## Register of each number
+
+Everything numeric in this skill traces to one of these, or is labelled
+CONVENTION because it traces to nothing:
+
+| Number | Source | Register |
+| --- | --- | --- |
+| Feed title 1-150 chars | Merchant Center product data spec | HARD RULE |
+| "first 70 or fewer characters" | Merchant Center product data spec | display observation |
+| "Use all 150 characters" | Merchant Center product data spec | RECOMMENDATION |
+| Handle max 255 chars | Shopify `productUpdate` error | HARD RULE |
+| Feed images 500x500 from 2027-01-31 | Merchant Center | HARD RULE |
+| `<title>` ~580-600px desktop | third-party pixel measurement | CONVENTION |
+| Meta description 120-155 chars | third-party measurement | CONVENTION |
+| Minimum description word count | **nothing — Google says it has none** | folklore |
+| Optimal handle length | **nothing** | folklore |
+| Product title 45-70 chars | **nothing** | folklore |
+
 ## Shopify
 
 - [Adding keywords for SEO](https://help.shopify.com/en/manual/promoting-marketing/seo/adding-keywords)

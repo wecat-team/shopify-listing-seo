@@ -66,15 +66,32 @@ Two failures worth checking for explicitly, because both ship regularly:
 
 ## 3. SEO title
 
-**60 minus the brand suffix.** See the SKILL.md section on finding the suffix.
+**Measured in pixels, not characters.** Google publishes no limit for `<title>`
+— it truncates "typically to fit the device width". Third-party measurement puts
+the desktop cut near 580-600px.
+
+Character counting mis-sizes titles because Arial character widths vary more than
+four-fold (`i` 4.4px, `W` 18.9px at 20px). Two titles of identical length can
+differ by 100px. Measured on one live catalogue of 278 titles: median 521px,
+maximum 617px, and **every title over 600px was only 48-49 characters long**.
+
+Method:
+
+1. Measure the storefront's brand suffix. An 11-character ` | Shop` suffix costs
+   about 110px — nearly a fifth of the budget.
+2. Divide the remaining pixels by ~9.9px (average width of English sentence-case
+   text) for a character rule of thumb.
+3. Tighten it when the title carries many capitals or `M W G O Q`.
+
+`scripts/check-listing.mjs` does this measurement for you rather than counting
+characters.
 
 Shopify stores this field as null when it equals the product title, so "no SEO
-title" means the product title is doing the job — check its length, not the empty
+title" means the product title is doing the job — check its width, not the empty
 field.
 
-Set an SEO title whenever the product title exceeds the budget. This is the
-highest-leverage, lowest-risk edit in listing SEO: it touches no URL, so there is
-no ranking risk at all.
+Setting an SEO title is the highest-leverage, lowest-risk edit available: it
+touches no URL, so there is no ranking risk at all.
 
 ## 4. Meta description
 
@@ -96,19 +113,23 @@ almost always a whole paragraph pasted into the wrong box, not a writing choice.
 
 ## 5. URL handle
 
-**3-5 words, lowercase, hyphen-separated, no filler** (`for`, `the`, `and`,
-`with`, `your`, `of`).
+| Fact | Source | Register |
+| --- | --- | --- |
+| Maximum 255 characters | Shopify: "Handle is too long (maximum is 255 characters)" | **HARD RULE** |
+| Hyphens, not underscores | Google URL structure guidance | **RECOMMENDATION** |
+| Readable words, not ID numbers | Google URL structure guidance | **RECOMMENDATION** |
+| An optimal length or word count | Nothing published, by Google or Shopify | — |
 
-Set it correctly at creation. Changing it later is the one edit in this document
-that can lose rankings outright.
+There is no evidence-based optimal handle length. Google publishes no URL length
+guidance at all, and the handle is not among the eight fields Shopify's storefront
+search reads — so handle length affects neither ranking nor on-site findability.
 
-> A handle change without a 301 redirect in the same change discards every link
-> and every ranking the old URL earned. If the shop's API credentials lack the
-> scope to create redirects, the correct action on an existing handle is: leave
-> it alone. An ugly handle that ranks beats a clean handle that does not.
+Short handles are nicer to read and share. That is aesthetics, not a rule, and it
+is not worth spending ranking equity on.
 
-For a catalog full of bad handles, the honest recommendation is usually to fix
-the rule going forward and leave the existing URLs.
+> The rule that matters is **set it once**. A handle change spends the equity the
+> old URL earned even when the redirect works. On a product with history, leave
+> it alone; on a product with none, it costs nothing.
 
 ## 6. Body copy
 
