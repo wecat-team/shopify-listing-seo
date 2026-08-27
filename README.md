@@ -41,15 +41,41 @@ Nó sẽ tự hỏi bạn 6 câu rồi viết đủ các trường.
 
 ---
 
-## Dùng thế nào
+## Dùng thế nào — cách nhanh nhất: gửi ảnh
 
-Nhắn cho ChatGPT một câu bất kỳ trong số này:
+Bạn đã có ảnh mockup sắp đăng. Gửi ảnh đó kèm vài dòng thông số, xong.
+
+> *[đính kèm ảnh sản phẩm]*
+>
+> Viết listing cho cái này. Size 30x40, 40x60, 60x90 inch. Vải lanh hoặc
+> polyester. Sản xuất 1-3 ngày, giao 5-12 ngày. Shop tên LunaVows.
+
+ChatGPT đọc ảnh, lấy ra loại sản phẩm, chất liệu, hoạ tiết, phong cách và cả
+những trường cá nhân hoá có chú thích sẵn trên ảnh mockup. Rồi viết đủ 6 trường
+cho bạn dán vào Shopify.
+
+**Nếu bạn chỉ gửi ảnh mà không kèm thông số**, nó sẽ nói rõ đọc được gì từ ảnh
+và hỏi lại đúng những thứ ảnh không cho biết:
+
+> **Đọc được từ ảnh:** khăn trải bàn cưới, vải trông như lanh, màu ngà, chữ
+> script, phong cách vintage, đang trải trên bàn sweetheart.
+>
+> **Cần bạn cho thêm 4 thứ ảnh không nói được:**
+> 1. Kích thước cụ thể theo inch *(ảnh không có thước nên tôi không đoán)*
+> 2. Chất liệu thật — lanh thật hay polyester giả lanh?
+> 3. Sản xuất mấy ngày, giao mấy ngày?
+> 4. Tên shop — để tính độ dài SEO title
+
+👉 **Xem ví dụ đầy đủ cả 3 tình huống:**
+[examples/vi-du-tu-anh.md](examples/vi-du-tu-anh.md)
+
+### Không có ảnh cũng được
+
+Nhắn một câu bất kỳ:
 
 > Viết listing Shopify cho tôi
 
-> Tôi cần đăng một sản phẩm khăn trải bàn cưới in tên, giúp tôi viết listing
-
-> Sửa lại tiêu đề và mô tả của sản phẩm này cho chuẩn: [dán nội dung cũ vào]
+> Sửa lại tiêu đề và mô tả sản phẩm này cho chuẩn: [dán nội dung cũ vào]
 
 Nó sẽ hỏi bạn 6 câu:
 
@@ -60,30 +86,20 @@ Nó sẽ hỏi bạn 6 câu:
 5. Dùng cho dịp gì, phong cách gì?
 6. Tên shop là gì?
 
-Trả lời xong là có listing hoàn chỉnh.
+### Nó sẽ không bịa
 
-**Quan trọng:** trả lời bằng **số liệu thật**. Skill được viết để **không bịa**
-kích thước hay thời gian giao. Bạn không cung cấp thì nó bỏ trống và báo cho bạn
-biết, chứ không tự nghĩ ra.
+Skill được viết để **không tự nghĩ ra thông số**. Từ ảnh nó đọc được kiểu dáng,
+chất liệu trông ra sao, hoạ tiết — nhưng **không đoán kích thước** vì ảnh không
+có thước, và **không đoán thời gian giao** vì đó không phải thứ nhìn thấy được.
 
-### Ví dụ một lượt dùng
+Thiếu thì nó hỏi. Thiếu ít thì nó viết luôn và chừa chỗ trống đánh dấu rõ:
 
-Bạn nhắn:
+```html
+<p>Production takes [cần điền: số ngày sản xuất] business days...</p>
+```
 
-> Viết listing Shopify cho tôi
-
-ChatGPT hỏi 6 câu. Bạn trả lời gọn:
-
-> 1. Khăn trải bàn cưới, vải lanh
-> 2. Tên cô dâu chú rể, ngày cưới
-> 3. Kích thước 30x40, 40x60, 60x90 inch. Màu ngà, hồng, xanh
-> 4. Sản xuất 1-3 ngày, giao 5-12 ngày
-> 5. Đám cưới, phong cách vintage
-> 6. LunaVows
-
-Nhận về đủ 6 trường, dán vào Shopify là xong.
-
----
+Một câu "giao trong 2 ngày" đoán bừa gây khiếu nại tốn hơn nhiều so với một chỗ
+để trống.
 
 ## Vì sao cần skill này thay vì tự hỏi ChatGPT
 
@@ -173,7 +189,8 @@ Brand suffix " | Tên Shop" → SEO title budget 52 chars
 | `references/shopify-api-traps.md` | Bẫy khi ghi hàng loạt qua Admin API |
 | `references/sources.md` | Danh sách nguồn gốc |
 | `scripts/check-listing.mjs` | Công cụ kiểm tra, không phụ thuộc thư viện |
-| `examples/` | Listing mẫu đạt, mẫu lỗi, và một catalog |
+| `examples/vi-du-tu-anh.md` | **Ví dụ viết listing từ 1 tấm ảnh** — 3 tình huống |
+| `examples/*.json` | Listing mẫu đạt, mẫu lỗi, và một catalog |
 
 ## Giấy phép
 

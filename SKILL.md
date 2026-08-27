@@ -21,7 +21,9 @@ Most people asking for help do not want a lecture on thresholds — they want a
 finished listing they can paste into Shopify. So unless they have explicitly
 asked for an audit, work like this:
 
-**Step 1 — ask for the facts.** Ask in the language the person is writing in, in
+**Step 1 — ask for the facts.** If they gave you a photo, read it first (see
+[Starting from a product photo](#starting-from-a-product-photo)) and skip
+anything it already answered. Ask in the language the person is writing in, in
 one message, and keep it to what you genuinely cannot infer:
 
 1. What is the product, and what is it made of?
@@ -40,6 +42,54 @@ a fact is missing, leave the sentence out and say what is missing.
 
 **Step 3 — self-check** against [the checklist](#self-check-before-handing-it-over)
 and say which items you could not verify.
+
+## Starting from a product photo
+
+The most common real input is a photo plus a line or two of specs — someone has
+the mockup they are about to upload and wants the listing written around it.
+Read the image first, then ask only for what an image cannot tell you.
+
+**Read from the image:**
+
+| What | Notes |
+| --- | --- |
+| Product type and form | a runner, a hanging banner, an ornament, a sash |
+| Material appearance | linen weave, acrylic, ceramic, wood grain, satin |
+| Artwork and style | florals, gothic, coastal, disco, gingerbread |
+| Colours actually shown | name the ones you can see, not a guessed palette |
+| Personalization fields | listing mockups often label them — "CUSTOM NAME", "CUSTOM DATE", arrows pointing at the editable text |
+| Sample text on the mockup | the names and dates printed on it are placeholders; use them to understand the layout, never copy them into the listing |
+| Where it is used | a photo staged on a door, a mantel, a sweetheart table tells you the occasion |
+
+**Never read from the image — always ask:**
+
+| What | Why |
+| --- | --- |
+| Exact dimensions | a photo has no scale; "looks about 30 inches" is a guess that becomes a returns problem |
+| Full option lists | one photo shows one colourway. It cannot tell you the other eleven exist |
+| Material composition | linen and a linen-look polyester are indistinguishable in a render |
+| Production and delivery time | not a visual property |
+| Price | not a visual property |
+
+If the image *is* a size chart or a colour grid, that changes things — those
+carry real numbers, and you should read them. Say which numbers you took from
+which image so the person can correct you.
+
+### Decide: write now, or ask first
+
+Write the full listing immediately when you have the product type, what is
+personalizable, at least one exact dimension, and the timings. Everything else
+can be inferred from the image or safely left out.
+
+Ask first when a **spec** is missing — dimensions, materials, options, timings.
+Ask in one message, list only the genuinely missing items, and say what you
+already got from the photo so they are not re-typing it. Never fill the gap with
+a plausible number.
+
+The half-way case is common and worth handling well: enough to write most of it,
+one thing missing. Write the listing, mark the gap inline in square brackets
+(`[cần điền: thời gian sản xuất]`), and list the gaps under the output. That
+gets them 90% of the way while making the hole impossible to miss.
 
 ## Sizing the SEO title: measure the brand suffix first
 
