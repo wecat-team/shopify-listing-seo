@@ -18,9 +18,9 @@ Xong.
 
 ## Dùng
 
-Gửi ảnh sản phẩm kèm vài dòng thông số:
+Gõ **`@`** rồi chọn **shopify-listing-seo**, sau đó gửi ảnh kèm vài dòng thông số:
 
-> *[đính kèm ảnh]*
+> **@shopify-listing-seo** *[đính kèm ảnh]*
 >
 > Viết listing cho cái này. Size 30x40, 40x60, 60x90 inch. Vải lanh hoặc
 > polyester. Sản xuất 1-3 ngày, giao 5-12 ngày. Shop tên LunaVows.
@@ -30,9 +30,13 @@ Nhận về đủ **tiêu đề, SEO title, meta description, handle, mô tả v
 > Bạn nhắn tiếng Việt, nó trả lời tiếng Việt — nhưng **listing luôn viết bằng
 > tiếng Anh**, vì đó là ngôn ngữ khách của bạn đọc.
 
-**Không có ảnh?** Nhắn *"Viết listing Shopify cho tôi"*, nó sẽ hỏi bạn 6 câu.
+**Vì sao nên gõ `@`:** ChatGPT cũng tự nhận ra skill khi bạn nhắn "viết listing
+Shopify cho tôi", nhưng không phải lúc nào cũng chắc. Gõ `@` là gọi thẳng, luôn
+đúng. Chỉ cần gõ ở tin nhắn đầu, các tin sau trong cùng cuộc trò chuyện không
+cần gõ lại.
 
----
+**Không có ảnh?** Vẫn gõ `@shopify-listing-seo` rồi nhắn *"Viết listing Shopify
+cho tôi"*, nó sẽ hỏi bạn 6 câu.
 
 ## Cần đưa những gì
 

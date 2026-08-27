@@ -10,7 +10,8 @@ git clone https://github.com/wecat-team/shopify-listing-seo \
   ~/.claude/skills/shopify-listing-seo
 ```
 
-Thư mục gốc của repo chính là thư mục skill.
+Thư mục gốc của repo chính là thư mục skill. Claude Code tự kích hoạt khi yêu
+cầu khớp `description`; gọi thẳng bằng `/shopify-listing-seo`.
 
 ## Codex
 
@@ -23,6 +24,9 @@ Trỏ `AGENTS.md` của dự án sang:
 ```markdown
 Khi làm việc với listing Shopify, đọc theo vendor/shopify-listing-seo/AGENTS.md.
 ```
+
+Trong Codex CLI, xem danh sách bằng `/skills` và gọi thẳng bằng
+`$shopify-listing-seo`.
 
 ## Công cụ kiểm tra
 
