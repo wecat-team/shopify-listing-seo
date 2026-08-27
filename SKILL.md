@@ -113,29 +113,44 @@ Practical method:
 
 CONVENTION, derived from third-party pixel measurement — not a Google rule.
 
-## Product title: front-load, do not truncate
+## Product title: two jobs, two different pressures
 
-The single most common bad advice is "keep product titles to 45-70 characters".
-**No Google or Shopify document contains that range.** The only primary source
-that states any title number is the Google Merchant Center feed spec — and if the
-shop publishes to the Google & YouTube channel, the Shopify product title *is*
-the feed title:
+The product title does two jobs that pull in opposite directions, and most
+advice collapses them into one number. Keep them apart.
+
+**On the storefront** it is the `<h1>` and the label on every product card. Long
+titles wrap, bury the price and read badly. Shorter is genuinely better here.
+
+**In the Google Shopping feed** it is match text. Merchant Center's spec says:
 
 | Google's wording | Register |
 | --- | --- |
-| "Title [title]: 1–150 characters" | **HARD RULE** — truncation + a feed warning past 150, not disapproval |
-| "Users will usually notice only the first 70 or fewer characters of your title, depending on screen size." | Display observation |
-| "Use all 150 characters" | **RECOMMENDATION** |
+| "Title [title]: 1–150 characters" | **HARD RULE** — truncated + a feed warning past 150, not disapproval |
+| "Users will usually notice only the first 70 or fewer characters" | Display observation |
+| "Use all 150 characters" | **RECOMMENDATION** — for the *feed* attribute |
 | "Put the most important details first" | **RECOMMENDATION** |
 
-So the fix for a long comma-tail title is **ordering, not deletion**: make the
-first ~70 characters identify the product and say what makes it different, keep
-the rest up to 150, and remove only repetition.
+**These are not necessarily the same field.** Shopify's Google & YouTube channel
+lets the merchant choose the feed source: *Settings → Product feed → Additional
+settings → Product titles and descriptions*, where the options are the product
+title or the **search engine product title**. Check which one the shop uses
+before assuming the product title is the feed title.
+
+So the guidance splits:
+
+- **Write the product title for the storefront.** Readable, front-loaded, no
+  repetition. There is no sourced character range — "45-70 characters" appears
+  in no Google or Shopify document — but a title that wraps to five lines on a
+  product card is a real problem regardless of what any spec says.
+- **If the feed uses the product title** and you want the extra match coverage
+  Google recommends, you can extend to 150 — but you are trading storefront
+  readability for it. Setting the channel to feed the SEO title instead avoids
+  the trade entirely.
 
 Keyword stuffing is defined qualitatively by Google — unnatural repetition,
-list-like out-of-context keyword blocks — with no character threshold anywhere. A
-long title is a dilution and readability problem, not a documented violation. A
-title that repeats a word is the actual risk.
+list-like or out-of-context keyword blocks, text that reads for machines rather
+than people — with no character threshold. Repetition is the clearest case, not
+the only one.
 
 ## Description: content, not word count
 
@@ -202,11 +217,20 @@ Google publishes no URL length or word-count guidance, and the handle is not one
 of the fields Shopify's storefront search reads, so handle length affects neither
 ranking nor on-site findability.
 
-The rule that matters is **set it once**. Changing a handle spends the ranking
-equity the old URL earned, even when the redirect works. On a product with
-history, leave it alone. See
-[references/shopify-api-traps.md](references/shopify-api-traps.md) for the
-`redirectNewHandle` mechanics when a change is genuinely required.
+The rule that matters is **set it once** — but be accurate about why. Google
+documents a 301 as a canonicalisation signal and does **not** say permanent
+redirects lose PageRank. The real costs of a handle change are operational:
+
+- the redirect has to actually exist (see
+  [references/shopify-api-traps.md](references/shopify-api-traps.md) for
+  `redirectNewHandle`)
+- internal links, sitemaps, ad destinations and any printed/QR material still
+  point at the old URL
+- Google has to recrawl before the new URL settles, which takes time
+- redirect chains accumulate if the handle changes more than once
+
+None of that is a ranking penalty. It is work, and it is avoidable by getting
+the handle right the first time.
 
 ## The fields Shopify's own search reads
 
@@ -219,12 +243,19 @@ storefront search reads exactly eight:
 It does **not** read `seo.title`, `seo.description`, `handle`, `category` or
 metafields. Two consequences:
 
-- The SEO title and meta description are a Google-only surface. The product
-  title carries in both places, which is why it earns the most attention.
-- Tags, product type, vendor and variant titles are query matches. Use tags for
-  words a shopper types — materials, occasions, recipients, colours — and keep
-  internal flags (`dept:gifts`, `needs-photo`) in metafields, which are not
-  searched. On one live shop an internal tag matched 246 of 273 products.
+- The SEO title and meta description do nothing for Shopify's own search. They
+  are page metadata — used by Google and other engines, and selectable as the
+  Google Shopping feed source. The product title carries on both surfaces, which
+  is why it earns the most attention.
+- Tags, product type, vendor and variant titles are query matches. Favour words
+  a shopper types — materials, occasions, recipients, colours. On one live shop
+  an internal `dept:` tag matched 246 of 273 products, which is noise rather
+  than a filter.
+
+  Before moving any tag, check what depends on it: Shopify also drives
+  **automated collections, storefront filters, menus, bulk operations and apps**
+  off tags. A tag that looks internal may be load-bearing. Move flags to
+  metafields only after confirming nothing consumes them.
 
 Shopify does not publish ranking weights, only the field list. Claims that
 "titles outrank descriptions" are not sourced to Shopify.
@@ -236,8 +267,8 @@ publishes no limit and is not obliged to use the text at all ("snippets are
 primarily created from the page content itself"). Writing a distinct one per page
 *is* a documented recommendation.
 
-Lead with what the product is and what is personalizable; mobile shows roughly
-the first half.
+Lead with what the product is and what is personalizable — the opening survives
+truncation on the narrowest screens.
 
 ## Images
 
@@ -245,11 +276,16 @@ the first half.
 | --- | --- |
 | Google Merchant Center will require feed images ≥ **500x500 px from 31 January 2027** | **HARD RULE**, feed images only |
 | Descriptive, hyphenated filenames | **RECOMMENDATION** |
-| Alt text on every image | **RECOMMENDATION** — Google uses it to understand images; also accessibility |
+| Descriptive alt text on images that carry information | **RECOMMENDATION** |
 
 Shoot larger than the minimum. Alt text describes the picture to someone who
 cannot see it — it is not a second keyword field. Charts and swatch grids need
 alt saying what they are, not the product name.
+
+**Purely decorative images take empty alt (`alt=""`), not a description.** A
+screen reader should skip them. Writing alt on *every* image regardless is bad
+accessibility advice; the test is whether the image carries information the
+surrounding text does not.
 
 ## Self-check before handing it over
 
@@ -284,5 +320,8 @@ openings and two listings fighting over one keyword are invisible one at a time.
   a missing sentence.
 - **Enforce unsourced numbers.** If a threshold has no source, it is labelled
   CONVENTION and can be overridden.
-- **Promise rankings from field edits.** Google rewrites most titles and
-  descriptions. Measure in Search Console over weeks.
+- **Promise rankings from field edits.** Google generates title links
+  automatically from several sources and creates snippets primarily from page
+  content, so what you write is a proposal. Measure in Search Console over
+  weeks. (Google publishes no rewrite percentage — treat any specific figure you
+  read elsewhere as unsourced.)

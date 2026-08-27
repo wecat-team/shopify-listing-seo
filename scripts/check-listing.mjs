@@ -69,8 +69,11 @@ function checkOne(p) {
   // this does not enforce one - it checks the front-loading Google does document.
   if (!title) out.push(F('error', 'title', 'missing'));
   else {
+    // 150 is the Merchant Center *feed* title limit. Whether it binds depends on
+    // whether the shop feeds the product title or the SEO title to the Google
+    // channel, so this warns rather than fails.
     if (title.length > TITLE_MAX) {
-      out.push(F('error', 'title', `${title.length} chars, over the ${TITLE_MAX}-char feed limit — Google truncates it and flags the feed`));
+      out.push(F('warn', 'title', `${title.length} chars — past the ${TITLE_MAX}-char Merchant Center feed limit, and long for an <h1>`));
     }
     if (title.length < 25) {
       out.push(F('warn', 'title', `${title.length} chars — too short to identify the product or match many queries`));
@@ -93,6 +96,9 @@ function checkOne(p) {
     if (rep) out.push(F('error', 'title', `word "${rep}" repeated back to back`));
     if (/\b(SALE|BEST|CHEAP|FREE SHIPPING)\b/.test(title)) {
       out.push(F('warn', 'title', 'promotional text is disallowed in Merchant Center feed titles'));
+    }
+    if (title === title.toUpperCase() && /[A-Z]{4,}/.test(title)) {
+      out.push(F('warn', 'title', 'all capitals — disallowed in Merchant Center feed titles and hard to read as an <h1>'));
     }
   }
 
@@ -156,7 +162,11 @@ function checkOne(p) {
     const src = text(img.src ?? img.filename ?? img.url);
     const alt = text(img.alt);
     const name = src.split('?')[0].split('/').pop() ?? '';
-    if (!alt) out.push(F('error', 'images', `image ${i + 1} has no alt text`));
+    // Empty alt is correct for a purely decorative image, so this is a warning
+    // and it names the position rather than demanding text everywhere.
+    if (!alt && img.decorative !== true) {
+      out.push(F('warn', 'images', `image ${i + 1} has no alt text — add one, or set "decorative": true if it carries no information`));
+    }
     if (name && (/^(img|dsc|image|photo|untitled)[-_ ]?\d+/i.test(name) || /^\d+\.(jpe?g|png|webp)$/i.test(name))) {
       out.push(F('warn', 'images', `image ${i + 1} filename "${name}" is not descriptive`));
     }
