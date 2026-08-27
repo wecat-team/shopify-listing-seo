@@ -54,6 +54,15 @@ Brand suffix " | Tên Shop" → SEO title budget 52 chars
         x duplicate-meta: meta description shared by 5: ...
 ```
 
+## Kiểm tra trước khi đóng gói
+
+```bash
+node scripts/validate-skill.mjs
+```
+
+Kiểm phần front matter của `SKILL.md` theo đúng giới hạn mà ChatGPT áp khi
+upload — `description` tối đa 1024 ký tự. Chạy trước mỗi lần đóng gói bản mới.
+
 ## Cấu trúc repo
 
 | Đường dẫn | Nội dung |
@@ -63,7 +72,8 @@ Brand suffix " | Tên Shop" → SEO title budget 52 chars
 | `references/field-rules.md` | Chi tiết từng trường kèm nguồn |
 | `references/shopify-api-traps.md` | Bẫy khi ghi hàng loạt qua Admin API |
 | `references/sources.md` | Bảng đăng ký từng con số |
-| `scripts/check-listing.mjs` | Công cụ kiểm tra |
+| `scripts/check-listing.mjs` | Công cụ kiểm tra listing |
+| `scripts/validate-skill.mjs` | Kiểm front matter trước khi đóng gói |
 | `examples/` | Ví dụ và listing mẫu |
 
 ## Về các ngưỡng số
