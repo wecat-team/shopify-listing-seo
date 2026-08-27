@@ -11,6 +11,7 @@ of you:
 
 | Task | Read |
 | --- | --- |
+| Anything at all, first | [references/shop-profile.md](references/shop-profile.md) — the shop's own name, lead times, shipping and returns |
 | Writing or auditing listing copy | [references/field-rules.md](references/field-rules.md) |
 | Writing fields through the Admin API | [references/shopify-api-traps.md](references/shopify-api-traps.md) |
 | Settling a disputed rule | [references/sources.md](references/sources.md) |
@@ -34,8 +35,8 @@ node scripts/check-listing.mjs catalog.json --suffix " | Brand" --catalog
 ```
 
 Do not invent specifications. Sizes, materials and lead times must come from the
-shop's own variant data and published policies; leave a sentence out rather than
-guess at it.
+shop's own variant data, its published policies, or the shop profile; leave a
+sentence out rather than guess at it.
 
 Do not enforce a product-title character range or a description word count.
 Neither exists in any Google or Shopify document — see
