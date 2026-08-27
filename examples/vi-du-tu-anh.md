@@ -20,7 +20,8 @@ Hai tình huống thật. Cùng một tấm ảnh, khác nhau ở lượng thôn
 > và ngày cưới, phong cách vintage, dùng cho bàn sweetheart. Tên "Harper & James"
 > trên ảnh là mẫu — tôi không đưa vào listing.
 >
-> Đủ thông tin để viết. Đây là listing hoàn chỉnh:
+> Đủ thông tin để viết. Listing viết bằng **tiếng Anh** (bạn nhắn tiếng Việt
+> nhưng khách của bạn đọc tiếng Anh):
 
 **Product title** — 102 ký tự, cụm tên chính nằm gọn trong 70 ký tự đầu
 
@@ -163,3 +164,20 @@ Skill được viết để **không bịa thông số**. Từ một tấm ảnh
 Một câu "giao trong 2 ngày" đoán bừa gây khiếu nại tốn hơn nhiều so với một câu
 để trống. Nếu ảnh bạn gửi **là bảng size hoặc bảng màu** thì khác — trong đó có
 số thật, ChatGPT sẽ đọc và nói rõ nó lấy số từ ảnh nào.
+
+---
+
+## Vì sao listing luôn là tiếng Anh
+
+Bạn nhắn tiếng Việt thì ChatGPT hỏi lại và giải thích bằng tiếng Việt. Nhưng
+**mọi trường listing đều viết tiếng Anh** — tiêu đề, meta description, handle,
+mô tả, tag.
+
+Lý do đơn giản: ngôn ngữ bạn dùng để mô tả sản phẩm không liên quan gì tới ngôn
+ngữ khách hàng đọc. Store bán cho khách Mỹ thì listing phải là tiếng Anh, dù
+người viết là ai.
+
+Nó cũng **dịch nghĩa chứ không phiên âm**: "khăn trải bàn vải lanh" thành
+"linen table runner".
+
+Nếu store của bạn bán cho khách Việt thì nói rõ, nó sẽ viết tiếng Việt.

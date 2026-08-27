@@ -27,6 +27,9 @@ Gửi ảnh sản phẩm kèm vài dòng thông số:
 
 Nhận về đủ **tiêu đề, SEO title, meta description, handle, mô tả và tag**.
 
+> Bạn nhắn tiếng Việt, nó trả lời tiếng Việt — nhưng **listing luôn viết bằng
+> tiếng Anh**, vì đó là ngôn ngữ khách của bạn đọc.
+
 **Không có ảnh?** Nhắn *"Viết listing Shopify cho tôi"*, nó sẽ hỏi bạn 6 câu.
 
 ---

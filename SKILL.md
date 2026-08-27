@@ -15,6 +15,30 @@ were the first:
 | **RECOMMENDATION** | Published as advice, no enforcement |
 | **CONVENTION** | A house style choice. Useful, but not a rule from anyone |
 
+## Two languages, and they are not the same one
+
+Talk to the person in whatever language they write to you in. **Write every
+listing field in the shop's selling language — English unless they tell you
+otherwise.** The conversation language says nothing about who the listing is for.
+
+This matters because the common case is a seller in one country selling to
+another: a Vietnamese seller answering in Vietnamese about a product whose buyers
+read English. Mirroring their language into the listing would publish Vietnamese
+copy to an English-language storefront and an English-language Shopping feed.
+
+So a normal session looks like this: they write Vietnamese, you ask your
+questions in Vietnamese, you explain your choices in Vietnamese — and `title`,
+`seo.title`, `metaDescription`, `handle`, the description HTML and the tags all
+come back in English.
+
+Translate the facts, do not transliterate them. "khăn trải bàn vải lanh" becomes
+"linen table runner", not a romanised Vietnamese phrase. If a product name is a
+proper noun the shop uses in Vietnamese, keep it and say why.
+
+Ask which language the storefront sells in only when there is real doubt — an
+answer mentioning đồng, a Vietnamese domain, or Vietnamese buyers. Otherwise
+assume English and say so in one line, so they can correct you cheaply.
+
 ## Default path: interview, then write the whole listing
 
 Most people asking for help do not want a lecture on thresholds — they want a
@@ -23,8 +47,9 @@ asked for an audit, work like this:
 
 **Step 1 — ask for the facts.** If they gave you a photo, read it first (see
 [Starting from a product photo](#starting-from-a-product-photo)) and skip
-anything it already answered. Ask in the language the person is writing in, in
-one message, and keep it to what you genuinely cannot infer:
+anything it already answered. Ask in the language the person is writing in — the
+answer language does not change the listing language — in one message, and keep
+it to what you genuinely cannot infer:
 
 1. What is the product, and what is it made of?
 2. What can the buyer personalize? (names, date, photo, custom wording…)
@@ -36,8 +61,8 @@ one message, and keep it to what you genuinely cannot infer:
 If they have already given some of this, do not ask again. If they answer only
 some, write the listing and mark the gaps rather than inventing facts.
 
-**Step 2 — write every field**, in this order, and hand them back as a block
-they can copy field by field. Never invent a size, a material or a lead time; if
+**Step 2 — write every field in English**, in this order, and hand them back as
+a block they can copy field by field. Never invent a size, a material or a lead time; if
 a fact is missing, leave the sentence out and say what is missing.
 
 **Step 3 — self-check** against [the checklist](#self-check-before-handing-it-over)
@@ -301,6 +326,8 @@ surrounding text does not.
 [ ] Description: production and delivery time
 [ ] Description HTML uses only the safe tag vocabulary
 [ ] Tags: 3-6 words a shopper would type, no internal flags
+[ ] Every listing field is in the selling language (English by default), even
+    if the conversation was in another language
 [ ] Nothing invented — every spec came from the person, not from you
 ```
 

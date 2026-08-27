@@ -22,6 +22,12 @@ const SUFFIX = flag('suffix', '');
 const TITLE_TAG_MAX = Number(flag('title-tag-max', '60'));
 const SEO_TITLE_MAX = TITLE_TAG_MAX - SUFFIX.length; // rule-of-thumb only; px is what counts
 
+// Vietnamese-specific letters. Detects a listing written in the conversation
+// language instead of the selling language — the common failure when a seller
+// answers in Vietnamese and the model mirrors it back. Deliberately narrow:
+// English copy legitimately carries é, ü, ’ and – so those are not flagged.
+const VI_LETTERS = /[ăâđêôơưĂÂĐÊÔƠƯ]|[àáảãạằắẳẵặầấẩẫậèéẻẽẹềếểễệìíỉĩịòóỏõọồốổỗộờớởỡợùúủũụừứửữựỳýỷỹỵ]/i;
+const looksVietnamese = (s) => VI_LETTERS.test(s ?? '');
 const HANDLE_MAX = 255; // Shopify: "Handle is too long (maximum is 255 characters)"
 // Google Merchant Center product data spec, `title` attribute.
 // Arial 20px advance widths, measured with canvas measureText. Google truncates
@@ -194,6 +200,22 @@ function checkOne(p) {
   }
   if (p.category !== undefined && (!text(p.category) || /^uncategorized$/i.test(text(p.category)))) {
     out.push(F('warn', 'category', 'not set to a real taxonomy category'));
+  }
+
+  // --- selling language ---
+  // The listing must be in the shop's selling language regardless of what
+  // language the seller used to describe the product.
+  const langFields = [
+    ['title', title], ['seoTitle', seoTitle], ['metaDescription', meta],
+    ['handle', handle], ['body', plain(body)],
+    ['tags', (p.tags ?? []).join(', ')],
+  ];
+  for (const [field, value] of langFields) {
+    if (looksVietnamese(value)) {
+      const hit = (value.match(VI_LETTERS) || [''])[0];
+      out.push(F('error', 'language',
+        `${field} contains Vietnamese text ("${hit}") — listing fields must be written in the selling language, not the language of the conversation`));
+    }
   }
 
   // --- 8. Collections ---
