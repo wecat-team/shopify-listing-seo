@@ -9,11 +9,15 @@ Không cần biết SEO. Không cần nhớ con số nào.
 
 ## Cài vào ChatGPT (3 phút, làm 1 lần)
 
-**Bước 1.** Tải bộ skill về máy:
+**Bước 1.** Tải file cài sẵn:
 
-- Vào https://github.com/wecat-team/shopify-listing-seo
-- Bấm nút xanh **Code** → **Download ZIP**
-- File `shopify-listing-seo-main.zip` nằm trong thư mục Downloads
+👉 **https://github.com/wecat-team/shopify-listing-seo/releases/latest**
+
+Bấm vào file `shopify-listing-seo.zip` để tải về.
+
+> ⚠️ **Đừng dùng nút xanh "Code → Download ZIP"** ở trang chính. File đó có thêm
+> một thư mục lồng bên ngoài nên ChatGPT có thể báo lỗi. Chỉ tải từ link
+> **releases** ở trên.
 
 **Bước 2.** Mở ChatGPT trên máy tính (trình duyệt), tìm mục **Skills**:
 
