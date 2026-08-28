@@ -45,6 +45,14 @@ Most people asking for help do not want a lecture on thresholds — they want a
 finished listing they can paste into Shopify. So unless they have explicitly
 asked for an audit, work like this:
 
+**Step 0 — read the shop profile.** If
+[references/shop-profile.md](references/shop-profile.md) exists, read it before
+you ask anything. It carries the facts that are identical on every listing —
+shop name, production time, delivery time, shipping region, guarantee, returns —
+and asking for them once per product is how a five-minute listing turns into a
+fifteen-minute one. Anything it answers, cross off the list below; anything it
+does not, still ask.
+
 **Step 1 — ask for the facts.** If they gave you a photo, read it first (see
 [Starting from a product photo](#starting-from-a-product-photo)) and skip
 anything it already answered. Ask in the language the person is writing in — the
@@ -54,12 +62,18 @@ it to what you genuinely cannot infer:
 1. What is the product, and what is it made of?
 2. What can the buyer personalize? (names, date, photo, custom wording…)
 3. What sizes, colours or other options exist? Give exact numbers and units.
-4. How long does production take, and how long does delivery take?
+4. How long does production take, and how long does delivery take? *(profile)*
 5. What occasion or style is it for?
-6. What is the shop name? (needed to size the SEO title — see below)
+6. What is the shop name? (needed to size the SEO title — see below) *(profile)*
 
 If they have already given some of this, do not ask again. If they answer only
 some, write the listing and mark the gaps rather than inventing facts.
+
+Say in one line which facts you took from the profile — "production 1–3 days,
+delivery 5–12 days, per the shop profile" — so a stale number is cheap to
+correct. If the seller contradicts the profile for this product, the seller
+wins; offer to update the profile if the new fact is shop-wide rather than
+particular to this listing.
 
 **Step 2 — write every field in English**, in this order, and hand them back as
 a block they can copy field by field. Never invent a size, a material or a lead time; if
@@ -188,7 +202,8 @@ Cover these six things, in this order, and the length takes care of itself:
 1. What it is — one or two sentences, primary keyword used naturally
 2. What the buyer personalizes — every field, and what it accepts
 3. Specifications — exact dimensions **with units**, material, mounting
-4. Timing — production time, delivery time, order-by guidance
+4. Timing — production time, delivery time, order-by guidance (all three are
+   in the shop profile, including paste-ready HTML)
 5. Care
 6. Occasions
 
@@ -328,7 +343,9 @@ surrounding text does not.
 [ ] Tags: 3-6 words a shopper would type, no internal flags
 [ ] Every listing field is in the selling language (English by default), even
     if the conversation was in another language
-[ ] Nothing invented — every spec came from the person, not from you
+[ ] Nothing invented — every spec came from the person, the profile, or the
+    shop's own data, not from you
+[ ] Shop-wide facts match the shop profile, and it is not out of date
 ```
 
 Run the checker when the listing exists as JSON:
@@ -344,7 +361,8 @@ openings and two listings fighting over one keyword are invisible one at a time.
 ## What this skill will not do
 
 - **Invent specifications.** A confident wrong "ships in 2 days" costs more than
-  a missing sentence.
+  a missing sentence. Lead times come from the shop profile or the seller —
+  never from what sounds plausible for this kind of product.
 - **Enforce unsourced numbers.** If a threshold has no source, it is labelled
   CONVENTION and can be overridden.
 - **Promise rankings from field edits.** Google generates title links

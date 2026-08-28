@@ -69,6 +69,7 @@ upload — `description` tối đa 1024 ký tự. Chạy trước mỗi lần đ
 | --- | --- |
 | `SKILL.md` | Hướng dẫn chính — ChatGPT, Claude, Codex đều đọc file này |
 | `AGENTS.md` | Cửa vào cho Codex |
+| `references/shop-profile.md` | Thông tin cố định của shop: tên, thời gian sản xuất, thời gian giao, bảo đảm, đổi trả — đọc trước khi hỏi seller |
 | `references/field-rules.md` | Chi tiết từng trường kèm nguồn |
 | `references/shopify-api-traps.md` | Bẫy khi ghi hàng loạt qua Admin API |
 | `references/sources.md` | Bảng đăng ký từng con số |

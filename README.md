@@ -23,9 +23,12 @@ Gõ **`@`** rồi chọn **shopify-listing-seo**, sau đó gửi ảnh kèm vài
 > **@shopify-listing-seo** *[đính kèm ảnh]*
 >
 > Viết listing cho cái này. Size 30x40, 40x60, 60x90 inch. Vải lanh hoặc
-> polyester. Sản xuất 1-3 ngày, giao 5-12 ngày. Shop tên LunaVows.
+> polyester.
 
 Nhận về đủ **tiêu đề, SEO title, meta description, handle, mô tả và tag**.
+
+Không cần nhắc lại tên shop hay số ngày sản xuất, giao hàng: skill đã có sẵn
+trong [references/shop-profile.md](references/shop-profile.md).
 
 > Bạn nhắn tiếng Việt, nó trả lời tiếng Việt — nhưng **listing luôn viết bằng
 > tiếng Anh**, vì đó là ngôn ngữ khách của bạn đọc.
@@ -36,20 +39,27 @@ Shopify cho tôi", nhưng không phải lúc nào cũng chắc. Gõ `@` là gọ
 cần gõ lại.
 
 **Không có ảnh?** Vẫn gõ `@shopify-listing-seo` rồi nhắn *"Viết listing Shopify
-cho tôi"*, nó sẽ hỏi bạn 6 câu.
+cho tôi"*, nó sẽ hỏi bạn vài câu — chỉ những gì hồ sơ shop chưa trả lời.
 
 ## Cần đưa những gì
 
 ChatGPT nhìn ảnh biết được sản phẩm là gì, chất liệu trông ra sao, hoạ tiết,
-phong cách. Nhưng có 4 thứ ảnh không nói được, bạn phải đưa:
+phong cách. Nhưng có 2 thứ ảnh không nói được, bạn phải đưa:
 
 1. **Kích thước** cụ thể kèm đơn vị *(ảnh không có thước)*
 2. **Chất liệu thật** *(lanh thật và polyester giả lanh nhìn y hệt)*
-3. **Sản xuất mấy ngày, giao mấy ngày**
-4. **Tên shop**
+
+Hai thứ hay phải gõ đi gõ lại — **sản xuất mấy ngày, giao mấy ngày** và **tên
+shop** — nằm sẵn trong hồ sơ shop, cùng với vùng giao hàng, phí ship, bảo đảm
+đúng ngày cưới và chính sách đổi trả. Sản phẩm nào khác thì cứ nói, lời bạn
+thắng hồ sơ.
 
 Thiếu thì nó hỏi lại, **không tự bịa**. Vì một câu "giao trong 2 ngày" đoán bừa
 gây khiếu nại tốn hơn nhiều so với một chỗ để trống.
+
+**Đổi thông tin shop** *(đổi thời gian sản xuất, đổi phí ship, hay dùng cho shop
+khác)*: sửa [references/shop-profile.md](references/shop-profile.md) — một file,
+không đụng chỗ nào khác.
 
 👉 [Xem ví dụ đầy đủ](examples/vi-du-tu-anh.md)
 

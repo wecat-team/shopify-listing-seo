@@ -12,13 +12,16 @@ Hai tình huống thật. Cùng một tấm ảnh, khác nhau ở lượng thôn
 "09.14.2026" bằng chữ script, trải trên bàn sweetheart có nến và hoa hồng]*
 
 > Viết listing cho cái này. Size 30x40, 40x60, 60x90 inch. Vải lanh hoặc
-> polyester. Sản xuất 1-3 ngày, giao 5-12 ngày. Shop tên LunaVows.
+> polyester.
 
 ### ChatGPT trả lời
 
 > **Đọc từ ảnh:** khăn trải bàn cưới vải lanh, chữ script màu taupe, in tên đôi
 > và ngày cưới, phong cách vintage, dùng cho bàn sweetheart. Tên "Harper & James"
 > trên ảnh là mẫu — tôi không đưa vào listing.
+>
+> Tên shop LunaVows, sản xuất 1-3 ngày, giao 5-12 ngày USPS: lấy từ hồ sơ shop,
+> bạn không cần gõ lại. Sai chỗ nào thì nói, tôi sửa theo bạn.
 >
 > Đủ thông tin để viết. Listing viết bằng **tiếng Anh** (bạn nhắn tiếng Việt
 > nhưng khách của bạn đọc tiếng Anh):
@@ -114,20 +117,19 @@ as a keepsake of the day.</p>
 > - Phong cách vintage, đang trải trên bàn sweetheart có nến và hoa hồng
 > - Tên "Harper & James" trên ảnh là chữ mẫu, không phải nội dung listing
 >
-> **Cần bạn cho thêm 4 thứ ảnh không nói được:**
+> **Cần bạn cho thêm 2 thứ ảnh không nói được:**
 >
 > 1. **Kích thước cụ thể** — có những size nào, tính bằng inch? *(Ảnh không có
 >    thước nên tôi không đoán được. Đây là thứ khách tìm nhiều nhất.)*
 > 2. **Chất liệu thật** — lanh thật hay polyester giả lanh? Có mấy lựa chọn?
-> 3. **Thời gian** — sản xuất mấy ngày, giao mấy ngày?
-> 4. **Tên shop** — để tôi tính độ dài SEO title cho vừa.
+>
+> Tên shop và thời gian sản xuất, giao hàng tôi lấy từ hồ sơ shop rồi.
 >
 > Còn màu sắc: ảnh chỉ có bản màu ngà. Nếu còn màu khác thì cho tôi biết luôn.
 
 ### Bạn trả lời gọn
 
-> 30x40, 40x60, 60x90 inch. Lanh hoặc polyester. 1-3 ngày sản xuất, 5-12 ngày
-> giao. LunaVows. Có 6 màu.
+> 30x40, 40x60, 60x90 inch. Lanh hoặc polyester. Có 6 màu.
 
 Kết quả giống Tình huống 1, thêm dòng màu trong phần Sizes and options.
 
@@ -135,17 +137,20 @@ Kết quả giống Tình huống 1, thêm dòng màu trong phần Sizes and opt
 
 ## Tình huống 3 — thiếu một thứ, vẫn viết và đánh dấu chỗ trống
 
-Nếu bạn đưa đủ mọi thứ trừ thời gian giao, ChatGPT **không hỏi lại toàn bộ** mà
-viết listing rồi chừa chỗ:
+Thời gian sản xuất và giao hàng thì hồ sơ shop đã có, nhưng những thứ riêng của
+từng mẫu thì không. Thiếu kích thước chẳng hạn, ChatGPT **không hỏi lại toàn
+bộ** mà viết listing rồi chừa chỗ:
 
 ```html
-<h3>Making and delivery</h3>
-<p>Made to order. Production takes [cần điền: số ngày sản xuất] business days,
-then tracked delivery takes [cần điền: số ngày giao] business days.</p>
+<h3>Sizes and options</h3>
+<ul>
+  <li><strong>Sizes:</strong> [cần điền: các size, kèm đơn vị]</li>
+  <li><strong>Material:</strong> linen or polyester</li>
+</ul>
 ```
 
-> **Còn thiếu:** thời gian sản xuất và thời gian giao. Điền vào hai chỗ
-> `[cần điền: ...]` rồi listing dùng được ngay.
+> **Còn thiếu:** danh sách kích thước. Điền vào chỗ `[cần điền: ...]` rồi listing
+> dùng được ngay.
 
 ---
 
@@ -158,8 +163,8 @@ Skill được viết để **không bịa thông số**. Từ một tấm ảnh
 | Loại sản phẩm, kiểu dáng | Kích thước chính xác |
 | Chất liệu trông như thế nào | Chất liệu thật (lanh thật hay giả lanh?) |
 | Hoạ tiết, phong cách, màu đang hiện | Danh sách đầy đủ các màu |
-| Trường cá nhân hoá (thường có chú thích trên ảnh mockup) | Thời gian sản xuất và giao |
-| Bối cảnh sử dụng | Giá |
+| Trường cá nhân hoá (thường có chú thích trên ảnh mockup) | Giá |
+| Bối cảnh sử dụng | *(thời gian sản xuất và giao: đã có trong hồ sơ shop)* |
 
 Một câu "giao trong 2 ngày" đoán bừa gây khiếu nại tốn hơn nhiều so với một câu
 để trống. Nếu ảnh bạn gửi **là bảng size hoặc bảng màu** thì khác — trong đó có
