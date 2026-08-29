@@ -1,0 +1,170 @@
+{
+  "skill_name": "shopify-listing-seo",
+  "notes": "Format theo marketingskills (coreyhaines31). Mỗi eval là 1 prompt thật + assertions kiểm được. Các eval 5-9 phát sinh từ lỗ hổng đã demo được bằng scripts/check-listing.mjs.",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Viết listing cho cái này giúp mình. Shop mình gọi nó là Lumière Runner. Size 30x40, 40x60, 60x90 inch. Vải lanh hoặc polyester. Sản xuất 1-3 ngày, giao 5-12 ngày. Shop tên LunaVows.",
+      "expected_output": "Phải hỏi và giải thích bằng tiếng Việt, nhưng viết TOÀN BỘ trường listing bằng tiếng Anh. Phải giữ nguyên tên thương hiệu 'Lumière' trong title và đặt lên đầu, đồng thời bỏ dấu trong handle. Phải nói rõ giả định ngôn ngữ bán hàng trong một dòng. Phải trả về đủ product title, SEO title, meta description, handle, tags, product type, description HTML. Phải đo SEO title theo pixel kèm đuôi ' | LunaVows'. Không được bịa thông số nào ngoài những gì được cung cấp.",
+      "assertions": [
+        "Trả lời bằng tiếng Việt nhưng mọi trường listing bằng tiếng Anh",
+        "Giữ nguyên 'Lumière' kể cả dấu, và đặt ở đầu title",
+        "Handle bỏ dấu thành 'lumiere-...' vì handle chỉ nhận a-z0-9-",
+        "Nêu rõ giả định ngôn ngữ bán hàng và mời sửa",
+        "Có đủ 7 trường: title, seoTitle, metaDescription, handle, tags, productType, bodyHtml",
+        "SEO title được đo bằng pixel có cộng đuôi thương hiệu, không chỉ đếm ký tự",
+        "Description phủ đủ 6 mục và có kích thước kèm đơn vị",
+        "Không xuất hiện thông số nào không do người dùng cung cấp"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "[ảnh khăn trải bàn cưới vải lanh in tên Harper & James] Viết listing cho cái này",
+      "expected_output": "Phải đọc ảnh trước, liệt kê thứ đọc được, rồi hỏi đúng những thứ ảnh không nói được: tên sản phẩm shop đang dùng, kích thước chính xác, chất liệu thật, thời gian sản xuất/giao, tên shop. Phải nói rõ tên trên ảnh là chữ mẫu và không đưa vào listing. Tuyệt đối không đoán kích thước.",
+      "assertions": [
+        "Liệt kê những gì đọc được từ ảnh trước khi hỏi",
+        "Hỏi tên sản phẩm shop đang dùng, vì ảnh không cho biết điều đó",
+        "Nhận diện tên/ngày trên mockup là placeholder, không copy vào listing",
+        "Hỏi đúng 5 nhóm: tên sản phẩm, kích thước, chất liệu, thời gian, tên shop",
+        "Không đưa ra bất kỳ số đo phỏng đoán nào",
+        "Hỏi trong một tin nhắn, không hỏi lắt nhắt"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Khăn trải bàn cưới vải lanh, size 30x40 và 40x60 inch, chất liệu cotton linen, khách cá nhân hoá tên và ngày cưới, sản xuất 1-3 ngày, shop tên LunaVows, dùng cho tiệc cưới. Mình có đủ thông tin trừ thời gian giao hàng. Cứ viết listing đi.",
+      "expected_output": "Phải viết đủ listing chứ không hỏi lại toàn bộ, chừa chỗ trống đánh dấu [cần điền: ...] ngay tại chỗ, và liệt kê phần thiếu bên dưới output.",
+      "assertions": [
+        "Viết listing đầy đủ thay vì hỏi lại toàn bộ",
+        "Đánh dấu chỗ thiếu bằng placeholder rõ ràng trong HTML",
+        "Liệt kê lại danh sách phần còn thiếu sau output",
+        "Nói rõ không được đăng khi còn marker chưa điền",
+        "Không bịa số ngày giao"
+      ],
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "Meta description nên dài bao nhiêu ký tự thì chuẩn SEO?",
+      "expected_output": "Phải nói Google KHÔNG công bố giới hạn nào và snippet chủ yếu sinh từ nội dung trang. Phải gán đúng nguồn: 160 ký tự là khuyến nghị của Shopify Help Center (REC), còn sàn 120 là quy ước riêng của skill. Không được trình bày 155 như một trần. Phải nêu điều Google thật sự khuyến nghị là mỗi trang một mô tả riêng.",
+      "assertions": [
+        "Nói rõ Google không công bố giới hạn ký tự",
+        "Gán đúng nguồn cho con số 160 (Shopify Help Center, không phải Google)",
+        "Không trình bày 155 như trần trên",
+        "Đánh dấu sàn 120 là quy ước, có thể ghi đè",
+        "Nhấn mạnh yêu cầu có nguồn thật: mô tả riêng biệt từng trang"
+      ],
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "Duyệt title này giúp mình: 'Wedding Sign, Custom Wedding Sign, Personalized Wedding Sign, Wedding Welcome Sign, Wedding Decor Sign'",
+      "expected_output": "Phải nhận diện đây là nhồi từ khoá theo đúng định nghĩa của Google ('repeating the same words or phrases so often that it sounds unnatural'), dù không có từ nào lặp liền kề và tổng chỉ 102 ký tự. Phải viết lại thành title đọc được.",
+      "assertions": [
+        "Gọi đúng tên vấn đề là keyword stuffing, không phải vấn đề độ dài",
+        "Nêu rõ Google định nghĩa định tính, không có ngưỡng số",
+        "Không kết luận 'đạt' chỉ vì dưới 150 ký tự",
+        "Đưa ra bản viết lại cụ thể"
+      ],
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "Title này ổn chứ: 'Personalized Wedding Sign, Best Seller, Free shipping, Sale'",
+      "expected_output": "Phải bắt được đây là promotional text bị Merchant Center cấm trong feed title (giá, giá sale, ngày sale, phí ship, ngày giao), bất kể viết hoa hay thường.",
+      "assertions": [
+        "Bắt được 'Free shipping' và 'Sale' là promo text bị cấm",
+        "Dẫn đúng nguồn Merchant Center product data spec",
+        "Không bỏ qua chỉ vì chữ viết thường"
+      ],
+      "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "Title này ổn chứ: 'PERSONALIZED WEDDING Welcome Sign with Names and Date, Fabric Banner'",
+      "expected_output": "Phải bắt được việc viết hoa để nhấn mạnh, mà Merchant Center cấm — hoa chỉ dành cho từ viết tắt và danh từ riêng. Không được bỏ qua vì title không viết hoa toàn bộ.",
+      "assertions": [
+        "Bắt được khối chữ hoa cục bộ, không đòi phải hoa toàn bộ mới tính",
+        "Dẫn quy định hoa chỉ dùng cho acronym và danh từ riêng",
+        "Đề xuất bản sửa"
+      ],
+      "files": []
+    },
+    {
+      "id": 8,
+      "prompt": "Shop mình bán cho khách Việt Nam, giá bằng đồng. Viết listing tiếng Việt nhé.",
+      "expected_output": "Phải viết listing bằng tiếng Việt vì đó chính là ngôn ngữ bán hàng, không được ép sang tiếng Anh. Nếu có chạy checker thì phải cấu hình ngôn ngữ cho đúng, không báo tiếng Việt là lỗi.",
+      "assertions": [
+        "Viết listing bằng tiếng Việt, không ép tiếng Anh",
+        "Không coi tiếng Việt là lỗi khi đó là ngôn ngữ bán hàng",
+        "Nếu chạy checker thì xử lý được trường hợp này thay vì báo error"
+      ],
+      "files": []
+    },
+    {
+      "id": 9,
+      "prompt": "Mình có 40 sản phẩm gần giống nhau, chỉ khác hoạ tiết. Viết mô tả sao cho khỏi bị Google phạt trùng lặp?",
+      "expected_output": "Phải nói đúng: ranh giới là scaled content abuse — 'primary purpose of manipulating search rankings and not helping users', 'no matter how it's created' — chứ không phải luật trùng lặp hay số từ hay chuyện AI viết. Phải chỉ ra hoạ tiết là điểm khác biệt thật và nên dẫn đầu bằng nó. Phải cảnh báo trùng meta description và tranh nhau từ khoá, và gợi ý chạy chế độ catalog.",
+      "assertions": [
+        "Định nghĩa đúng scaled content abuse thay vì nói 'Google phạt nội dung trùng lặp'",
+        "Không viện dẫn ngưỡng số từ nào",
+        "Chỉ ra hoạ tiết là điểm khác biệt và nên dẫn đầu",
+        "Cảnh báo trùng meta description và keyword cannibalization",
+        "Gợi ý chạy check-listing.mjs ở chế độ --catalog"
+      ],
+      "files": [
+        "examples/catalog.json"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Có nên thêm file llms.txt để lọt vào AI Overviews không?",
+      "expected_output": "Phải trả lời theo tài liệu chính thức của Google: Google Search không dùng llms.txt, không cần chunking, không cần viết riêng cho AI, structured data không bắt buộc cho gen AI, và tạo bản nội dung riêng cho AI là vi phạm scaled content abuse. Được phép nêu rằng các engine khác hành xử khác, nhưng phải tách bạch nguồn.",
+      "assertions": [
+        "Nói rõ Google Search không dùng llms.txt",
+        "Không hứa hẹn thứ hạng AI từ việc thêm file",
+        "Cảnh báo tạo nội dung riêng cho AI là vi phạm chính sách spam",
+        "Tách bạch điều Google công bố với hành vi của engine khác"
+      ],
+      "files": []
+    },
+    {
+      "id": 11,
+      "prompt": "Tên sản phẩm bên mình là TR-LIN-3040. Viết listing giúp mình, khăn trải bàn lanh 30x40 inch, sản xuất 1-3 ngày giao 5-12 ngày, shop LunaVows.",
+      "expected_output": "Phải nhận ra TR-LIN-3040 là mã nội bộ chứ không phải tên bán hàng, nói thẳng là mã không dùng làm tiêu đề được, rồi tự viết một tiêu đề thật và trình bày nó như đề xuất để người dùng sửa. Không được nhét mã vào title, seoTitle hay meta description. Mã có thể dùng làm SKU.",
+      "assertions": [
+        "Nhận ra TR-LIN-3040 là mã/SKU chứ không phải tên sản phẩm",
+        "Không đưa mã vào title, seoTitle hoặc metaDescription",
+        "Vẫn viết listing đầy đủ thay vì dừng lại hỏi",
+        "Trình bày tiêu đề tự đặt như một đề xuất để người dùng ghi đè"
+      ],
+      "files": []
+    },
+    {
+      "id": 12,
+      "prompt": "Sản phẩm tên là Lumière Runner. Viết listing giúp mình.",
+      "expected_output": "Phải giữ nguyên 'Lumière' kể cả dấu trong title và SEO title, nhưng bỏ dấu trong handle vì handle chỉ nhận a-z, 0-9 và gạch ngang. Không được coi dấu tiếng Pháp là lỗi ngôn ngữ. Vẫn phải hỏi các thông số còn thiếu.",
+      "assertions": [
+        "Giữ 'Lumière' nguyên dấu trong title và seoTitle",
+        "Handle chuyển thành 'lumiere-...' và nói rõ vì sao bỏ dấu",
+        "Không nhầm dấu tiếng Pháp thành lỗi ngôn ngữ bán hàng",
+        "Vẫn hỏi kích thước, chất liệu và thời gian còn thiếu"
+      ],
+      "files": []
+    },
+    {
+      "id": 13,
+      "prompt": "Khăn trải bàn cotton linen, size 30x40 inch, in tên và ngày cưới lên vải, sản xuất 1-3 ngày, giao 5-12 ngày, shop LunaVows. Viết listing giúp mình.",
+      "expected_output": "Phần Care phải tách hai loại: hướng dẫn giặt suy ra từ chất liệu cotton linen thì được viết, nhưng phải nói rõ đó là hướng dẫn chung cho chất liệu. Riêng những gì phụ thuộc cách in (có là được lên vùng in không) thì phải để marker [cần điền: ...] vì không suy ra được từ tên chất liệu. Không được viết một câu về vùng in như thể đó là sự thật shop cung cấp.",
+      "assertions": [
+        "Viết được phần care suy ra từ cotton linen (giặt lạnh, phơi khô)",
+        "Nói rõ đó là hướng dẫn chung cho chất liệu, không phải shop cung cấp",
+        "Để marker cho phần phụ thuộc cách in, ví dụ có được là lên vùng in không",
+        "Không khẳng định chắc chắn về vùng in như thể là dữ kiện đã biết"
+      ],
+      "files": []
+    }
+  ]
+}

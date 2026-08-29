@@ -79,6 +79,10 @@ upload — `description` tối đa 1024 ký tự. Chạy trước mỗi lần đ
 ## Về các ngưỡng số
 
 Mỗi con số trong skill được gắn nhãn **LUẬT** (có chế tài), **KHUYẾN NGHỊ**
-(công bố thành văn) hoặc **QUY ƯỚC** (chỉ là thói quen). Ba con số phổ biến bị
-loại vì truy về hư không: "tiêu đề 45-70 ký tự", "mô tả tối thiểu 250 từ", và
-"độ dài handle tối ưu". Chi tiết ở [references/sources.md](references/sources.md).
+(công bố thành văn) hoặc **QUY ƯỚC** (chỉ là thói quen).
+
+Quan trọng: **kiểm cả Google lẫn Shopify, không chỉ Google.** Google im lặng
+không có nghĩa là không ai công bố. "Tiêu đề 45-70 ký tự" và "độ dài handle tối
+ưu" thì đúng là vô căn cứ, nhưng "mô tả tối thiểu 250 từ" thì **có nguồn** — nó
+nằm trong Shopify Help Center, và bản trước của skill này đã gán nhãn sai cho nó.
+Bảng đối chiếu hai cột ở [references/sources.md](references/sources.md).
