@@ -61,7 +61,7 @@ Two failures worth checking for explicitly, because both ship regularly:
 **Bad** (162 chars, repeated word, comma tail):
 `Personalized Personalized Til Death Do Us Part Glass Ornament, Custom Gothic Wedding Ornament, Skeleton Couple Keepsake, Halloween Wedding Gift, Anniversary Decor`
 
-**Good** (55 chars):
+**Good** (56 chars):
 `Personalized Wedding Welcome Sign, Couple Portrait Decor`
 
 ## 3. SEO title
@@ -77,8 +77,9 @@ maximum 617px, and **every title over 600px was only 48-49 characters long**.
 
 Method:
 
-1. Measure the storefront's brand suffix. An 11-character ` | Shop` suffix costs
-   about 110px — nearly a fifth of the budget.
+1. Measure the storefront's brand suffix. ` | Shop` is 7 characters and about
+   72px; an 11-character suffix like ` | LunaVows` costs about 110px — nearly a
+   fifth of the budget. Measure the real one; do not reuse either number.
 2. Divide the remaining pixels by ~9.9px (average width of English sentence-case
    text) for a character rule of thumb.
 3. Tighten it when the title carries many capitals or `M W G O Q`.
@@ -90,16 +91,26 @@ Shopify stores this field as null when it equals the product title, so "no SEO
 title" means the product title is doing the job — check its width, not the empty
 field.
 
-Setting an SEO title is the highest-leverage, lowest-risk edit available: it
-touches no URL, so there is no ranking risk at all.
+Setting an SEO title is a low-risk edit: it touches no URL, so nothing has to be
+redirected or recrawled. It is not a guaranteed win either — Google generates
+title links from several sources and rewrites them when it judges the `<title>`
+inaccurate, boilerplate or unclear.
 
 ## 4. Meta description
 
-**120-155 characters, unique across the catalog.**
+**120-160 characters, unique across the catalog.**
 
-Not a ranking factor — a click-through factor. Mobile shows roughly 110-120
-characters, so the thing that makes someone click belongs in the first half of
-the sentence.
+| Number | Source | Register |
+| --- | --- | --- |
+| Any length limit | Google publishes none | — |
+| 160 characters | Shopify Help Center: "It's recommended that 160 characters is used" | **RECOMMENDATION** |
+| A distinct description per page | Google snippet documentation | **RECOMMENDATION** |
+| The 120 floor, and mobile ~110-120 | this skill | CONVENTION |
+
+Uniqueness is the sourced part, so that is the part the checker fails on; length
+is advice and only warns. Not a ranking factor either way — a click-through
+factor. Narrow screens show roughly 110-120 characters, so the thing that makes
+someone click belongs in the first half of the sentence.
 
 Say what it is, what gets personalized or configured, and how many choices there
 are. Google rewrites most hand-written meta descriptions, so spend the effort on
@@ -124,21 +135,33 @@ There is no evidence-based optimal handle length. Google publishes no URL length
 guidance at all, and the handle is not among the eight fields Shopify's storefront
 search reads — so handle length affects neither ranking nor on-site findability.
 
-Short handles are nicer to read and share. That is aesthetics, not a rule, and it
-is not worth spending ranking equity on.
+Short handles are nicer to read and share. That is aesthetics, not a rule.
 
-> The rule that matters is **set it once**. A handle change spends the equity the
-> old URL earned even when the redirect works. On a product with history, leave
-> it alone; on a product with none, it costs nothing.
+> The rule that matters is **set it once** — but be accurate about why. Google
+> documents a 301 as a canonicalisation signal and does **not** say permanent
+> redirects lose PageRank. The costs of a handle change are operational: the
+> redirect has to exist, internal links and sitemaps and ad destinations still
+> point at the old URL, Google has to recrawl before the new URL settles, and
+> chains accumulate if it changes twice. None of that is a ranking penalty. It is
+> work, and it is avoidable by getting the handle right the first time.
 
 ## 6. Body copy
 
-**Six content sections, unique. There is no word-count minimum.**
+**Six content sections, unique. Google sets no word-count minimum; Shopify
+recommends 250 words.**
 
-Google states it in writing: "Are you writing to a particular word count because
-you've heard or read that Google has a preferred word count? (No, we don't.)"
-A "250-word minimum" is folklore. What matters is whether the copy answers the
-buyer's questions — which is what the six sections below are for.
+Google states its position in writing: "Are you writing to a particular word
+count because you've heard or read that Google has a preferred word count? (No,
+we don't.)"
+
+Shopify's Help Center is a different publisher and does give a number: "Make sure
+that every page has at least 250 words of descriptive text." That is a
+RECOMMENDATION — no enforcement, no ranking claim — and an earlier version of this
+file wrongly called it folklore.
+
+Neither statement tells you to pad. What matters is whether the copy answers the
+buyer's questions, which is what the six sections below are for; on a real
+product they land past 250 words without trying.
 
 Structure it as the order a buyer actually asks:
 
@@ -146,7 +169,12 @@ Structure it as the order a buyer actually asks:
 2. **What gets personalized** — every field, with what it accepts
 3. **Specifications** — exact dimensions with units, material, mounting
 4. **Timing** — production time, delivery time, order-by guidance
-5. **Care**
+5. **Care** — material-derived care may be written and labelled as standard
+   guidance for that material; anything that depends on the print, embroidery,
+   engraving or coating is a `[to fill: ...]` marker, because it is not
+   inferable from the material name and a wrong line ruins a paid-for piece.
+   If the material itself is unconfirmed, the whole section is a marker. See
+   *Care: material-derived yes, process-derived no* in SKILL.md
 6. **Occasions**
 
 Sections 3 and 4 are the ones most often missing and the ones buyers search for.
@@ -167,9 +195,14 @@ manipulate rankings.
 
 - Descriptive, hyphenated, lowercase filenames set **before** upload:
   `linen-table-runner-sweetheart-30x40.jpg`, not `IMG_4821.jpg`
-- Primary image 1:1, at least 1000x1000 px (Google Merchant requires a 500x500
-  minimum from 31 January 2027, so shoot larger)
-- Alt on **every** image, not only the first
+- Feed images must be at least **500x500 px from 31 January 2027** (Merchant
+  Center has warned on smaller images since 14 April 2026) — **HARD RULE**
+- Google recommends **1500x1500 or above**; anything over 1024px counts as
+  high-resolution for Merchant Center — **RECOMMENDATION**
+- A 1:1 primary image is a storefront-theme preference, not a Google requirement
+- Alt on every image that **carries information**. Purely decorative images take
+  empty alt (`alt=""`) so a screen reader skips them — writing alt on everything
+  regardless is bad accessibility advice
 
 Alt text describes the picture to someone who cannot see it. That is the whole
 job — it is not a second keyword field, and stuffing it helps nothing.
@@ -207,14 +240,18 @@ collections linked from hundreds of pages is a common and invisible failure.
 
 ## 9. Structured data
 
-Required for a product rich result: `name`, `image`, plus an `offers` block with
-`price`, `priceCurrency` and `availability`.
+**Required** for a merchant listing: `name`, `image`, and an `offers` block
+carrying `price` (greater than zero) and `priceCurrency`.
+
+`availability` is **not** required — an earlier version of this file listed it as
+such. It sits in the recommended set below, alongside the rest.
 
 Recommended and usually missing:
 
 | Property | Why it earns its place |
 | --- | --- |
-| `aggregateRating` | Stars in results, the biggest CTR lever in gift categories |
+| `availability` | Stock state in results; cheap and almost always known |
+| `aggregateRating` | Stars in results, which lift click-through in gift categories |
 | `hasMerchantReturnPolicy` | Returns shown in results, and a top question to AI assistants |
 | `shippingDetails` | Same, but only declare it if the number is real and stable |
 | `itemCondition` | Constant for new goods, trivially cheap to add |

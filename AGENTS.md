@@ -29,14 +29,23 @@ Two rules cost real data when missed, so they are repeated here:
 Validate before publishing:
 
 ```bash
-node scripts/check-listing.mjs listing.json --suffix " | Brand"
+node scripts/check-listing.mjs listing.json --suffix " | Brand" --feed-title product
+```
+
+```bash
 node scripts/check-listing.mjs catalog.json --suffix " | Brand" --catalog
 ```
+
+Pass `--selling-language vi` when the shop actually sells in Vietnamese, and
+`--feed-title seo` when the Google & YouTube channel is set to feed the search
+engine title rather than the product title.
 
 Do not invent specifications. Sizes, materials and lead times must come from the
 shop's own variant data and published policies; leave a sentence out rather than
 guess at it.
 
-Do not enforce a product-title character range or a description word count.
+Do not enforce a product-title character range. Do not present Shopify's
+250-word page recommendation as a Google rule, and do not present it as folklore
+either — it is published advice from the platform being published on.
 Neither exists in any Google or Shopify document — see
 [references/sources.md](references/sources.md) for the register of every number.
