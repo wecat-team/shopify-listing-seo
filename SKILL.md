@@ -2,7 +2,7 @@
 name: shopify-listing-seo
 description: Write a complete Shopify product listing from a product photo or a few facts - product title, SEO title, meta description, URL handle, description HTML, tags - and audit existing listings. Listing fields are always written in the shop selling language, English by default, whatever language the chat is in. Every threshold is labelled hard rule, documented recommendation, or unsourced convention. Use whenever someone writes, rewrites or audits a Shopify listing or product description, sends a product photo and asks for a listing, mentions product SEO, listing SEO, meta title, meta description, product tags or storefront search, or is about to write product fields through the Shopify Admin API - even if they never say "SEO". Same requests in Vietnamese also trigger it: "viết listing", "viết mô tả sản phẩm", "đăng sản phẩm Shopify", "viết tiêu đề sản phẩm", "sửa listing", "tối ưu SEO sản phẩm". Listing fields only - not technical SEO, site speed or theme code.
 metadata:
-  version: 1.1.0
+  version: 1.6.0
 ---
 
 # Shopify listing SEO
