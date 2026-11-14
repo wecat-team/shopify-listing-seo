@@ -14,6 +14,8 @@
 //                              (e.g. "wedding,christmas"); the generic-title
 //                              test treats them like "personalized"
 //   --catalog                  also run cross-listing checks
+//   --titles-only              report only title and SEO title findings
+//   --focus "h1,h2"            with --catalog: report only these handles (the batch)
 //   --json                     machine-readable output
 //
 // Exits 1 when any rule fails, so it drops straight into a pre-publish hook.
@@ -28,6 +30,12 @@ const flag = (name, fallback) => {
   return i >= 0 && argv[i + 1] && !argv[i + 1].startsWith('--') ? argv[i + 1] : fallback;
 };
 const CATALOG = argv.includes('--catalog');
+// Rewriting titles against a titles-only export: report title rules only, so
+// the missing meta, body and images of the export do not bury them.
+const TITLES_ONLY = argv.includes('--titles-only');
+// Checking a batch inside the whole shop's export: report only the listings
+// in the batch, and only catalog findings that involve one of them.
+const FOCUS = new Set(flag('focus', '').split(',').map((h) => h.trim()).filter(Boolean));
 const JSON_OUT = argv.includes('--json');
 const SUFFIX = flag('suffix', '');
 // Shopify's Google & YouTube channel feeds either the product title or the
@@ -124,7 +132,7 @@ const FUNCTION_WORDS = new Set(['the','and','for','with','your','our','from','in
 const GENERIC_WORDS = new Set(['personalized','personalised','personalize','personalise','custom',
   'customized','customised','customizable','gift','keepsake','decor','decoration','unique','cute',
   'beautiful','perfect','best','new','handmade','premium','quality','name','date','text','item',
-  'product','design','set','idea']);
+  'product','design','set','idea','holiday','xmas']);
 // Filled from --shop-words once the helpers below exist.
 // Below this the <title> leaves a quarter of the ~600px budget unused: room for
 // the motif, a material or the occasion. Matches the 450-580px SKILL.md aims
@@ -134,11 +142,44 @@ const TITLE_PX_SHORT = 450;
 // and nothing a shopper would use to pick this listing. Advice, not a rule —
 // no Google or Shopify document sets a product-title minimum.
 const PRODUCT_TITLE_SHORT = 45;
+// What a phone shopper reads of the product title before the theme cuts it:
+// about 30-36 characters on a two-column product card and about 50 on the
+// product page, measured on one live storefront. Convention — measure yours.
+const BROAD_TYPES = new Set(['drinkware', 'clothing', 'apparel', 'jewelry', 'jewellery', 'accessories',
+  'home decor', 'decor', 'homeware', 'kitchenware', 'stationery', 'gifts', 'gift', 'other']);
+const PHONE_CARD_CHARS = 35;
+const PHONE_PDP_CHARS = 50;
+// Occasion phrases and materials buyers type. On one shop's own search box
+// over 90 days occasion words were 34% of searches and materials 12%, against
+// under 5% for "personalized". A title that keeps the design but drops these
+// loses the words people search with. Extend for your own catalogue.
+const SEARCHED_OCCASIONS = [
+  ['first christmas', /\b(first|1st) christmas\b/],
+  ['married / Mr & Mrs', /\bmarried\b|\bnewlywed|\bmr\.? ?(&|and) ?mrs\b/],
+  ['engagement', /\bengage(d|ment)\b|\bproposal\b/],
+  ['baby', /\bbaby\b/],
+  ['memorial', /\bmemorial\b|\bin loving memory\b/],
+  // "Family Name" is a field the buyer fills in, not the family occasion.
+  ['family', /\bfamily\b(?! (sur)?names?\b)/],
+  ['anniversary', /\banniversary\b/],
+  ['bridal shower', /\bbridal shower\b/],
+  ['baby shower', /\bbaby shower\b/],
+  ['growing old together', /\bgrowing old together\b/],
+  ['grandparent', /\bgrand(ma|pa|mother|father|parents?|kids?)\b/],
+];
+const SEARCHED_MATERIALS = [
+  ['3D relief', /\b3d relief\b/],
+  ['acrylic', /\bacrylic\b/],
+  ['glass', /\bglass\b/],
+  ['ceramic', /\bceramic\b/],
+  ['wood', /\bwood(en)?\b/],
+  ['photo', /\bphoto\b/],
+];
 
 const text = (v) => (v ?? '').toString().replace(/\s+/g, ' ').trim();
 const plain = (html) => text((html ?? '').replace(/<[^>]+>/g, ' ').replace(/&[a-z]+;/g, ' '));
 const words = (html) => plain(html).split(' ').filter(Boolean).length;
-const normWords = (s) => s.toLowerCase().replace(/[^a-z0-9\s'-]/g, ' ').split(/\s+/).filter(Boolean);
+const normWords = (s) => s.toLowerCase().replace(/[’‘]/g, "'").replace(/'s\b/g, '').replace(/[^a-z0-9\s'-]/g, ' ').split(/\s+/).filter(Boolean);
 // Tags may arrive as an array, a comma-separated string, or nothing at all.
 // Mapping a string used to throw, which read as a crash rather than a finding.
 const asList = (v) => Array.isArray(v) ? v.map(text).filter(Boolean)
@@ -224,6 +265,37 @@ function checkOne(p) {
   else {
     if (title.length < PRODUCT_TITLE_SHORT) {
       out.push(F('warn', 'title', `${title.length} chars — names the type and little else; a shopper sees about ${TITLE_VISIBLE}, so add the motif, material, size or occasion (advice, no published minimum)`));
+    }
+    // A phone card shows ~35 characters. Opening with a word every listing in
+    // the shop carries spends a third of them on nothing that tells cards apart.
+    const opener = normWords(title)[0];
+    // "Design Your Own" names the product (the buyer supplies the design).
+    if (opener && GENERIC_WORDS.has(stem(opener)) && !/^design your own\b/i.test(title)) {
+      out.push(F('warn', 'title', `opens with "${title.split(' ')[0]}" — a phone card shows about ${PHONE_CARD_CHARS} characters, so lead with the design or occasion and move "${title.split(' ')[0]}" later (Google Shopping still matches it there)`));
+    }
+    // The type keyword has to be readable before the product page cuts it.
+    const typeStems = stems(text(p.productType));
+    const titleStems = new Set(stems(title));
+    // A broad category (Drinkware for a mug, Clothing for a sweatshirt) is a
+    // fine product type that a title is not expected to repeat.
+    const broadType = BROAD_TYPES.has(text(p.productType).toLowerCase());
+    if (typeStems.length && !broadType && !typeStems.some((t) => titleStems.has(t))) {
+      out.push(F('warn', 'title', `product type "${text(p.productType)}" appears nowhere in the title — either the title or the product type is wrong (a runner rug typed "Doormat" files it under the wrong search and filters)`));
+    } else if (typeStems.length) {
+      // Only the type phrase itself counts. "Welcome Banner, Fabric Sign" for a
+      // "Welcome Sign" names the type at "Banner"; the later "Sign" is detail.
+      const toks = [...title.toLowerCase().matchAll(/[a-z0-9'-]+/g)];
+      const at = toks.findIndex((_, i) => typeStems.every((t, j) => toks[i + j] && stem(toks[i + j][0]) === t));
+      const end = at >= 0 ? toks[at + typeStems.length - 1].index + toks[at + typeStems.length - 1][0].length : -1;
+      if (end > PHONE_PDP_CHARS) {
+        out.push(F('warn', 'title', `the product type "${text(p.productType)}" ends at character ${end} — a phone product page shows about ${PHONE_PDP_CHARS}, so a shopper may not read what it is`));
+      }
+      // The type keyword once names the product; a second copy at the end is
+      // the keyword tail ("...Family Christmas Stocking Gift Holiday Decor Stocking").
+      const head = typeStems[typeStems.length - 1];
+      if (!broadType && toks.filter((m) => stem(m[0]) === head).length === 2) {
+        out.push(F('warn', 'title', `the product type "${text(p.productType)}" is named twice — once names the product; the second copy reads as a keyword tail`));
+      }
     }
     // The first ~70 characters are what a shopper actually reads, so the
     // product's core name has to fit there. Checking that the leading segment
@@ -326,6 +398,30 @@ function checkOne(p) {
     };
     checkGeneric(title, 'title', 'product title');
     if (seoTitle) checkGeneric(seoTitle, 'seoTitle', 'SEO title');
+  }
+
+  // The SEO title is short, but the occasion phrase is what buyers search;
+  // keeping the design and dropping "first christmas" loses the query.
+  if (seoTitle && title) {
+    const tl = title.toLowerCase(), sl = seoTitle.toLowerCase();
+    const dropped = (list) => list.filter(([, re]) => re.test(tl) && !re.test(sl)).map(([name]) => name);
+    const occ = dropped(SEARCHED_OCCASIONS);
+    if (occ.length) {
+      out.push(F('warn', 'seoTitle', `SEO title drops the occasion ${occ.map((w) => `"${w}"`).join(', ')} that the product title has — buyers search occasion phrases more than any other words; cut material or "Personalized" first`));
+    }
+    // Buyers type "first christmas" about six times as often as "1st"; an
+    // abbreviation saves 2 characters and costs the phrase they search.
+    if (/\bfirst christmas\b/.test(tl) && /\b1st christmas\b/.test(sl)) {
+      out.push(F('warn', 'seoTitle', 'SEO title shortens "First Christmas" to "1st Christmas" — buyers search "first" far more often; cut another word instead'));
+    }
+    // A material only earns a warning when it would still fit.
+    const room = TITLE_PX_SAFE - titlePx(seoTitle + SUFFIX);
+    // Measured as it would be written, in Title Case.
+    const titleCase = (w) => w.replace(/\b[a-z]/g, (c) => c.toUpperCase());
+    const mat = dropped(SEARCHED_MATERIALS).filter((w) => titlePx(` ${titleCase(w)}`) <= room);
+    if (mat.length && !occ.length) {
+      out.push(F('warn', 'seoTitle', `SEO title drops ${mat.map((w) => `"${w}"`).join(', ')} from the product title — a searched material; keep it if it fits the budget`));
+    }
   }
 
   // The storefront appends the brand; typing it into the field shows it twice
@@ -517,7 +613,7 @@ function checkCatalog(items) {
       m.get(k).push(text(p.handle) || '(no handle)');
     }
     for (const [, hs] of m) {
-      if (hs.length > 1) out.push(F(level, rule, `${label} shared by ${hs.length}: ${hs.slice(0, 4).join(', ')}${hs.length > 4 ? ' …' : ''}`));
+      if (hs.length > 1) out.push({...F(level, rule, `${label} shared by ${hs.length}: ${hs.slice(0, 4).join(', ')}${hs.length > 4 ? ' …' : ''}`), handles: hs});
     }
   };
   group((p) => text(p.metaDescription ?? p.seo?.description).toLowerCase(), 'meta description', 'duplicate-meta');
@@ -540,7 +636,7 @@ function checkCatalog(items) {
   }
   for (const [, hs] of skeletons) {
     if (hs.length > 2) {
-      out.push(F('warn', 'boilerplate-title', `${hs.length} titles share one template varying by a single word: ${hs.slice(0, 4).join(', ')}${hs.length > 4 ? ' …' : ''} — Google names this as a reason it rewrites title links`));
+      out.push({...F('warn', 'boilerplate-title', `${hs.length} titles share one template varying by a single word: ${hs.slice(0, 4).join(', ')}${hs.length > 4 ? ' …' : ''} — Google names this as a reason it rewrites title links`), handles: hs});
     }
   }
 
@@ -558,7 +654,24 @@ function checkCatalog(items) {
     const bland = items.filter((p) => effective(p) && stems(effective(p)).every(common));
     if (bland.length) {
       const hs = bland.map((p) => text(p.handle) || '(no handle)');
-      out.push(F('warn', 'generic-title', `${bland.length} <title>s use only words common across this catalog, so none names its own design: ${hs.slice(0, 4).join(', ')}${hs.length > 4 ? ' …' : ''}`));
+      out.push({...F('warn', 'generic-title', `${bland.length} <title>s use only words common across this catalog, so none names its own design: ${hs.slice(0, 4).join(', ')}${hs.length > 4 ? ' …' : ''}`), handles: hs});
+    }
+  }
+
+  // "Rocking Horse Baby's First Christmas Ornament" and "Baby's First Christmas
+  // Rocking Horse Ornament" are one title to a reader. Same words, any order.
+  const bags = new Map();
+  for (const p of items) {
+    const t = text(p.seoTitle ?? p.seo?.title) || text(p.title);
+    const k = stems(t).filter((w) => !FUNCTION_WORDS.has(w)).sort().join(' ');
+    if (!k) continue;
+    if (!bags.has(k)) bags.set(k, new Set());
+    bags.get(k).add(t.toLowerCase());
+  }
+  for (const [k, ts] of bags) {
+    if (ts.size > 1) {
+      const hs = items.filter((p) => stems(text(p.seoTitle ?? p.seo?.title) || text(p.title)).filter((w) => !FUNCTION_WORDS.has(w)).sort().join(' ') === k).map((p) => text(p.handle) || '(no handle)');
+      out.push({...F('warn', 'reordered-title', `${hs.length} <title>s use the same words in a different order: ${[...ts].slice(0, 3).join(' / ')}`), handles: hs});
     }
   }
   return out;
@@ -578,8 +691,12 @@ if (Array.isArray(data) && !CATALOG) {
   process.stderr.write('Input is an array — pass --catalog to also check cross-listing duplicates.\n');
 }
 
-const results = items.map((p) => ({handle: text(p.handle) || text(p.title).slice(0, 40) || '(unnamed)', findings: checkOne(p)}));
-const catalogFindings = CATALOG ? checkCatalog(items) : [];
+const TITLE_RULES = new Set(['title', 'seoTitle', 'duplicate-seo-title', 'duplicate-title', 'boilerplate-title', 'generic-title', 'reordered-title', 'keyword-cannibalization']);
+const keep = (f) => !TITLES_ONLY || TITLE_RULES.has(f.rule);
+const results = items.map((p) => ({handle: text(p.handle) || text(p.title).slice(0, 40) || '(unnamed)', findings: checkOne(p).filter(keep)}))
+  .filter((r) => !FOCUS.size || FOCUS.has(r.handle));
+const catalogFindings = CATALOG ? checkCatalog(items).filter(keep)
+  .filter((f) => !FOCUS.size || (f.handles ?? []).some((h) => FOCUS.has(h))) : [];
 
 const errors = results.reduce((n, r) => n + r.findings.filter((f) => f.level === 'error').length, 0)
   + catalogFindings.filter((f) => f.level === 'error').length;
@@ -596,7 +713,8 @@ if (JSON_OUT) {
   process.stdout.write(` | feed reads the ${FEED_TITLE === 'seo' ? 'SEO title' : 'product title'} | selling language ${SELLING_LANGUAGE}\n\n`);
   for (const r of results) {
     if (!r.findings.length) { process.stdout.write(`  PASS  ${r.handle}\n`); continue; }
-    process.stdout.write(`  FAIL  ${r.handle}\n`);
+    // FAIL only when something blocks; warnings alone are worth a look.
+    process.stdout.write(`  ${r.findings.some((f) => f.level === 'error') ? 'FAIL' : 'WARN'}  ${r.handle}\n`);
     for (const f of r.findings) {
       process.stdout.write(`        ${f.level === 'error' ? 'x' : '!'} ${f.rule}: ${f.message}\n`);
     }
@@ -607,7 +725,7 @@ if (JSON_OUT) {
       process.stdout.write(`        ${f.level === 'error' ? 'x' : '!'} ${f.rule}: ${f.message}\n`);
     }
   }
-  process.stdout.write(`\n${items.length} listing(s): ${errors} error(s), ${warns} warning(s)\n`);
+  process.stdout.write(`\n${results.length} listing(s)${FOCUS.size ? ` of ${items.length} in the export` : ''}: ${errors} error(s), ${warns} warning(s)\n`);
 }
 // exitCode, not exit(): exit() drops whatever stdout has not flushed to a pipe,
 // which cut catalog --json output off at 64 KB.
