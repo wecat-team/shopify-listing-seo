@@ -38,7 +38,11 @@ node scripts/check-listing.mjs catalog.json --suffix " | Brand" --catalog
 
 Pass `--selling-language vi` when the shop actually sells in Vietnamese, and
 `--feed-title seo` when the Google & YouTube channel is set to feed the search
-engine title rather than the product title.
+engine title rather than the product title. Pass `--shop-words "wedding,christmas"`
+with the occasion words every listing in the shop carries, so the generic-title
+check ignores them the way the generic test in SKILL.md does. For a batch
+rewrite, put the shop's existing titles in the catalog file too: uniqueness in
+a batch is not uniqueness in the shop.
 
 Do not invent specifications. Sizes, materials and lead times must come from the
 shop's own variant data and published policies; leave a sentence out rather than
