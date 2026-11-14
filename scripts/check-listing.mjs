@@ -517,4 +517,6 @@ if (JSON_OUT) {
   }
   process.stdout.write(`\n${items.length} listing(s): ${errors} error(s), ${warns} warning(s)\n`);
 }
-process.exit(errors ? 1 : 0);
+// exitCode, not exit(): exit() drops whatever stdout has not flushed to a pipe,
+// which cut catalog --json output off at 64 KB.
+process.exitCode = errors ? 1 : 0;
