@@ -52,6 +52,10 @@ Titles lead with the design — the artwork or motif that tells this listing fro
 its siblings — never with `Personalized` + the product type alone. Run the
 generic test in SKILL.md (*Writing the title: the design leads*) on every title,
 and use most of the SEO title's pixel budget instead of stopping at 30
+characters. When a title must lose words, cut personalization, then
+material, then design — never the occasion phrase buyers search (`First
+Christmas Married`, `Baby's First Christmas`) or the product type. The product
+title does not open with `Personalized`: a phone card shows about 35
 characters.
 
 Do not enforce a product-title character range: the checker's under-45 warning

@@ -171,7 +171,7 @@
       "prompt": "Viết title và SEO title cho ornament này: ornament gỗ in hình đôi chim hoạ tiết hoa, có móc thép, khách điền tên và ngày. Shop LunaVows có hơn 800 ornament Giáng sinh.",
       "expected_output": "Phải dẫn đầu bằng hoạ tiết (Floral Bird Couple) chứ không phải 'Personalized Christmas Ornament'. Phải nói rõ chữ Personalized có ở mọi listing nên không phân biệt được. SEO title phải dùng gần hết ngân sách pixel (khoảng 450-580px kể cả ' | LunaVows'), không gõ tên shop vào. Không thêm chất liệu hay kích thước ngoài những gì được cung cấp.",
       "assertions": [
-        "SEO title bắt đầu bằng hoạ tiết (đôi chim, hoa); product title nếu mở bằng 'Personalized' thì hoạ tiết đứng ngay sau, trước 'Christmas Ornament'",
+        "SEO title và product title đều bắt đầu bằng hoạ tiết (đôi chim, hoa); product title không mở bằng 'Personalized' — chữ đó đứng sau, ví dụ ', Personalized with Names'",
         "Chạy hoặc mô tả phép thử title chung chung: bỏ loại sản phẩm và chữ chung, phần còn lại phải gọi tên được mẫu này",
         "SEO title đo bằng pixel và nằm trong khoảng ~450-580px kể cả đuôi",
         "SEO title không chứa tên shop",
@@ -189,6 +189,55 @@
         "Không cho rằng title ổn chỉ vì ngắn và nằm dưới ngưỡng pixel",
         "Đề xuất viết lại theo hoạ tiết của từng listing, lấy từ dữ liệu sẵn có",
         "Gợi ý chạy check-listing.mjs với --catalog để tìm hết các trang trùng"
+      ],
+      "files": []
+    },
+    {
+      "id": 16,
+      "prompt": "Viết SEO title cho listing này: 'Personalized Woodland Baby’s First Christmas Ceramic Ornament with Photo, Name & Year'. Shop LunaVows, storefront tự thêm ' | LunaVows'.",
+      "expected_output": "Phải giữ nguyên cụm 'Baby's First Christmas' trong SEO title vì đó là cụm khách tìm nhiều nhất; khi thiếu chỗ thì bỏ 'Personalized' hoặc chi tiết cá nhân hoá trước, không bỏ dịp. Ví dụ đạt: 'Woodland Baby's First Christmas Ceramic Ornament'. Không được ra 'Woodland Baby Christmas Ceramic Ornament'.",
+      "assertions": [
+        "SEO title chứa 'First Christmas' và 'Baby'",
+        "Giữ hoạ tiết Woodland",
+        "Nêu thứ tự bỏ chữ khi thiếu chỗ: personalization trước, rồi chất liệu, không bỏ dịp hay loại sản phẩm",
+        "SEO title đo bằng pixel và không quá 600px kể cả đuôi"
+      ],
+      "files": []
+    },
+    {
+      "id": 17,
+      "prompt": "Title này ổn chưa: 'Personalized Double-Sided Vintage Christmas Photo Wood Slice Ornament'? Khách chủ yếu xem trên điện thoại.",
+      "expected_output": "Phải chỉ ra trên điện thoại thẻ sản phẩm chỉ hiện khoảng 30-36 ký tự, nên khách chỉ đọc được 'Personalized Double-Sided Vintage' — chữ Personalized chiếm 13 ký tự mà shop nào cũng có. Đề xuất đưa hoạ tiết và loại lên đầu, đẩy Personalized ra sau (Google Shopping vẫn khớp chữ đó ở bất kỳ vị trí nào).",
+      "assertions": [
+        "Nêu giới hạn hiển thị trên điện thoại (thẻ ~30-36 ký tự, trang sản phẩm ~50)",
+        "Không khuyên bỏ hẳn chữ Personalized khỏi product title vì Google có người tìm",
+        "Đề xuất bản viết lại với hoạ tiết + loại sản phẩm ở đầu",
+        "Loại sản phẩm (Ornament) nằm trong khoảng 50 ký tự đầu"
+      ],
+      "files": []
+    },
+    {
+      "id": 18,
+      "prompt": "Title này ổn chưa: 'Personalized Custom Name Family Christmas Stocking Gift Keepsake Holiday Decor Stocking' (product type: Stocking). Chưa có SEO title.",
+      "expected_output": "Trả lời đúng câu hỏi, không phỏng vấn cả listing. Chỉ ra: mở đầu bằng Personalized; 'Stocking' lặp hai lần thành đuôi từ khoá; bỏ chữ chung chung thì không còn hoạ tiết nào; không có SEO title nên <title> vượt ~600px. Đưa bản viết lại có [to fill: design] và hỏi ảnh hoặc tên hoạ tiết, không tự bịa hoạ tiết.",
+      "assertions": [
+        "Không chạy phỏng vấn 7 câu, không viết cả listing",
+        "Nêu 'Stocking' lặp hai lần / đuôi từ khoá",
+        "Nêu không còn hoạ tiết sau khi bỏ chữ chung chung",
+        "Không bịa hoạ tiết; dùng [to fill: design] hoặc hỏi lại",
+        "Nêu <title> vượt ngân sách pixel vì chưa có SEO title"
+      ],
+      "files": []
+    },
+    {
+      "id": 19,
+      "prompt": "Viết SEO title cho: 'Personalized Christmas Stocking with Name – Fairy, Elf, Dinosaur & Dragon'. Bốn nhân vật là bốn lựa chọn khách chọn.",
+      "expected_output": "Bốn nhân vật vừa là lựa chọn vừa là hoạ tiết, nên nêu cả bốn nếu vừa (nối bằng 'or'), hoặc tên nhóm nếu không vừa; không chọn một nhân vật. Không mở đầu bằng Personalized. Đo bằng checker với ' | LunaVows'.",
+      "assertions": [
+        "Không chỉ nêu một trong bốn nhân vật",
+        "Có 'Christmas Stocking'",
+        "SEO title không có tên shop",
+        "Đo pixel bằng checker, ≤600px kèm hậu tố"
       ],
       "files": []
     }

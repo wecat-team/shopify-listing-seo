@@ -2,7 +2,7 @@
 name: shopify-listing-seo
 description: Write a complete Shopify product listing from a product photo or a few facts - product title, SEO title, meta description, URL handle, description HTML, tags - and audit existing listings. Listing fields are always written in the shop selling language, English by default, whatever language the chat is in. Every threshold is labelled hard rule, documented recommendation, or unsourced convention. Use whenever someone writes, rewrites or audits a Shopify listing or product description, sends a product photo and asks for a listing, mentions product SEO, listing SEO, meta title, meta description, product tags or storefront search, or is about to write product fields through the Shopify Admin API - even if they never say "SEO". Same requests in Vietnamese also trigger it: "viết listing", "viết mô tả sản phẩm", "đăng sản phẩm Shopify", "viết tiêu đề sản phẩm", "sửa listing", "tối ưu SEO sản phẩm". Listing fields only - not technical SEO, site speed or theme code.
 metadata:
-  version: 1.7.0
+  version: 1.8.0
 ---
 
 # Shopify listing SEO
@@ -103,6 +103,18 @@ a fact is missing, leave the sentence out and say what is missing.
 **Step 3 — self-check** against [the checklist](#self-check-before-handing-it-over)
 and say which items you could not verify.
 
+### When they ask for one field, or ask whether a title is OK
+
+"Just the SEO title", "fix this title", "is this title good?" — answer that and
+nothing else; do not run the interview or write the whole listing. Ask only for
+what that one field needs (for a title: the design, the occasion, the shop name
+for the suffix). The title rules still apply in full: run the generic test,
+keep the occasion phrase, and measure with the checker (`--titles-only` skips
+the fields they did not ask about). When judging a title, say what is wrong in
+one line each and give the rewrite. If the design is the missing fact, give
+the rewrite with `[to fill: design]` in its place and ask for a photo or the
+design name — do not invent a motif to finish it.
+
 ## Starting from a product photo
 
 The most common real input is a photo plus a line or two of specs — someone has
@@ -153,7 +165,8 @@ a plausible number.
 
 The half-way case is common and worth handling well: enough to write most of it,
 one thing missing. Write the listing, mark the gap inline in square brackets
-(`[cần điền: thời gian sản xuất]`), and list the gaps under the output. That
+(`[to fill: production time]` — the fields are in the selling language, so the
+marker is too), and list the gaps under the output in the person's language. That
 gets them 90% of the way while making the hole impossible to miss.
 
 ## Writing the title: the design leads
@@ -174,30 +187,101 @@ they never count as the part that names the product.
 
 ### The formula
 
-Build every title from these parts, in this order, using only facts you were
-given or can see:
+Build every title from these parts, using only facts you were given or can see:
 
 | Part | What it is | Example |
 | --- | --- | --- |
-| **Design** | the artwork, motif, theme or shape that sets this listing apart from its siblings | `Floral Bird Couple`, `Gingerbread Family Tray`, `Gothic Rose` |
 | **Type keyword** | the phrase a buyer types for the product type, exactly once | `Christmas Ornament`, `Wedding Welcome Sign` |
-| **Personalization** | what the buyer adds | `with Names and Date`, `Photo` |
-| **Attribute** | material, finish, size, count — facts only | `3D Relief Acrylic`, `Wood`, `Steel Charm` |
-| **Occasion / recipient** | who or what it is for | `First Christmas Married`, `for Grandma` |
+| **Occasion / recipient** | the occasion phrase buyers search, when the listing has one | `First Christmas Married`, `Baby's First Christmas`, `Engagement`, `Memorial`, `for Grandma` |
+| **Design** | the artwork, motif, theme or shape that sets this listing apart from its siblings | `Floral Bird Couple`, `Gingerbread Family Tray`, `Gothic Rose` |
+| **Material / format** | material, finish, construction — the ones buyers search first | `3D Relief`, `Acrylic`, `Glass`, `Ceramic`, `Wood`, `Photo` |
+| **Personalization** | what the buyer adds | `with Names and Date`, `Personalized` |
 
-The **design comes first** whenever the type keyword can still finish inside
-the first ~45 characters. A shopper looking at ten ornament results is choosing
-between designs; the type is already obvious from the page around it.
+Write them in natural English order — usually design, occasion, material, type:
+`Woodland Baby's First Christmas Ceramic Ornament`.
 
-One allowed exception: when the shop's primary keyword starts with
-`Personalized` (buyers really do type "personalized christmas ornament") — and
-if nobody told you the keyword, assume it does when the shop's existing titles
-all open with it — the
-**product title** may open with that one word, with the design straight after
-it — `Personalized Cozy Snowman Couple Christmas Ornament`, never
-`Personalized Christmas Ornament with Cozy Snowman Couple`, where the design
-falls to the end. The **SEO title** has no room to spare, so it spends those
-13 characters on the design instead.
+`Christmas Ornament` is the full type keyword. When the occasion phrase already
+says Christmas (`Baby's First Christmas`, `Christmas Wedding`), the type is just
+`Ornament` — never write Christmas twice. When the SEO title is short of room,
+`Ornament` alone is the next thing to give up after personalization and
+material, before the design or the occasion.
+
+**A year** printed on the piece (`2026`) can go in the product title. Leave it
+out of the SEO title unless it fits after design and occasion: it dates the
+page, and the page outlives the season.
+
+The **type keyword is what a buyer types**, not whatever sits in Shopify's
+Product type field. When the two disagree — a runner rug typed `Doormat`, a
+banner typed `Table Runner` — write the buyer's word in the title and tell the
+person the product type looks wrong; it decides which search, filter and
+collection the listing lands in. The checker warns when the product type
+appears nowhere in the title.
+
+Some type keywords already carry a material (`Wooden Block`, `Wood Slice
+Ornament`, `Glass Ornament`). Keep them whole — that is the buyer's word — and
+do not add the material a second time.
+
+Say a stated fact in the words buyers search: a listing written for
+`newlyweds` can be titled `First Christmas Married`, because that is the same
+fact. Adding a fact the listing does not state — an occasion, a material, a
+recipient — is inventing, even when it would rank.
+
+When the listing's own text contradicts itself (`linen-style` in one line,
+`Material: linen` in the spec), use the spec line and say which you chose.
+
+### When space runs out, cut from the bottom of the table, never the top
+
+The table is also the priority order. A title that has to lose words loses
+personalization first, then material, then design, and **never** the occasion
+phrase or the type keyword. This order comes from what buyers actually type.
+One shop's own search box over 90 days (7,921 searches): occasion words were
+34% of all searches — "first christmas married" alone was the most searched
+phrase in the shop — materials 12%, design words 9%, and "personalized" or
+"custom" under 5%. A rewrite that kept the design but dropped the occasion
+turned `Woodland Baby's First Christmas Ceramic Ornament` into `Woodland Baby
+Christmas Ceramic Ornament` and lost the second most searched phrase in the
+shop. Do not do that.
+
+Material is searched more than design (12% vs 9%) and still goes before it,
+for two reasons. A material is shared by hundreds of listings, so it never
+makes a `<title>` unique — the design does. And a material search (`acrylic
+ornament`) lands on a filter or a collection page, while the design plus the
+occasion (`cardinal memorial ornament`) is the query this one page can win.
+So: keep the material in the product title always, and in the SEO title
+whenever it fits after the design. The checker warns only when it would have
+fitted.
+
+### "Personalized": a search word on Google, a wasted word on a product card
+
+Buyers on Google do type it — Google's own suggestions for "christmas
+ornament" include "christmas ornaments personalized", and "personalized
+christmas ornaments with names / with photo / for family" are common. Inside
+the shop nobody types it, because everything there is personalized.
+
+- **SEO title:** include `Personalized` when it still fits after type,
+  occasion and design. With an 11-character brand suffix it almost never does,
+  and that is expected: it is the first word to go, and the product page itself
+  (title, H1, description) still carries it for Google.
+- **Write the phrase the way buyers type it.** `First Christmas`, not `1st
+  Christmas` — on that shop "first" was searched about six times as often as
+  "1st". When a title is a few pixels over, cut another word; do not abbreviate
+  the searched phrase.
+- An occasion is something the piece is *for* (`Family Christmas`, `Memorial`).
+  A field the buyer fills in (`Family Name`, `Names and Date`) is
+  personalization, and is cut first.
+- **Product title:** do **not** open with it. On a phone, product cards in a
+  two-column grid show roughly the first **30-36 characters** and the product
+  page about **50** before the title is cut (measured on one live storefront;
+  measure your own theme). `Personalized ` spends 13 of those 30 on a word
+  every card in the shop shares. Put the design and occasion first and the
+  personalization later: `Vintage Christmas Photo Wood Slice Ornament,
+  Double-Sided and Personalized`, not `Personalized Double-Sided Vintage…`.
+  Google Shopping matches the whole title, so the word still counts there.
+- The type keyword has to finish inside the first ~50 characters of the
+  product title, so a phone shopper reads what the thing is. The two numbers
+  do different jobs: the ~35 a card shows sell the design and occasion (the
+  shopper is already in a shop of ornaments or signs), and the ~50 the
+  product page shows have to name the type as well.
 
 ### The generic test — run it on every title before you hand it over
 
@@ -217,10 +301,18 @@ the attribute or the personalization instead (`Engraved Oak`, `Couple Photo`),
 and say in your notes that the listing has nothing visual to set it apart.
 
 When the **buyer supplies the design** (a photo, their own artwork), name what
-they supply and the form it takes: `Design Your Own Heart Glass Photo
-Ornament`, not `Personalized Photo Glass Ornament`. The shape, material and
-style options are the attributes that tell it from the shop's other photo
-pieces.
+they supply and the form it takes: `Design Your Own Glass Photo Ornament`, not
+`Personalized Photo Glass Ornament`. Name a shape only when the listing comes
+in that one shape; when it offers several (heart, round, star), they are
+variants, and naming one in the title tells the other shapes' buyers it is not
+for them. The material and the form are what tell it from the shop's other
+photo pieces.
+
+When the options **are** the design — a stocking that comes as a fairy, an
+elf, a dinosaur or a dragon — name them all if they fit (`Fairy, Elf, Dinosaur
+or Dragon Christmas Stocking`), joined with `or` so it reads as a choice. When
+they do not fit, name the group (`Fantasy Character Christmas Stocking`).
+Naming only one turns away the buyers of the others.
 
 ### Real rewrites (one shop, SEO title, suffix ` | LunaVows`)
 
@@ -243,16 +335,23 @@ description. Nothing was invented to make a title distinct.
 `Personalized` + type is about 30 characters, and there is nothing else in it.
 
 - **SEO title:** fill the pixel budget. Aim for roughly 450-580px with the
-  brand suffix — in Title Case that is about 38-47 characters before an
+  brand suffix — in Title Case that is about 38-48 characters before an
   11-character suffix (on one live catalogue 9 in 10 titles that fit were 47
   characters or fewer). Past ~48 characters most Title Case titles cross 600px,
   so **measure, do not count**: run the checker on every draft. Under 450px the
-  checker warns that the room is unused. (CONVENTION.)
-- **Product title:** the first ~70 characters carry design + type keyword;
-  personalization and real attributes — material, size, occasion, recipient —
-  follow, up to 150 when the product title feeds Google Shopping. A comma before
-  them is fine: two or three commas separating distinct facts are a product
-  name, a run of keyword phrases repeating the type is a keyword tail. Under ~45
+  checker warns that the room is unused. Between 580 and 600px it warns too,
+  but that is a margin, not a cut: keep a design or occasion word that lands
+  there rather than drop it. Over 600px always shorten. (CONVENTION.)
+- **Product title:** the first ~35 characters name this product's design or
+  occasion, the type keyword finishes inside ~50, and the first ~70 (what
+  Google Shopping displays) carry design + occasion + type. Personalization and
+  real attributes — material, size, recipient — follow, up to 150 when the
+  product title feeds Google Shopping. A comma before
+  them is fine: one or two commas separating distinct facts are a product
+  name, a run of keyword phrases repeating the type is a keyword tail.
+  Add attributes a buyer would type or filter by (material, size, count,
+  recipient); stop when the next one is neither. An option list (`Heart or
+  Round`, `Sets of 50 or 100`) belongs in the variants, not the title. Under ~45
   characters a title almost always names the type and nothing else; the checker
   warns. (CONVENTION — no Google or Shopify document sets a minimum.)
 - Length never justifies repetition or a comma tail of keyword phrases. Each
@@ -274,7 +373,11 @@ between them **is** the design — lead every title with it. Run the checker in
 duplicate `<title>`s, and from 20 titles up it warns on titles made only of
 words common across the catalog. Pass the shop's own occasion words with
 `--shop-words "wedding,christmas"` so the checker's generic test deletes the
-same words yours does.
+same words yours does. Add `--titles-only` when the file is a titles-only
+export, so missing descriptions and images do not bury the title findings. In
+`--json` output every catalog finding lists all the handles it covers. Catalog
+mode also flags two titles made of the same words in a different order, which
+read as one title.
 
 **Do not type the shop name into the SEO title.** The storefront appends
 ` | Shop` itself; typed again it shows twice (`... | shop | Shop`) unless the
@@ -300,7 +403,7 @@ Practical method:
    an 11-character suffix.
 3. That ceiling is not a target. Title Case puts a capital on every word, and
    capitals are wide, so real titles cross 600px from about 48 characters.
-   Write to roughly 38-47 and measure; tighten further when the title is full
+   Write to roughly 38-48 and measure; tighten further when the title is full
    of wide letters (`M W G O Q`), which is exactly when a character count lies.
 4. The budget is a target as well as a ceiling. A 30-character SEO title is
    not "safe"; it leaves the design out. Use the room.
@@ -312,10 +415,10 @@ CONVENTION, derived from third-party pixel measurement — not a Google rule.
 The product title does two jobs that pull in opposite directions, and most
 advice collapses them into one number. Keep them apart.
 
-**On the storefront** it is the `<h1>` and the label on every product card. A
-title that wraps to five lines buries the price, so keep the part a shopper
-reads — the first ~70 characters — clean: design, type keyword,
-personalization. Do not answer that by cutting the title down to the type
+**On the storefront** it is the `<h1>` and the label on every product card. On
+a phone the card shows about 30-36 characters and the product page about 50
+before the title is cut, so those first characters carry the design or
+occasion and the type keyword — not `Personalized`. Do not answer that by cutting the title down to the type
 alone; a short generic title is the worse failure (see
 [Writing the title](#writing-the-title-the-design-leads)).
 
@@ -450,7 +553,9 @@ page already supplies those.
 takes 5 to 12 business days.</p>
 ```
 
-## Handle: strip the accents, then set it once
+## Handle
+
+### Strip the accents
 
 **A handle carries only `a-z`, `0-9` and hyphens.** Anything else is a Shopify
 error or a percent-encoded URL nobody can read or share. So transliterate before
@@ -460,7 +565,7 @@ are display text — and drops only in the handle. Say that you did it, because 
 seller seeing their brand name spelled differently in the URL will otherwise
 assume you made a typo.
 
-## Handle: set it once; length does not matter
+### Set it once; length does not matter
 
 | Fact | Source | Register |
 | --- | --- | --- |
@@ -566,7 +671,7 @@ Description        <HTML block — paste with the <> button, not the rich text e
 
 Then, underneath and in the person's own language:
 
-1. **What is still missing** — every `[cần điền: ...]` gap, listed once more so it
+1. **What is still missing** — every `[to fill: ...]` gap, listed once more so it
    cannot be skimmed past.
 2. **What you assumed** — the selling language, the feed source, anything you read
    off a photo rather than being told.
@@ -584,8 +689,14 @@ Then, underneath and in the person's own language:
 [ ] Product title: not one template with a single word swapped across the catalog
 [ ] Both titles lead with the design; the generic test leaves words that name
     this listing and no other
-[ ] Product title: 45 characters or more — design, type, personalization, then
-    real attributes
+[ ] Product title: 45 characters or more — design, occasion, type, then
+    personalization and real attributes
+[ ] Product title: does not open with Personalized/Custom; the first ~35
+    characters name the design or occasion; the type finishes inside ~50
+[ ] Every occasion phrase in the product title (first christmas married,
+    baby's first christmas, engagement, memorial…) survives into the SEO
+    title, and so does a searched material (3D relief, acrylic, glass…)
+    whenever it fits after the design
 [ ] SEO title: fits the pixel budget once the brand suffix is added, and uses
     most of it (~450-580px)
 [ ] SEO title: no shop name typed in — the storefront adds it
@@ -618,6 +729,18 @@ checker treats Vietnamese copy as the mirrored-language failure and errors.
 
 Catalog mode is where the value is: duplicate meta descriptions, duplicate body
 openings and two listings fighting over one keyword are invisible one at a time.
+
+When the file is the shop's whole export plus a new batch, add
+`--focus "handle-1,handle-2"`. If the batch rewrites listings that are already
+in the export, replace those rows with your drafts rather than appending them,
+or each draft is compared with its own old title. With `--focus` the checker
+still compares against every listing, but reports only the batch and the catalog findings that involve it.
+Without it, the shop's existing problems bury yours.
+
+Reading the output: `FAIL` means at least one error — fix it before the
+listing goes live; the checker exits 1. `WARN` means warnings only — each is
+worth a look and some are a judgement call (a material that fits but was left
+out for the design); the checker exits 0. `PASS` means nothing was found.
 
 ## Further reading
 
