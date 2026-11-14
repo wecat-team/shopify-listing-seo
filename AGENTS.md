@@ -44,7 +44,14 @@ Do not invent specifications. Sizes, materials and lead times must come from the
 shop's own variant data and published policies; leave a sentence out rather than
 guess at it.
 
-Do not enforce a product-title character range. Do not present Shopify's
+Titles lead with the design — the artwork or motif that tells this listing from
+its siblings — never with `Personalized` + the product type alone. Run the
+generic test in SKILL.md (*Writing the title: the design leads*) on every title,
+and use most of the SEO title's pixel budget instead of stopping at 30
+characters.
+
+Do not enforce a product-title character range: the checker's under-45 warning
+is advice, not a gate. Do not present Shopify's
 250-word page recommendation as a Google rule, and do not present it as folklore
 either — it is published advice from the platform being published on.
 Neither exists in any Google or Shopify document — see

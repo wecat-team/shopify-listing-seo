@@ -36,11 +36,16 @@ Lumière Personalized Wedding Table Runner with Names and Date, Linen
 Sweetheart Table Decor
 ```
 
-**SEO title** — 41 ký tự, 511px sau khi cộng ` | LunaVows` (ngưỡng 600px)
+**SEO title** — 45 ký tự, 558px sau khi cộng ` | LunaVows` (ngưỡng 600px)
 
 ```
-Lumière Personalized Wedding Linen Runner
+Lumière Linen Wedding Table Runner with Names
 ```
+
+SEO title bỏ chữ "Personalized": trang nào của shop cũng có chữ đó, nên nó
+không giúp Google hay khách phân biệt trang này. Chỗ đó dành cho thứ chỉ
+listing này có — tên Lumière, chất liệu lanh, và thứ khách tự điền. Dùng gần
+hết ngân sách 600px chứ không dừng ở 30 ký tự cho "an toàn".
 
 **Meta description** — 139 ký tự
 
@@ -98,7 +103,7 @@ as a keepsake of the day.</p>
 ```
 
 > **Đã kiểm:** tiêu đề 91 ký tự (dưới trần 150 của Google), không lặp từ, SEO
-> title 511px (dưới ngưỡng 600px), meta 139 ký tự (trong khoảng 120–160), mô tả
+> title 558px (dưới ngưỡng 600px, dùng gần hết chỗ), meta 139 ký tự (trong khoảng 120–160), mô tả
 > đủ 6 mục, có kích thước cụ thể và thời gian giao, HTML chỉ dùng thẻ an toàn.
 >
 > Listing này chạy qua `scripts/check-listing.mjs` cho kết quả **0 lỗi, 3 cảnh
@@ -111,7 +116,8 @@ as a keepsake of the day.</p>
 > - `primary keyword appears only as scattered words` — từ khoá chính là
 >   *personalized wedding linen table runner*, nhưng tiêu đề chèn "Lumière" và
 >   "Table" vào giữa nên không còn là một cụm liền. Đây là đánh đổi có chủ ý:
->   giữ tên thương hiệu ở đầu, và cụm liền vẫn nằm nguyên trong SEO title.
+>   giữ tên thương hiệu ở đầu, vì đó là thứ phân biệt tấm khăn này với mọi
+>   khăn trải bàn khác.
 >
 > Và **1 lỗi cố ý**: `placeholder: body still contains 1 unfilled marker`.
 >
