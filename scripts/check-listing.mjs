@@ -10,6 +10,9 @@
 //   --feed-title product|seo   which field Shopify sends to the Google channel
 //   --selling-language <code>  the shop's selling language (default en)
 //   --meta-min / --meta-max    meta description advisory range (default 120-160)
+//   --shop-words "a,b"         occasion words every listing in this shop carries
+//                              (e.g. "wedding,christmas"); the generic-title
+//                              test treats them like "personalized"
 //   --catalog                  also run cross-listing checks
 //   --json                     machine-readable output
 //
@@ -38,6 +41,11 @@ const SELLING_LANGUAGE = flag('selling-language', 'en').toLowerCase();
 // Google publishes no meta description limit and is not obliged to use the text
 // at all. Shopify Help Center recommends 160 characters. Advisory, not a gate.
 const META_MIN = Number(flag('meta-min', '120'));
+// The checker cannot know what a shop is built around, and "Christmas" is the
+// design word in a wedding shop but filler in an ornament shop. SKILL.md's
+// generic test deletes the shop's core occasion words; this lets the checker
+// delete the same ones.
+const SHOP_WORDS = flag('shop-words', '').toLowerCase().split(',').map((w) => w.trim()).filter(Boolean);
 const META_MAX = Number(flag('meta-max', '160'));
 
 // Vietnamese-specific letters. Detects a listing written in the conversation
@@ -108,6 +116,25 @@ const CAPS_OK = new Set(['USA','USD','EUR','GBP','UK','EU','XL','XXL','XXXL','LE
 const FUNCTION_WORDS = new Set(['the','and','for','with','your','our','from','into','onto',
   'this','that','plus','over','under','a','an','of','in','on','to','by','or','at','as']);
 
+// Words nearly every listing in a personalized-gift shop carries. They match
+// queries, but they never tell one listing from its siblings, so they do not
+// count as the design. A title built only from these plus the product type —
+// "Personalized Christmas Ornament" — fits every listing of that type: on one
+// live catalogue 74 pages shared exactly that <title>.
+const GENERIC_WORDS = new Set(['personalized','personalised','personalize','personalise','custom',
+  'customized','customised','customizable','gift','keepsake','decor','decoration','unique','cute',
+  'beautiful','perfect','best','new','handmade','premium','quality','name','date','text','item',
+  'product','design','set','idea']);
+// Filled from --shop-words once the helpers below exist.
+// Below this the <title> leaves a quarter of the ~600px budget unused: room for
+// the motif, a material or the occasion. Matches the 450-580px SKILL.md aims
+// for. Convention, not a published number.
+const TITLE_PX_SHORT = 450;
+// A short product title is the same failure one field over: it names the type
+// and nothing a shopper would use to pick this listing. Advice, not a rule —
+// no Google or Shopify document sets a product-title minimum.
+const PRODUCT_TITLE_SHORT = 45;
+
 const text = (v) => (v ?? '').toString().replace(/\s+/g, ' ').trim();
 const plain = (html) => text((html ?? '').replace(/<[^>]+>/g, ' ').replace(/&[a-z]+;/g, ' '));
 const words = (html) => plain(html).split(' ').filter(Boolean).length;
@@ -116,6 +143,20 @@ const normWords = (s) => s.toLowerCase().replace(/[^a-z0-9\s'-]/g, ' ').split(/\
 // Mapping a string used to throw, which read as a crash rather than a finding.
 const asList = (v) => Array.isArray(v) ? v.map(text).filter(Boolean)
   : typeof v === 'string' ? v.split(',').map(text).filter(Boolean) : [];
+// "ornaments" and "ornament" are the same word for this purpose.
+const stem = (w) => w.replace(/ies$/, 'y').replace(/(?<!s)s$/, '');
+const stems = (s) => normWords(s).map(stem);
+
+/**
+ * The words in a title that are neither the product type, nor the brand, nor
+ * words every listing carries — what is left is what names this listing.
+ */
+for (const w of SHOP_WORDS.flatMap(stems)) GENERIC_WORDS.add(w);
+
+function distinctiveWords(t, typeWords, brandWords) {
+  return stems(t).filter((w) => w.length > 1 && !FUNCTION_WORDS.has(w)
+    && !GENERIC_WORDS.has(w) && !typeWords.has(w) && !brandWords.has(w));
+}
 
 /** One finding. `level` is 'error' (blocks publish) or 'warn' (worth a look). */
 const F = (level, rule, message) => ({level, rule, message});
@@ -181,8 +222,8 @@ function checkOne(p) {
   // this does not enforce one - it checks the front-loading Google does document.
   if (!title) out.push(F('error', 'title', 'missing'));
   else {
-    if (title.length < 25) {
-      out.push(F('warn', 'title', `${title.length} chars — too short to identify the product or match many queries`));
+    if (title.length < PRODUCT_TITLE_SHORT) {
+      out.push(F('warn', 'title', `${title.length} chars — names the type and little else; a shopper sees about ${TITLE_VISIBLE}, so add the motif, material, size or occasion (advice, no published minimum)`));
     }
     // The first ~70 characters are what a shopper actually reads, so the
     // product's core name has to fit there. Checking that the leading segment
@@ -229,9 +270,15 @@ function checkOne(p) {
       const kwWords = normWords(primaryKeyword);
       const titleWords = new Set([...normWords(title), ...normWords(seoTitle)]);
       const missing = kwWords.filter((w) => !titleWords.has(w));
+      // "Personalized Cozy Snowman Couple Christmas Ornament" puts the design
+      // between the modifier and the type, which is what SKILL.md asks for.
+      // The phrase that has to stay whole is the keyword without its generic
+      // modifiers; those only have to be present.
+      const core = kwWords.filter((w) => !GENERIC_WORDS.has(stem(w))).join(' ');
+      const hasPhrase = (t) => t.includes(primaryKeyword) || (core && normWords(t).join(' ').includes(core));
       if (missing.length) {
         out.push(F('error', 'title', `primary keyword "${primaryKeyword}" is missing "${missing.join('", "')}" from both the product title and the SEO title`));
-      } else if (!lower.includes(primaryKeyword) && !seoLower.includes(primaryKeyword)) {
+      } else if (!hasPhrase(lower) && !hasPhrase(seoLower)) {
         out.push(F('warn', 'title', `primary keyword "${primaryKeyword}" appears only as scattered words, not as the phrase — fine if it reads better, worth a look if not`));
       } else if (lower.includes(primaryKeyword) && lower.indexOf(primaryKeyword) + primaryKeyword.length > TITLE_VISIBLE) {
         out.push(F('warn', 'title', `primary keyword "${primaryKeyword}" ends past character ${TITLE_VISIBLE} — Google says users notice the first 70 or fewer`));
@@ -257,7 +304,34 @@ function checkOne(p) {
     } else if (px > TITLE_PX_SAFE) {
       out.push(F('warn', 'seoTitle',
         `<title> renders ${Math.round(px)}px — within ${TITLE_PX_BUDGET}px but past the ${TITLE_PX_SAFE}px safe mark, trim if it has many capitals`));
+    } else if (px < TITLE_PX_SHORT) {
+      out.push(F('warn', 'seoTitle',
+        `<title> renders ${Math.round(px)}px of ~${TITLE_PX_BUDGET}px — roughly ${Math.floor((TITLE_PX_SAFE - px) / 9.9)} more characters fit; spend them on the motif, material or occasion`));
     }
+  }
+
+  // --- Generic titles ---
+  // A title that is only "Personalized" + the product type names no listing in
+  // particular. Google lists boilerplate titles among the reasons it rewrites a
+  // title link, and a shop that sells many of one type ends up with dozens of
+  // pages under one <title>. Strip the type, the brand and the words every
+  // listing carries; something must remain.
+  const typeWords = new Set([...stems(text(p.productType)), ...stems(primaryKeyword)]);
+  const brandWords = new Set(stems(SUFFIX));
+  if (typeWords.size) {
+    const checkGeneric = (t, rule, label) => {
+      if (t && !distinctiveWords(t, typeWords, brandWords).length) {
+        out.push(F('error', rule, `${label} "${t}" names no motif, design or attribute beyond the product type — it would fit any listing of this type; lead with what makes this one different`));
+      }
+    };
+    checkGeneric(title, 'title', 'product title');
+    if (seoTitle) checkGeneric(seoTitle, 'seoTitle', 'SEO title');
+  }
+
+  // The storefront appends the brand; typing it into the field shows it twice
+  // ("... | lunavows | LunaVows") unless the theme happens to strip it.
+  if (seoTitle && brandWords.size && stems(seoTitle).some((w) => brandWords.has(w))) {
+    out.push(F('warn', 'seoTitle', `SEO title already carries the brand and the storefront appends "${SUFFIX.trim()}" — it shows twice unless the theme strips it; spend those characters on the product`));
   }
 
   // --- 4. Meta description ---
@@ -469,6 +543,24 @@ function checkCatalog(items) {
       out.push(F('warn', 'boilerplate-title', `${hs.length} titles share one template varying by a single word: ${hs.slice(0, 4).join(', ')}${hs.length > 4 ? ' …' : ''} — Google names this as a reason it rewrites title links`));
     }
   }
+
+  // "Christmas" is a fine word, but on a shop with 800 ornaments it tells one
+  // ornament from another no better than "Personalized" does. The catalog says
+  // which words are common: a <title> made only of words found in at least 1 in
+  // 20 titles names no listing in particular. Needs enough titles to count.
+  if (items.length >= 20) {
+    const effective = (p) => text(p.seoTitle ?? p.seo?.title) || text(p.title);
+    const df = new Map();
+    for (const p of items) {
+      for (const w of new Set(stems(effective(p)))) df.set(w, (df.get(w) ?? 0) + 1);
+    }
+    const common = (w) => FUNCTION_WORDS.has(w) || GENERIC_WORDS.has(w) || (df.get(w) ?? 0) / items.length >= 0.05;
+    const bland = items.filter((p) => effective(p) && stems(effective(p)).every(common));
+    if (bland.length) {
+      const hs = bland.map((p) => text(p.handle) || '(no handle)');
+      out.push(F('warn', 'generic-title', `${bland.length} <title>s use only words common across this catalog, so none names its own design: ${hs.slice(0, 4).join(', ')}${hs.length > 4 ? ' …' : ''}`));
+    }
+  }
   return out;
 }
 
@@ -517,4 +609,6 @@ if (JSON_OUT) {
   }
   process.stdout.write(`\n${items.length} listing(s): ${errors} error(s), ${warns} warning(s)\n`);
 }
-process.exit(errors ? 1 : 0);
+// exitCode, not exit(): exit() drops whatever stdout has not flushed to a pipe,
+// which cut catalog --json output off at 64 KB.
+process.exitCode = errors ? 1 : 0;

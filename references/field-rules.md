@@ -61,8 +61,24 @@ Two failures worth checking for explicitly, because both ship regularly:
 **Bad** (162 chars, repeated word, comma tail):
 `Personalized Personalized Til Death Do Us Part Glass Ornament, Custom Gothic Wedding Ornament, Skeleton Couple Keepsake, Halloween Wedding Gift, Anniversary Decor`
 
-**Good** (56 chars):
-`Personalized Wedding Welcome Sign, Couple Portrait Decor`
+**Generic** (33 chars) — true, but it fits every sign in the shop:
+`Personalized Wedding Welcome Sign`
+
+**Good** (93 chars) — the design right behind `Personalized`, the type keyword
+inside the first 50, then real attributes:
+`Personalized Couple Portrait Wedding Welcome Sign with Names and Date, Fabric Ceremony Banner`
+
+No size in it: the listing sells three, and a title naming one of them would be
+wrong for the other two.
+
+Run the generic test from SKILL.md (*Writing the title: the design leads*):
+delete the type keyword and the words every listing carries — `personalized`,
+`custom`, `gift`, `keepsake`, `decor`, the brand, the shop's core occasion word.
+What is left must name this listing. In the generic example nothing is left.
+
+A product-title minimum appears in no Google or Shopify document. The checker
+still warns under 45 characters (CONVENTION), because on real catalogues a title
+that short is almost always `Personalized` plus the type.
 
 ## 3. SEO title
 
@@ -90,6 +106,20 @@ characters.
 Shopify stores this field as null when it equals the product title, so "no SEO
 title" means the product title is doing the job — check its width, not the empty
 field.
+
+The budget is a target too. A 30-character SEO title is not safer than a
+45-character one; it simply leaves the design out. The checker warns below
+about 450px including the suffix — a quarter of the line unused. In Title Case
+the real ceiling is nearer 47 characters than 49, so measure every draft.
+
+Do not type the shop name into the SEO title when the storefront appends it.
+One live catalogue had 372 SEO titles ending `| lunavows` on a storefront that
+adds ` | LunaVows` itself; only a theme rule that strips a trailing brand kept
+it from showing twice.
+
+Every page needs its own `<title>`. Two products sharing one compete for the
+same query; on the same catalogue 438 pages shared a title with another page
+before a rewrite, 75 of them `Personalized Christmas Ornament`.
 
 Setting an SEO title is a low-risk edit: it touches no URL, so nothing has to be
 redirected or recrawled. It is not a guaranteed win either — Google generates

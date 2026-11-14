@@ -2,7 +2,7 @@
 name: shopify-listing-seo
 description: Write a complete Shopify product listing from a product photo or a few facts - product title, SEO title, meta description, URL handle, description HTML, tags - and audit existing listings. Listing fields are always written in the shop selling language, English by default, whatever language the chat is in. Every threshold is labelled hard rule, documented recommendation, or unsourced convention. Use whenever someone writes, rewrites or audits a Shopify listing or product description, sends a product photo and asks for a listing, mentions product SEO, listing SEO, meta title, meta description, product tags or storefront search, or is about to write product fields through the Shopify Admin API - even if they never say "SEO". Same requests in Vietnamese also trigger it: "viết listing", "viết mô tả sản phẩm", "đăng sản phẩm Shopify", "viết tiêu đề sản phẩm", "sửa listing", "tối ưu SEO sản phẩm". Listing fields only - not technical SEO, site speed or theme code.
 metadata:
-  version: 1.6.0
+  version: 1.7.0
 ---
 
 # Shopify listing SEO
@@ -64,7 +64,9 @@ it to what you genuinely cannot infer:
 3. What can the buyer personalize? (names, date, photo, custom wording…)
 4. What sizes, colours or other options exist? Give exact numbers and units.
 5. How long does production take, and how long does delivery take?
-6. What occasion or style is it for?
+6. What design, artwork or theme is on it, and what occasion is it for? (The
+   design is what the title leads with — see
+   [Writing the title](#writing-the-title-the-design-leads).)
 7. What is the shop name? (needed to size the SEO title — see below)
 
 If they have already given some of this, do not ask again. If they answer only
@@ -154,6 +156,131 @@ one thing missing. Write the listing, mark the gap inline in square brackets
 (`[cần điền: thời gian sản xuất]`), and list the gaps under the output. That
 gets them 90% of the way while making the hole impossible to miss.
 
+## Writing the title: the design leads
+
+The commonest failure this skill used to produce was not a long title. It was a
+short, generic one: `Personalized Christmas Ornament`, `Personalized Wedding
+Welcome Sign`. Every word is true and the title fits every ornament or every
+sign in the shop. On one live catalogue 74 pages carried the exact `<title>`
+"Personalized Christmas Ornament", 26 "Personalized Wooden Christmas Ornament",
+16 "Personalized Christmas Stocking". Google cannot tell those pages apart,
+shoppers scanning results cannot either, and Google names boilerplate titles as
+a reason it rewrites a title link.
+
+**"Personalized" is not a description.** In a personalized-gift shop it is on
+every listing, so it carries no information about this one. Neither do
+`custom`, `gift`, `keepsake`, `decor` or `unique`. They may appear, once, but
+they never count as the part that names the product.
+
+### The formula
+
+Build every title from these parts, in this order, using only facts you were
+given or can see:
+
+| Part | What it is | Example |
+| --- | --- | --- |
+| **Design** | the artwork, motif, theme or shape that sets this listing apart from its siblings | `Floral Bird Couple`, `Gingerbread Family Tray`, `Gothic Rose` |
+| **Type keyword** | the phrase a buyer types for the product type, exactly once | `Christmas Ornament`, `Wedding Welcome Sign` |
+| **Personalization** | what the buyer adds | `with Names and Date`, `Photo` |
+| **Attribute** | material, finish, size, count — facts only | `3D Relief Acrylic`, `Wood`, `Steel Charm` |
+| **Occasion / recipient** | who or what it is for | `First Christmas Married`, `for Grandma` |
+
+The **design comes first** whenever the type keyword can still finish inside
+the first ~45 characters. A shopper looking at ten ornament results is choosing
+between designs; the type is already obvious from the page around it.
+
+One allowed exception: when the shop's primary keyword starts with
+`Personalized` (buyers really do type "personalized christmas ornament") — and
+if nobody told you the keyword, assume it does when the shop's existing titles
+all open with it — the
+**product title** may open with that one word, with the design straight after
+it — `Personalized Cozy Snowman Couple Christmas Ornament`, never
+`Personalized Christmas Ornament with Cozy Snowman Couple`, where the design
+falls to the end. The **SEO title** has no room to spare, so it spends those
+13 characters on the design instead.
+
+### The generic test — run it on every title before you hand it over
+
+1. Delete the type keyword.
+2. Delete the words every listing in the shop carries: `personalized`,
+   `custom`, `gift`, `keepsake`, `decor`, the brand, and the occasion words the
+   shop is built around — `Christmas` in a Christmas-ornament shop, `wedding`
+   in a wedding shop, **both** in a shop that sells both. An occasion word that
+   is part of the type keyword (`Wedding Welcome Sign`) goes with the type; it
+   still does not count as the design.
+3. **What is left must name this listing's design.** If nothing is left, or what
+   is left would also describe another listing in the shop, the title is
+   generic. Go back to the photo or the product name and find the motif.
+
+If you genuinely cannot see a design — a plain product with no artwork — use
+the attribute or the personalization instead (`Engraved Oak`, `Couple Photo`),
+and say in your notes that the listing has nothing visual to set it apart.
+
+When the **buyer supplies the design** (a photo, their own artwork), name what
+they supply and the form it takes: `Design Your Own Heart Glass Photo
+Ornament`, not `Personalized Photo Glass Ornament`. The shape, material and
+style options are the attributes that tell it from the shop's other photo
+pieces.
+
+### Real rewrites (one shop, SEO title, suffix ` | LunaVows`)
+
+| Before (shared by many pages) | After |
+| --- | --- |
+| Personalized Christmas Ornament | Floral Bird Couple Christmas Ornament, Steel Charm |
+| Personalized Christmas Ornament | Cozy Snowman Couple Christmas Ornament |
+| Personalized Christmas Ornament | Jeweled Tree Christmas Ornament with Names |
+| Personalized Christmas Ornament | Holiday House 3D Relief Christmas Ornament |
+| Personalized Christmas Ornament | Wedding Bells Chapel Wood Christmas Ornament |
+| Personalized Christmas Ornament | Grandma and Grandkids Baking Wood Ornament |
+| Personalized Christmas Ornament | Snowy Cardinal Memorial Acrylic Ornament |
+
+Each "after" came from words already in that listing's own product title or
+description. Nothing was invented to make a title distinct.
+
+### How long
+
+**Do not write short.** Short titles are where the generic ones come from:
+`Personalized` + type is about 30 characters, and there is nothing else in it.
+
+- **SEO title:** fill the pixel budget. Aim for roughly 450-580px with the
+  brand suffix — in Title Case that is about 38-47 characters before an
+  11-character suffix (on one live catalogue 9 in 10 titles that fit were 47
+  characters or fewer). Past ~48 characters most Title Case titles cross 600px,
+  so **measure, do not count**: run the checker on every draft. Under 450px the
+  checker warns that the room is unused. (CONVENTION.)
+- **Product title:** the first ~70 characters carry design + type keyword;
+  personalization and real attributes — material, size, occasion, recipient —
+  follow, up to 150 when the product title feeds Google Shopping. A comma before
+  them is fine: two or three commas separating distinct facts are a product
+  name, a run of keyword phrases repeating the type is a keyword tail. Under ~45
+  characters a title almost always names the type and nothing else; the checker
+  warns. (CONVENTION — no Google or Shopify document sets a minimum.)
+- Length never justifies repetition or a comma tail of keyword phrases. Each
+  content word appears once in the SEO title, and at most twice in the product
+  title.
+
+### Unique across the shop
+
+Two pages with the same `<title>` compete for the same query and Google picks
+one. Before handing over a title, compare it with the shop's other titles for
+the same type. **Unique within a batch is not unique in the shop**: when
+rewriting listings of a shop that already has a catalogue, ask for an export of
+its titles (Shopify admin → Products → Export) and check against it. If you
+cannot get one, say in your notes that uniqueness was checked only within the
+batch.
+When the person sends a batch of near-identical products, the difference
+between them **is** the design — lead every title with it. Run the checker in
+`--catalog` mode on the batch **plus the shop's existing titles**: it fails
+duplicate `<title>`s, and from 20 titles up it warns on titles made only of
+words common across the catalog. Pass the shop's own occasion words with
+`--shop-words "wedding,christmas"` so the checker's generic test deletes the
+same words yours does.
+
+**Do not type the shop name into the SEO title.** The storefront appends
+` | Shop` itself; typed again it shows twice (`... | shop | Shop`) unless the
+theme happens to strip it, and it spends 10+ characters that belonged to the
+design.
+
 ## Sizing the SEO title: measure the brand suffix first
 
 Storefronts append the shop name to the page title — `Product name | Shop`. That
@@ -168,11 +295,15 @@ Practical method:
 
 1. Measure the suffix. ` | LunaVows` is 11 characters and about **110px** — a
    fifth of the whole budget.
-2. Budget ≈ 600px total. Average English sentence-case text runs ~9.9px per
-   character, so `600px − suffix` divided by 9.9 gives a character target.
-3. That lands near **49 characters** for an 11-character suffix. Treat it as a
-   rule of thumb, and tighten it when the title is full of caps or wide letters
-   (`M W G O Q`), which is exactly when a character count lies.
+2. Budget ≈ 600px total. English text averages ~9.8-9.9px per character, so
+   `600px − suffix` divided by 9.9 gives a ceiling near **49 characters** for
+   an 11-character suffix.
+3. That ceiling is not a target. Title Case puts a capital on every word, and
+   capitals are wide, so real titles cross 600px from about 48 characters.
+   Write to roughly 38-47 and measure; tighten further when the title is full
+   of wide letters (`M W G O Q`), which is exactly when a character count lies.
+4. The budget is a target as well as a ceiling. A 30-character SEO title is
+   not "safe"; it leaves the design out. Use the room.
 
 CONVENTION, derived from third-party pixel measurement — not a Google rule.
 
@@ -181,8 +312,12 @@ CONVENTION, derived from third-party pixel measurement — not a Google rule.
 The product title does two jobs that pull in opposite directions, and most
 advice collapses them into one number. Keep them apart.
 
-**On the storefront** it is the `<h1>` and the label on every product card. Long
-titles wrap, bury the price and read badly. Shorter is genuinely better here.
+**On the storefront** it is the `<h1>` and the label on every product card. A
+title that wraps to five lines buries the price, so keep the part a shopper
+reads — the first ~70 characters — clean: design, type keyword,
+personalization. Do not answer that by cutting the title down to the type
+alone; a short generic title is the worse failure (see
+[Writing the title](#writing-the-title-the-design-leads)).
 
 **In the Google Shopping feed** it is match text. Merchant Center's spec says:
 
@@ -203,14 +338,15 @@ the field that is actually submitted.
 
 So the guidance splits:
 
-- **Write the product title for the storefront.** Readable, front-loaded, no
-  repetition. There is no sourced character range — "45-70 characters" appears
-  in no Google or Shopify document — but a title that wraps to five lines on a
-  product card is a real problem regardless of what any spec says.
-- **If the feed uses the product title** and you want the extra match coverage
-  Google recommends, you can extend to 150 — but you are trading storefront
-  readability for it. Setting the channel to feed the SEO title instead avoids
-  the trade entirely.
+- **Front-load it.** Design + type keyword + personalization inside the first
+  ~70 characters, no repetition. There is no sourced character range — "45-70
+  characters" appears in no Google or Shopify document.
+- **Then use the length.** When the feed uses the product title, add real
+  attributes after the lead phrase — material, size, occasion, recipient — up
+  to 150, as Google recommends. Each one is a query the listing can now match.
+  Facts only: an attribute you were not given does not go in.
+- **Setting the channel to feed the SEO title** moves the 150-character rules
+  onto that field instead; the formula stays the same.
 
 Keyword stuffing is defined qualitatively by Google — unnatural repetition,
 list-like or out-of-context keyword blocks, text that reads for machines rather
@@ -446,7 +582,14 @@ Then, underneath and in the person's own language:
 [ ] Product title: no price, sale, shipping or delivery wording (Merchant Center)
 [ ] Product title: no word capitalised for emphasis, no gimmicky punctuation
 [ ] Product title: not one template with a single word swapped across the catalog
-[ ] SEO title: fits the pixel budget once the brand suffix is added
+[ ] Both titles lead with the design; the generic test leaves words that name
+    this listing and no other
+[ ] Product title: 45 characters or more — design, type, personalization, then
+    real attributes
+[ ] SEO title: fits the pixel budget once the brand suffix is added, and uses
+    most of it (~450-580px)
+[ ] SEO title: no shop name typed in — the storefront adds it
+[ ] SEO title: not shared with any other page in the shop
 [ ] Meta description: 120-160 characters, not reused from another product
 [ ] Handle: lowercase, hyphens, readable, under 255 characters
 [ ] Description: covers all six content sections, ideally past 250 words (Shopify)

@@ -165,6 +165,32 @@
         "Không khẳng định chắc chắn về vùng in như thể là dữ kiện đã biết"
       ],
       "files": []
+    },
+    {
+      "id": 14,
+      "prompt": "Viết title và SEO title cho ornament này: ornament gỗ in hình đôi chim hoạ tiết hoa, có móc thép, khách điền tên và ngày. Shop LunaVows có hơn 800 ornament Giáng sinh.",
+      "expected_output": "Phải dẫn đầu bằng hoạ tiết (Floral Bird Couple) chứ không phải 'Personalized Christmas Ornament'. Phải nói rõ chữ Personalized có ở mọi listing nên không phân biệt được. SEO title phải dùng gần hết ngân sách pixel (khoảng 450-580px kể cả ' | LunaVows'), không gõ tên shop vào. Không thêm chất liệu hay kích thước ngoài những gì được cung cấp.",
+      "assertions": [
+        "SEO title bắt đầu bằng hoạ tiết (đôi chim, hoa); product title nếu mở bằng 'Personalized' thì hoạ tiết đứng ngay sau, trước 'Christmas Ornament'",
+        "Chạy hoặc mô tả phép thử title chung chung: bỏ loại sản phẩm và chữ chung, phần còn lại phải gọi tên được mẫu này",
+        "SEO title đo bằng pixel và nằm trong khoảng ~450-580px kể cả đuôi",
+        "SEO title không chứa tên shop",
+        "Chỉ dùng thông tin được cho: gỗ, thép, đôi chim, hoa, tên, ngày"
+      ],
+      "files": []
+    },
+    {
+      "id": 15,
+      "prompt": "Duyệt SEO title này giúp mình: 'Personalized Christmas Ornament | lunavows'. Shop có 74 trang đang dùng đúng title này.",
+      "expected_output": "Phải nói thẳng đây là title chung chung và trùng lặp: 74 trang cùng một <title> tranh nhau một truy vấn, Google chỉ chọn một và có thể tự viết lại title link. Phải chỉ ra lỗi gõ tên shop khi storefront đã tự thêm. Phải đề xuất cách viết lại theo hoạ tiết riêng của từng listing, lấy từ title/mô tả sẵn có, không bịa.",
+      "assertions": [
+        "Gọi đúng hai vấn đề: chung chung (không có hoạ tiết) và trùng trên 74 trang",
+        "Chỉ ra tên shop bị gõ thừa vì storefront tự thêm đuôi",
+        "Không cho rằng title ổn chỉ vì ngắn và nằm dưới ngưỡng pixel",
+        "Đề xuất viết lại theo hoạ tiết của từng listing, lấy từ dữ liệu sẵn có",
+        "Gợi ý chạy check-listing.mjs với --catalog để tìm hết các trang trùng"
+      ],
+      "files": []
     }
   ]
 }
