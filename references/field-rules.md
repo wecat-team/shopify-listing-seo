@@ -24,8 +24,13 @@ Three tiers, and only the third is winnable for most shops:
 | Tier | Example | Where it goes |
 | --- | --- | --- |
 | Category | `wedding welcome sign` | Collection title and H1 |
-| Product | `personalized wedding welcome sign` | Product title, SEO title |
+| Product | `couple portrait wedding welcome sign` | Product title, SEO title |
 | Long-tail | `custom wedding welcome sign with couple portrait 24x36` | Body copy, alt text |
+
+The product tier is the type keyword plus what sets this listing apart — its
+design or occasion. `Personalized` is not that: every listing in a
+personalization shop carries it, so it goes later in the product title and is
+the first word cut from the SEO title (see SKILL.md, "Personalized").
 
 Check cannibalization before committing: search the shop for the keyword and see
 what already targets it. If something does, pick a different angle for this
@@ -64,9 +69,13 @@ Two failures worth checking for explicitly, because both ship regularly:
 **Generic** (33 chars) — true, but it fits every sign in the shop:
 `Personalized Wedding Welcome Sign`
 
-**Good** (93 chars) — the design right behind `Personalized`, the type keyword
-inside the first 50, then real attributes:
-`Personalized Couple Portrait Wedding Welcome Sign with Names and Date, Fabric Ceremony Banner`
+**Good** (93 chars) — the design first, the type keyword inside the first 50,
+then personalization and real attributes:
+`Couple Portrait Wedding Welcome Sign, Personalized Fabric Ceremony Banner with Names and Date`
+
+Not `Personalized Couple Portrait…`: a phone product card shows about 30-36
+characters, and the shopper would spend 13 of them reading a word every card in
+the shop shares. Google Shopping matches `Personalized` wherever it sits.
 
 No size in it: the listing sells three, and a title naming one of them would be
 wrong for the other two.
@@ -111,6 +120,12 @@ The budget is a target too. A 30-character SEO title is not safer than a
 45-character one; it simply leaves the design out. The checker warns below
 about 450px including the suffix — a quarter of the line unused. In Title Case
 the real ceiling is nearer 47 characters than 49, so measure every draft.
+
+Keep the searched occasion phrase. Measured on one shop's own search box over 90
+days, occasion words were 34% of searches, materials 12%, design words 9%, and
+"personalized" under 5%. A rewrite that kept the design and dropped the
+occasion turned 7 of 41 "first christmas" titles into titles without it. Cut
+personalization first, then material, then design.
 
 Do not type the shop name into the SEO title when the storefront appends it.
 One live catalogue had 372 SEO titles ending `| lunavows` on a storefront that
