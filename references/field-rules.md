@@ -69,8 +69,8 @@ Two failures worth checking for explicitly, because both ship regularly:
 **Generic** (33 chars) — true, but it fits every sign in the shop:
 `Personalized Wedding Welcome Sign`
 
-**Good** (93 chars) — the design first, the type keyword inside the first 50,
-then personalization and real attributes:
+**Good** (93 chars) — the design first, then the type keyword, then
+personalization and real attributes:
 `Couple Portrait Wedding Welcome Sign, Personalized Fabric Ceremony Banner with Names and Date`
 
 Not `Personalized Couple Portrait…`: a phone product card shows about 30-36
@@ -79,6 +79,15 @@ the shop shares. Google Shopping matches `Personalized` wherever it sits.
 
 No size in it: the listing sells three, and a title naming one of them would be
 wrong for the other two.
+
+**Good, with a recipient** — the listing says it is an anniversary present for
+a husband; the photo becomes a watercolor portrait:
+`Watercolor Couple Portrait Anniversary Photo Ornament - Gift for Husband, Personalized with Names`
+
+The lead phrase ends at the spaced dash (the checker treats ` - ` like a comma)
+and the gift phrase names one recipient. A title past 50 characters is normal.
+Not `Anniversary Gift For Husband Boyfriend Dad - Personalized…`: that lists
+recipients as keywords.
 
 Run the generic test from SKILL.md (*Writing the title: the design leads*):
 delete the type keyword and the words every listing carries — `personalized`,
@@ -115,6 +124,13 @@ characters.
 Shopify stores this field as null when it equals the product title, so "no SEO
 title" means the product title is doing the job — check its width, not the empty
 field.
+
+A long product title left to fill `<title>` loses its end, and in a gift-shop
+formula the end is the product type. On one 2,969-listing gift storefront the
+`<title>` was the product title cut at about 70 characters plus the shop name;
+298 of 300 sampled titles rendered past 600px, and the cut fell inside the type
+(`…I Met You Fli – Shop`). Write a separate SEO title whenever the product title
+runs past the budget.
 
 The budget is a target too. A 30-character SEO title is not safer than a
 45-character one; it simply leaves the design out. The checker warns below

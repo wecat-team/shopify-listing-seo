@@ -209,10 +209,10 @@
       "prompt": "Title này ổn chưa: 'Personalized Double-Sided Vintage Christmas Photo Wood Slice Ornament'? Khách chủ yếu xem trên điện thoại.",
       "expected_output": "Phải chỉ ra trên điện thoại thẻ sản phẩm chỉ hiện khoảng 30-36 ký tự, nên khách chỉ đọc được 'Personalized Double-Sided Vintage' — chữ Personalized chiếm 13 ký tự mà shop nào cũng có. Đề xuất đưa hoạ tiết và loại lên đầu, đẩy Personalized ra sau (Google Shopping vẫn khớp chữ đó ở bất kỳ vị trí nào).",
       "assertions": [
-        "Nêu giới hạn hiển thị trên điện thoại (thẻ ~30-36 ký tự, trang sản phẩm ~50)",
+        "Nêu giới hạn hiển thị của thẻ sản phẩm trên điện thoại (~30-36 ký tự)",
         "Không khuyên bỏ hẳn chữ Personalized khỏi product title vì Google có người tìm",
         "Đề xuất bản viết lại với hoạ tiết + loại sản phẩm ở đầu",
-        "Loại sản phẩm (Ornament) nằm trong khoảng 50 ký tự đầu"
+        "Không bắt loại sản phẩm phải xong trong 50 ký tự đầu — title quá 50 ký tự là bình thường"
       ],
       "files": []
     },
@@ -238,6 +238,52 @@
         "Có 'Christmas Stocking'",
         "SEO title không có tên shop",
         "Đo pixel bằng checker, ≤600px kèm hậu tố"
+      ],
+      "files": []
+    },
+    {
+      "id": 20,
+      "prompt": "Viết product title và SEO title cho: ornament mica in câu 'Your Wings Were Ready, My Heart Was Not', có tên và năm của người đã mất, dùng để tưởng niệm. Shop LunaVows, storefront tự thêm ' | LunaVows'.",
+      "expected_output": "Câu in trên sản phẩm chính là hoạ tiết: giữ nguyên chữ, Title Case, không diễn giải lại; câu dài thì giữ phần đầu khách nhận ra ('Your Wings Were Ready'). Giữ dịp Memorial và loại Ornament; chất liệu Acrylic nếu vừa. Ví dụ SEO title: 'Your Wings Were Ready Memorial Acrylic Ornament'.",
+      "assertions": [
+        "Cả hai title có câu 'Your Wings Were Ready' đúng nguyên văn",
+        "Có 'Memorial' và 'Ornament' trong SEO title",
+        "Không mở đầu product title bằng Personalized",
+        "SEO title đo bằng checker, ≤600px kể cả đuôi"
+      ],
+      "files": []
+    },
+    {
+      "id": 21,
+      "prompt": "Viết SEO title: khách gửi ảnh thú cưng, shop vẽ lại thành tranh màu nước (watercolor) rồi in lên ornament gốm tròn. Không có dịp cụ thể.",
+      "expected_output": "Phong cách vẽ là hoạ tiết: nêu 'Watercolor' và cái được vẽ (Pet Portrait), cộng Photo/Ceramic nếu vừa. Không ra title chung chung 'Personalized Pet Photo Ornament'. Không tự thêm dịp hay người nhận.",
+      "assertions": [
+        "Có 'Watercolor' và 'Pet Portrait'",
+        "Không tự thêm dịp (Christmas, Memorial…) hay người nhận",
+        "Không phải dạng 'Personalized Pet Photo Ornament'"
+      ],
+      "files": []
+    },
+    {
+      "id": 22,
+      "prompt": "Sửa title này: 'Christmas Gift For Mom Grandma Nana Aunt - Personalized Snowman Family Shaker Ornament'. Listing ghi rõ là quà cho bà (grandma).",
+      "expected_output": "Bốn người nhận liên tiếp là khối từ khoá; listing chỉ nói là cho bà nên chỉ giữ Grandma. Không coi độ dài quá 50 ký tự là lỗi. Shaker là cấu tạo, đứng ngay trước loại. Ví dụ: 'Snowman Family Shaker Ornament - Christmas Gift for Grandma, Personalized with Names'.",
+      "assertions": [
+        "Chỉ còn một người nhận (Grandma), hoặc tối đa hai nối bằng 'and'",
+        "Giữ 'Shaker' ngay trước 'Ornament'",
+        "Không bắt title phải ngắn dưới 50 ký tự",
+        "Chạy checker không còn cảnh báo recipients"
+      ],
+      "files": []
+    },
+    {
+      "id": 23,
+      "prompt": "Shop kia viết title kiểu 'Anniversary Gift For Couples - Personalized Custom Photo Pencil Sketch Couple Portrait Leather Desk Mat' và không đặt SEO title. Mình có nên làm y vậy không?",
+      "expected_output": "Product title dài kiểu đó là được (quá 50 ký tự là bình thường, mở đầu bằng dịp + người nhận cũng được). Cái không nên chép: để trống SEO title, vì <title> sẽ là product title bị cắt và mất tên loại sản phẩm ở cuối; nên viết SEO title riêng. Không liệt kê quá hai người nhận.",
+      "assertions": [
+        "Không chê product title chỉ vì dài hay loại sản phẩm nằm sau ký tự 50",
+        "Khuyên viết SEO title riêng vì title dài bị cắt mất phần cuối",
+        "Đưa ra một SEO title mẫu đo được ≤600px"
       ],
       "files": []
     }

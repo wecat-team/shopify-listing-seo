@@ -50,6 +50,7 @@ not the absence of a source. Both columns get checked.
 | `<title>` ~580-600px desktop | — | — | CONVENTION — third-party measurement, no publisher |
 | Arial 20px advance widths | — | — | **INTERNAL OBSERVATION** — measured with canvas `measureText`, not published by anyone |
 | Median 521px / max 617px over 278 titles | — | — | **INTERNAL OBSERVATION** — one live catalogue, not a general finding |
+| Gift-shop title patterns: 42% gift-for phrase, type ends at char 87 (median), 298/300 `<title>`s over 600px, 144/2,969 with 3+ recipients | — | — | **INTERNAL OBSERVATION** — one public personalized-gift storefront, 2,969 product titles read from its public product list on 2026-11-16; another shop's choices, not a rule |
 | Core Web Vitals LCP 2.5s / INP 200ms / CLS 0.1 | [Core Web Vitals](https://web.dev/articles/vitals) | — | **RECOMMENDATION** — page experience, outside this skill's listing-field scope |
 | Meta description length | **no limit published**, and Google may ignore the text | "It's recommended that 160 characters is used" | **RECOMMENDATION** (Shopify) |
 | One distinct meta description per page | snippet documentation | — | **RECOMMENDATION** |

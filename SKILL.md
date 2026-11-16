@@ -2,7 +2,7 @@
 name: shopify-listing-seo
 description: Write a complete Shopify product listing from a product photo or a few facts - product title, SEO title, meta description, URL handle, description HTML, tags - and audit existing listings. Listing fields are always written in the shop selling language, English by default, whatever language the chat is in. Every threshold is labelled hard rule, documented recommendation, or unsourced convention. Use whenever someone writes, rewrites or audits a Shopify listing or product description, sends a product photo and asks for a listing, mentions product SEO, listing SEO, meta title, meta description, product tags or storefront search, or is about to write product fields through the Shopify Admin API - even if they never say "SEO". Same requests in Vietnamese also trigger it: "viết listing", "viết mô tả sản phẩm", "đăng sản phẩm Shopify", "viết tiêu đề sản phẩm", "sửa listing", "tối ưu SEO sản phẩm". Listing fields only - not technical SEO, site speed or theme code.
 metadata:
-  version: 1.8.0
+  version: 1.9.0
 ---
 
 # Shopify listing SEO
@@ -192,9 +192,9 @@ Build every title from these parts, using only facts you were given or can see:
 | Part | What it is | Example |
 | --- | --- | --- |
 | **Type keyword** | the phrase a buyer types for the product type, exactly once | `Christmas Ornament`, `Wedding Welcome Sign` |
-| **Occasion / recipient** | the occasion phrase buyers search, when the listing has one | `First Christmas Married`, `Baby's First Christmas`, `Engagement`, `Memorial`, `for Grandma` |
-| **Design** | the artwork, motif, theme or shape that sets this listing apart from its siblings | `Floral Bird Couple`, `Gingerbread Family Tray`, `Gothic Rose` |
-| **Material / format** | material, finish, construction — the ones buyers search first | `3D Relief`, `Acrylic`, `Glass`, `Ceramic`, `Wood`, `Photo` |
+| **Occasion / recipient** | the occasion phrase buyers search, when the listing has one; the recipient, when the listing names one | `First Christmas Married`, `Baby's First Christmas`, `Engagement`, `Memorial`, `for Grandma`, `Anniversary Gift for Husband` |
+| **Design** | the artwork, motif, theme or shape that sets this listing apart from its siblings — or the printed saying, or the art style of a photo piece | `Floral Bird Couple`, `Gingerbread Family Tray`, `Gothic Rose`, `Your Wings Were Ready`, `Watercolor Pet Portrait` |
+| **Material / format** | material, finish, construction — the ones buyers search first | `3D Relief`, `Acrylic`, `Glass`, `Ceramic`, `Wood`, `Photo`, `Shaker`, `2-Layer` |
 | **Personalization** | what the buyer adds | `with Names and Date`, `Personalized` |
 
 Write them in natural English order — usually design, occasion, material, type:
@@ -228,6 +228,92 @@ recipient — is inventing, even when it would rank.
 
 When the listing's own text contradicts itself (`linen-style` in one line,
 `Material: linen` in the spec), use the spec line and say which you chose.
+
+### When the design is not a drawing
+
+On many personalized pieces the part that tells this listing from its siblings
+is not an illustration. Three things stand in for it. A 2,969-listing
+personalized-gift storefront, sampled on 2026-11-16, used one of them on almost
+every title: of 300 of its titles run through the checker, none came out
+generic and none duplicated another.
+
+- **The printed saying.** When the piece is mostly a phrase (`Together We Make
+  a Great Team`, `Your Wings Were Ready`), the phrase is the design. Write it
+  as printed, in Title Case, punctuation included, and never paraphrase it:
+  the buyer searches the words they saw. When it is long, keep the opening
+  words a buyer would recognise, up to the first comma:
+  `Your Wings Were Ready Memorial Acrylic Ornament`.
+- **The art style of a photo piece.** When the buyer sends a photo and the
+  shop turns it into a style (watercolor, pencil sketch, cartoon portrait,
+  line art, stained glass), the style is the design: `Watercolor Pet Portrait
+  Photo Ornament`, not `Personalized Pet Photo Ornament`. Name only the style
+  the listing produces; one style per title.
+- **Construction that changes what the object is.** `Shaker`, `Ball`,
+  `2-Layer` and `Custom-Shaped` make a different object from a flat ornament,
+  so they belong to the type phrase: put them right before the head noun
+  (`Snowman Family Shaker Ornament`, `Christmas Shaker Ornament`). A shape such as `Heart` or `Circle`
+  still goes in only when the listing comes in that one shape.
+
+These run the same generic test as any design. A saying that every listing in
+the shop carries (`Merry Christmas`) is not a design.
+
+### Gift for whom: the recipient is information, "gift" is not
+
+In a gift shop, `Gift` on its own tells the shopper nothing. `Gift for
+Husband` does: the recipient is a fact about this listing, and an occasion
+followed by "gift for" and a recipient is how people search for a present
+(`anniversary gift for husband`, `christmas gift for grandma`). On the same
+storefront 42% of titles carried a gift-for phrase before the dash.
+
+- Use it only when the listing names the recipient: the design says `To My
+  Daughter`, or the listing says it is for grandma. Adding a recipient to
+  widen the reach is inventing.
+- Write it the way it is searched, occasion first: `Anniversary Gift for
+  Husband`, `Christmas Gift for Coworkers`.
+- **One recipient, two at most, joined with `and`.** `Gift for Mom and
+  Grandma` reads as a sentence. `Gift For Dad Grandpa Husband Son` is a block
+  of keywords, which is how Google describes keyword stuffing. On that
+  storefront 144 of 2,969 titles named three or more recipients after "for".
+  The checker warns from three.
+- **In the product title** it can follow the lead phrase, behind a comma or a
+  spaced dash (`Watercolor Couple Portrait Anniversary Photo Ornament - Gift
+  for Husband, Personalized with Names`), or lead it when the occasion is the
+  hook (`Anniversary Gift for Husband - Watercolor Couple Portrait Photo
+  Ornament`). Do not open with the bare word `Gift`: `Gift for Husband - …`
+  spends the card on a word every listing shares.
+- **In the SEO title** the recipient belongs to the occasion row and is not
+  cut before the design (`Snowy Cardinal Memorial Ornament for Grandma`). The
+  word `Gift` goes first when room is short; the recipient stays. When `for
+  Coworkers` does not fit, the recipient as a modifier (`Coworker Ornament`)
+  keeps it.
+- **`Christmas` in a gift phrase** (`Christmas Gift for Grandma`) on an
+  ornament is the Christmas half of the type keyword, not a searched occasion:
+  in the SEO title it may shrink to `Ornament for Grandma`. A Christmas phrase
+  buyers search as such (`First Christmas`, `Christmas Wedding`) is never cut.
+  When the listing never says Christmas, do not add it: the type is then
+  `Ornament`, and adding the occasion would be inventing.
+
+### A gift-shop formula: what to take, what to leave
+
+That storefront writes `<occasion or gift phrase> - Personalized <design>
+<type>` on every title, and its product titles are long: the type ends at
+character 87 in the median title. That is normal for a product title — a
+product title past 50 characters is not a fault. Opening with the occasion
+and the recipient (`Anniversary Gift for Husband - …`) is allowed as well: it
+is the occasion the phone card is meant to sell. Two things it does are not
+worth copying:
+
+1. **The SEO title was left to the product title.** Its `<title>` was the
+   product title cut at about 70 characters, plus the shop name, so the end —
+   the product type — is what Google dropped. 298 of the 300 titles checked
+   render past the 600px cut. A long product title is fine; a long product
+   title falling back into `<title>` is not. Write a separate SEO title.
+2. **Recipient runs.** 144 of its 2,969 titles named three or more recipients
+   after "for". Name one or two.
+
+It also puts `Personalized` straight after the dash on 98% of titles. That is
+better than opening with it, and it is still a word every card in the shop
+shares.
 
 ### When space runs out, cut from the bottom of the table, never the top
 
@@ -270,18 +356,16 @@ the shop nobody types it, because everything there is personalized.
   A field the buyer fills in (`Family Name`, `Names and Date`) is
   personalization, and is cut first.
 - **Product title:** do **not** open with it. On a phone, product cards in a
-  two-column grid show roughly the first **30-36 characters** and the product
-  page about **50** before the title is cut (measured on one live storefront;
-  measure your own theme). `Personalized ` spends 13 of those 30 on a word
+  two-column grid show roughly the first **30-36 characters** before the
+  title is cut (measured on one live storefront; measure your own theme). `Personalized ` spends 13 of those 30 on a word
   every card in the shop shares. Put the design and occasion first and the
   personalization later: `Vintage Christmas Photo Wood Slice Ornament,
   Double-Sided and Personalized`, not `Personalized Double-Sided Vintage…`.
   Google Shopping matches the whole title, so the word still counts there.
-- The type keyword has to finish inside the first ~50 characters of the
-  product title, so a phone shopper reads what the thing is. The two numbers
-  do different jobs: the ~35 a card shows sell the design and occasion (the
-  shopper is already in a shop of ornaments or signs), and the ~50 the
-  product page shows have to name the type as well.
+- The type keyword can sit anywhere in the product title; finishing it past
+  character 50 is normal. The ~35 characters a card shows sell the design and
+  occasion (the shopper is already in a shop of ornaments or signs), the
+  product page shows the whole title, and the SEO title names the type.
 
 ### The generic test — run it on every title before you hand it over
 
@@ -343,11 +427,12 @@ description. Nothing was invented to make a title distinct.
   but that is a margin, not a cut: keep a design or occasion word that lands
   there rather than drop it. Over 600px always shorten. (CONVENTION.)
 - **Product title:** the first ~35 characters name this product's design or
-  occasion, the type keyword finishes inside ~50, and the first ~70 (what
+  occasion, and the first ~70 (what
   Google Shopping displays) carry design + occasion + type. Personalization and
   real attributes — material, size, recipient — follow, up to 150 when the
-  product title feeds Google Shopping. A comma before
-  them is fine: one or two commas separating distinct facts are a product
+  product title feeds Google Shopping. A comma or a spaced dash (` - `)
+  before them is fine, and the checker reads either as the end of the lead
+  phrase: one or two commas separating distinct facts are a product
   name, a run of keyword phrases repeating the type is a keyword tail.
   Add attributes a buyer would type or filter by (material, size, count,
   recipient); stop when the next one is neither. An option list (`Heart or
@@ -416,9 +501,8 @@ The product title does two jobs that pull in opposite directions, and most
 advice collapses them into one number. Keep them apart.
 
 **On the storefront** it is the `<h1>` and the label on every product card. On
-a phone the card shows about 30-36 characters and the product page about 50
-before the title is cut, so those first characters carry the design or
-occasion and the type keyword — not `Personalized`. Do not answer that by cutting the title down to the type
+a phone the card shows about 30-36 characters before the title is cut, so
+those first characters carry the design or occasion — not `Personalized`. Do not answer that by cutting the title down to the type
 alone; a short generic title is the worse failure (see
 [Writing the title](#writing-the-title-the-design-leads)).
 
@@ -689,10 +773,13 @@ Then, underneath and in the person's own language:
 [ ] Product title: not one template with a single word swapped across the catalog
 [ ] Both titles lead with the design; the generic test leaves words that name
     this listing and no other
+[ ] A printed saying is quoted as printed; a photo piece names its art style
+[ ] A recipient appears only when the listing names one, written as searched
+    ("Anniversary Gift for Husband"), two recipients at most, joined with "and"
 [ ] Product title: 45 characters or more — design, occasion, type, then
     personalization and real attributes
 [ ] Product title: does not open with Personalized/Custom; the first ~35
-    characters name the design or occasion; the type finishes inside ~50
+    characters name the design or occasion (the type may come after 50)
 [ ] Every occasion phrase in the product title (first christmas married,
     baby's first christmas, engagement, memorial…) survives into the SEO
     title, and so does a searched material (3D relief, acrylic, glass…)
