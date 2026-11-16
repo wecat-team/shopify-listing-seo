@@ -58,6 +58,13 @@ Christmas Married`, `Baby's First Christmas`) or the product type. The product
 title does not open with `Personalized`: a phone card shows about 35
 characters.
 
+When the piece has no drawn motif, the design is the printed saying (quoted as
+printed) or the art style of a photo piece (`Watercolor Pet Portrait`). Name a
+recipient only when the listing names one, the way it is searched
+(`Anniversary Gift for Husband`), and never more than two. A product title past
+50 characters is normal; where the type keyword lands is not checked. A long
+product title still needs its own SEO title, or `<title>` is cut.
+
 Do not enforce a product-title character range: the checker's under-45 warning
 is advice, not a gate. Do not present Shopify's
 250-word page recommendation as a Google rule, and do not present it as folklore

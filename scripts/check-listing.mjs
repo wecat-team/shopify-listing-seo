@@ -143,12 +143,12 @@ const TITLE_PX_SHORT = 450;
 // no Google or Shopify document sets a product-title minimum.
 const PRODUCT_TITLE_SHORT = 45;
 // What a phone shopper reads of the product title before the theme cuts it:
-// about 30-36 characters on a two-column product card and about 50 on the
-// product page, measured on one live storefront. Convention — measure yours.
+// about 30-36 characters on a two-column product card, measured on one live
+// storefront. Convention — measure yours. Where the type keyword lands is not
+// checked: a product title that names the type past character 50 is normal.
 const BROAD_TYPES = new Set(['drinkware', 'clothing', 'apparel', 'jewelry', 'jewellery', 'accessories',
   'home decor', 'decor', 'homeware', 'kitchenware', 'stationery', 'gifts', 'gift', 'other']);
 const PHONE_CARD_CHARS = 35;
-const PHONE_PDP_CHARS = 50;
 // Occasion phrases and materials buyers type. On one shop's own search box
 // over 90 days occasion words were 34% of searches and materials 12%, against
 // under 5% for "personalized". A title that keeps the design but drops these
@@ -166,7 +166,22 @@ const SEARCHED_OCCASIONS = [
   ['baby shower', /\bbaby shower\b/],
   ['growing old together', /\bgrowing old together\b/],
   ['grandparent', /\bgrand(ma|pa|mother|father|parents?|kids?)\b/],
+  // "Gift for Husband" is how people search for a present; the recipient
+  // belongs to the occasion row in SKILL.md and is not cut before the design.
+  // "for Couples" is left out: in a wedding shop every listing is for a couple,
+  // so it tells no page apart (124 of 144 hits on one wedding catalogue).
+  ['for + recipient', /\bfor (my |the |your )?(husband|wife|mom|mum|mother|dad|father|daughter|son|sister|brother|boyfriend|girlfriend|fianc[eé]e?|coworkers?|teachers?|nurses?|bride|groom|bestie|besties|aunt|uncle|niece|nephew|nana|papa|him|her)\b/],
 ];
+// Words that name who a present is for. A run of three or more after "for"
+// ("Gift For Dad Grandpa Husband Son") is a block of keywords rather than a
+// recipient: 144 of 2,969 titles on one large gift storefront named three or more.
+const RECIPIENT_WORDS = new Set(['mom','mum','mother','mama','dad','father','papa','grandma','grandpa',
+  'nana','grandmother','grandfather','grandparents','husband','wife','boyfriend','girlfriend','fiance',
+  'fiancee','son','daughter','sister','brother','kids','kid','grandkids','grandchildren','aunt','uncle',
+  'niece','nephew','friend','friends','bestie','besties','coworker','coworkers','colleague','colleagues',
+  'boss','teacher','teachers','nurse','nurses','couple','couples','him','her','men','women','bride',
+  'groom','parents','granddaughter','grandson']);
+const RECIPIENT_JOINERS = new Set(['and','my','the','your','a','or']);
 const SEARCHED_MATERIALS = [
   ['3D relief', /\b3d relief\b/],
   ['acrylic', /\bacrylic\b/],
@@ -184,6 +199,18 @@ const normWords = (s) => s.toLowerCase().replace(/[’‘]/g, "'").replace(/'s\b
 // Mapping a string used to throw, which read as a crash rather than a finding.
 const asList = (v) => Array.isArray(v) ? v.map(text).filter(Boolean)
   : typeof v === 'string' ? v.split(',').map(text).filter(Boolean) : [];
+/** The recipients named after the first "for", counting "Dog Lovers" as one. */
+function recipientRun(t) {
+  const ws = normWords(t.replace(/&/g, ' and '));
+  const found = [];
+  for (let i = ws.indexOf('for') + 1; i > 0 && i < ws.length; i++) {
+    if (RECIPIENT_JOINERS.has(ws[i])) continue;
+    if (/^lovers?$/.test(ws[i + 1] ?? '')) { found.push(`${ws[i]} ${ws[i + 1]}`); i++; continue; }
+    if (!RECIPIENT_WORDS.has(ws[i])) break;
+    found.push(ws[i]);
+  }
+  return found;
+}
 // "ornaments" and "ornament" are the same word for this purpose.
 const stem = (w) => w.replace(/ies$/, 'y').replace(/(?<!s)s$/, '');
 const stems = (s) => normWords(s).map(stem);
@@ -273,7 +300,6 @@ function checkOne(p) {
     if (opener && GENERIC_WORDS.has(stem(opener)) && !/^design your own\b/i.test(title)) {
       out.push(F('warn', 'title', `opens with "${title.split(' ')[0]}" — a phone card shows about ${PHONE_CARD_CHARS} characters, so lead with the design or occasion and move "${title.split(' ')[0]}" later (Google Shopping still matches it there)`));
     }
-    // The type keyword has to be readable before the product page cuts it.
     const typeStems = stems(text(p.productType));
     const titleStems = new Set(stems(title));
     // A broad category (Drinkware for a mug, Clothing for a sweatshirt) is a
@@ -282,14 +308,7 @@ function checkOne(p) {
     if (typeStems.length && !broadType && !typeStems.some((t) => titleStems.has(t))) {
       out.push(F('warn', 'title', `product type "${text(p.productType)}" appears nowhere in the title — either the title or the product type is wrong (a runner rug typed "Doormat" files it under the wrong search and filters)`));
     } else if (typeStems.length) {
-      // Only the type phrase itself counts. "Welcome Banner, Fabric Sign" for a
-      // "Welcome Sign" names the type at "Banner"; the later "Sign" is detail.
       const toks = [...title.toLowerCase().matchAll(/[a-z0-9'-]+/g)];
-      const at = toks.findIndex((_, i) => typeStems.every((t, j) => toks[i + j] && stem(toks[i + j][0]) === t));
-      const end = at >= 0 ? toks[at + typeStems.length - 1].index + toks[at + typeStems.length - 1][0].length : -1;
-      if (end > PHONE_PDP_CHARS) {
-        out.push(F('warn', 'title', `the product type "${text(p.productType)}" ends at character ${end} — a phone product page shows about ${PHONE_PDP_CHARS}, so a shopper may not read what it is`));
-      }
       // The type keyword once names the product; a second copy at the end is
       // the keyword tail ("...Family Christmas Stocking Gift Holiday Decor Stocking").
       const head = typeStems[typeStems.length - 1];
@@ -299,10 +318,11 @@ function checkOne(p) {
     }
     // The first ~70 characters are what a shopper actually reads, so the
     // product's core name has to fit there. Checking that the leading segment
-    // (up to the first comma) fits is the useful test; demanding that char 70
-    // land exactly on a space would fire on most titles for no reason.
+    // (up to the first comma, bar or spaced dash) fits is the useful test;
+    // demanding that char 70 land exactly on a space would fire on most titles
+    // for no reason.
     if (title.length > TITLE_VISIBLE) {
-      const lead = title.split(/\s*[,|]\s*/)[0];
+      const lead = title.split(/\s*[,|]\s*|\s+[-–—]\s+/)[0];
       if (lead.length > TITLE_VISIBLE) {
         out.push(F('warn', 'title', `the leading phrase runs ${lead.length} chars — a shopper sees about ${TITLE_VISIBLE}, so put the distinguishing words earlier`));
       }
@@ -382,6 +402,16 @@ function checkOne(p) {
     }
   }
 
+  // One recipient is a fact a gift search matches; four in a row is the list
+  // Google describes as keyword stuffing. Two joined with "and" still reads as
+  // a sentence, so the warning starts at three.
+  for (const [t, rule, label] of [[title, 'title', 'product title'], [seoTitle, 'seoTitle', 'SEO title']]) {
+    const who = t ? recipientRun(t) : [];
+    if (who.length >= 3) {
+      out.push(F('warn', rule, `${label} names ${who.length} recipients after "for" (${who.join(', ')}) — a run of recipients reads as a keyword list; keep the one or two the listing is for, joined with "and"`));
+    }
+  }
+
   // --- Generic titles ---
   // A title that is only "Personalized" + the product type names no listing in
   // particular. Google lists boilerplate titles among the reasons it rewrites a
@@ -405,7 +435,12 @@ function checkOne(p) {
   if (seoTitle && title) {
     const tl = title.toLowerCase(), sl = seoTitle.toLowerCase();
     const dropped = (list) => list.filter(([, re]) => re.test(tl) && !re.test(sl)).map(([name]) => name);
-    const occ = dropped(SEARCHED_OCCASIONS);
+    // "Coworker Ornament" keeps the recipient that "for Coworkers" named.
+    const keptRecipient = () => {
+      const m = SEARCHED_OCCASIONS.find(([n]) => n === 'for + recipient')[1].exec(tl);
+      return m && stems(sl).includes(stem(m[2]));
+    };
+    const occ = dropped(SEARCHED_OCCASIONS).filter((n) => n !== 'for + recipient' || !keptRecipient());
     if (occ.length) {
       out.push(F('warn', 'seoTitle', `SEO title drops the occasion ${occ.map((w) => `"${w}"`).join(', ')} that the product title has — buyers search occasion phrases more than any other words; cut material or "Personalized" first`));
     }
